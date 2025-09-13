@@ -1,51 +1,90 @@
-.perfil-page .page-header { margin-bottom: 2rem; }
-.perfil-page .page-header h1 { font-size: 2.25rem; font-weight: 700; color: #1a202c; margin: 0; }
-.perfil-page .page-header p { font-size: 1rem; color: #718096; margin-top: 4px; }
+/* --- LAYOUT GERAL E TEMA ESCURO --- */
+.perfil-page .page-header { 
+  margin-bottom: 2rem; 
+}
+.perfil-page .page-header h1 { 
+  font-size: 2.25rem; 
+  font-weight: 700; 
+  color: #F9FAFB; /* Cor de título para tema escuro */
+  margin: 0; 
+}
+.perfil-page .page-header p { 
+  font-size: 1rem; 
+  color: #9CA3AF; /* Cor de subtítulo para tema escuro */
+  margin-top: 4px; 
+}
+
+/* Base do card, consistente com o resto da aplicação */
+.perfil-page .card-base {
+  background: #1F2A40;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
 
 .perfil-card {
   max-width: 800px;
-  margin: 2rem auto 0 auto;
-  padding: 2.5rem;
+  margin: 0 auto;
+  padding: 0; /* O padding será interno */
+  position: relative;
+  overflow: hidden; /* Garante que o banner não vaze */
 }
 
-.perfil-header {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding-bottom: 2rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+/* --- NOVO BANNER E AVATAR SOBREPOSTO --- */
+.perfil-banner {
+  height: 150px;
+  background: linear-gradient(135deg, rgba(246, 209, 104, 0.1), rgba(31, 42, 64, 0.8)), 
+              url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+  background-size: auto, auto;
 }
 
 .perfil-avatar {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  background-color: #3b82f6;
-  color: white;
+  background-color: #f6d168; /* Cor de destaque */
+  color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  flex-shrink: 0;
+  font-size: 3.5rem;
+  font-weight: 600;
+  border: 6px solid #1F2A40; /* Borda da cor do card para efeito de "corte" */
+  
+  /* Posicionamento sobreposto */
+  position: relative;
+  margin: -60px auto 0 auto; /* Metade da altura para cima */
+  z-index: 2;
+}
+
+/* --- CONTEÚDO DO CARD --- */
+.perfil-content {
+  padding: 1.5rem 2.5rem 2.5rem 2.5rem;
+  text-align: center;
+}
+
+.perfil-header-info {
+  margin-bottom: 2.5rem;
 }
 
 .perfil-name {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
+  color: #F9FAFB;
 }
 
 .perfil-role {
   font-size: 1rem;
-  color: #6b7280;
+  color: #9CA3AF;
+  font-weight: 500;
 }
 
 .perfil-details-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
+  text-align: left;
 }
 
 .detail-item {
@@ -56,20 +95,25 @@
 
 .detail-item label {
   font-weight: 500;
-  color: #6b7280;
+  color: #9CA3AF; /* Cor secundária */
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .detail-item span {
   font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
+  font-weight: 500;
+  color: #E5E7EB; /* Cor principal de texto */
+  word-break: break-all; /* Garante que emails longos quebrem a linha */
 }
 
 .detail-item-full {
-  grid-column: 1 / -1; /* Ocupa a largura total */
+  grid-column: 1 / -1;
 }
 
+/* --- LINK DE INDICAÇÃO --- */
 .indication-link-wrapper {
   display: flex;
   gap: 0.5rem;
@@ -78,28 +122,80 @@
 .indication-link-wrapper input {
   flex-grow: 1;
   padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #374151;
   border-radius: 8px;
-  background-color: #f8f9fa;
+  background-color: #121828; /* Fundo mais escuro */
   font-size: 1rem;
-  color: #4b5563;
+  color: #9CA3AF;
+  font-family: 'monospace';
 }
 
 .indication-link-wrapper button {
-  background-color: #3b82f6;
-  color: white;
+  background-color: #f6d168;
+  color: #111827;
   border: none;
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
 .indication-link-wrapper button:hover {
-  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(246, 209, 104, 0.2);
+}
+
+.indication-link-wrapper button.copied {
+  background-color: #34D399; /* Verde sucesso */
+  color: #F9FAFB;
+}
+
+/* --- SKELETON LOADER --- */
+@keyframes skeleton-loading {
+  0% { background-color: #374151; }
+  100% { background-color: #4B5563; }
+}
+
+.perfil-page .skeleton-card {
+  padding: 0;
+  position: relative;
+}
+
+.perfil-banner-skeleton {
+  height: 150px;
+  animation: skeleton-loading 1.5s infinite alternate;
+}
+.perfil-avatar-skeleton {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 6px solid #1F2A40;
+  position: relative;
+  margin: -60px auto 0 auto;
+  z-index: 2;
+  animation: skeleton-loading 1.5s infinite alternate;
+}
+.perfil-content-skeleton {
+  padding: 1.5rem 2.5rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.skeleton-text {
+  animation: skeleton-loading 1.5s infinite alternate;
+  border-radius: 6px;
+}
+.skeleton-text.title { height: 32px; width: 40%; margin-bottom: 8px; }
+.skeleton-text.subtitle { height: 16px; width: 20%; margin-bottom: 2.5rem; }
+.skeleton-text.long { height: 40px; width: 100%; }
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
 }

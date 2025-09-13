@@ -1,6 +1,8 @@
 /* Estilos da Página */
 .home-container {
   font-family: 'Poppins', sans-serif;
+  background-color: #121828; 
+  color: #E5E7EB;
 }
 
 .dashboard-header {
@@ -10,13 +12,13 @@
 .header-h1 {
   font-size: 2.25rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #F9FAFB;
   margin: 0;
 }
 
 .header-p {
   font-size: 1rem;
-  color: #718096;
+  color: #9CA3AF;
   margin-top: 4px;
 }
 
@@ -32,22 +34,24 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
+  align-items: stretch; /* Garante que os cards na mesma linha tenham a mesma altura */
 }
 
 /* Estilos Base dos Cards */
 .card-base {
-  background: var(--cor-ilha, #ffffff99);
+  background: #1F2A40; 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #374151; 
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease-in-out;
 }
 
 .card-base:hover {
   transform: translateY(-5px);
-  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+  border-color: #4B5563;
 }
 
 /* Card KPI */
@@ -71,7 +75,7 @@
 .kpi-title {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #4a5568;
+  color: #9CA3AF; /* Cor para títulos de KPI */
   margin-bottom: 4px;
   white-space: nowrap;
 }
@@ -79,14 +83,7 @@
 .kpi-value {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #1a202c;
-}
-
-.kpi-chart {
-  width: 120px;
-  height: 60px;
-  opacity: 0.8;
-  flex-shrink: 0;
+  color: #F9FAFB; /* Cor para valores de KPI */
 }
 
 /* Card Principal (Gráfico e Clientes) */
@@ -98,83 +95,97 @@
 .card-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2d3748;
+  color: #E5E7EB; /* Cor para títulos de card */
   margin: 0 0 24px 0;
 }
 
-/* Lista de Melhores Clientes */
-.clients-list {
+/* ======================================================= */
+/* ====== LISTA DE MELHORES CLIENTES (LAYOUT VERTICAL) ====== */
+/* ======================================================= */
+
+.home-container .clients-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-container .top-clients-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  flex-grow: 1;
+  justify-content: space-around;
 }
 
-.client-item {
-  display: flex;
+.home-container .top-client-item {
+  display: grid;
+  /* Colunas: [Rank] [Avatar] [Detalhes Flexíveis] */
+  grid-template-columns: 20px 40px 1fr;
   align-items: center;
-  gap: 14px;
+  gap: 1rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(246, 209, 104, 0.2); /* Linha amarela sutil */
+  transition: background-color 0.2s ease;
 }
 
-.client-avatar {
-  width: 36px;
-  height: 36px;
-  max-width: 36px;
-  max-height: 36px;
+.home-container .top-client-item:last-child {
+  border-bottom: none; /* Remove a linha do último item */
+}
+
+.home-container .top-client-item:hover {
+  background-color: rgba(255, 255, 255, 0.03); /* Hover sutil */
+}
+
+.home-container .client-rank {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-align: center;
+}
+
+.home-container .client-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: #3b82f6;
-  color: white;
+  background-color: #f6d168; /* COR DE DESTAQUE */
+  color: #111827; /* Texto escuro para bom contraste */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-.client-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-
-.client-info {
-  flex-grow: 1;
-}
-
-.client-name {
-  font-size: 0.5rem;
-  font-weight: 500;
-  color: #2d3748;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.client-sales {
-  font-size: 0.9rem;
   font-weight: 600;
-  color: #1a202c;
-  white-space: nowrap;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background-color: #e2e8f0;
-  border-radius: 3px;
-  overflow: hidden;
+/* Container para os detalhes verticais */
+.home-container .client-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Pequeno espaço entre as linhas */
+  min-width: 0;
 }
 
-.progress {
-  height: 100%;
-  background-color: #3b82f6;
-  border-radius: 3px;
-  transition: width 0.5s ease-in-out;
+.home-container .client-name {
+  font-size: 1rem;
+  font-weight: 600; /* Destaque maior para o nome */
+  color: #E5E7EB;
+  line-height: 1.3;
 }
+
+.home-container .client-cpf {
+  font-size: 0.8rem;
+  color: #9CA3AF; /* Cor secundária para o CPF */
+}
+
+.home-container .client-value {
+  font-size: 1.1rem; /* Tamanho maior para o valor */
+  font-weight: 700;
+  color: #34D399;
+  margin-top: 0.25rem; /* Espaço extra antes do valor */
+}
+
 
 /* --- Estilos da Seção de Ranking --- */
 
@@ -203,18 +214,19 @@
 }
 
 .consultant-item:hover {
-  background-color: #f8f9fa;
+  background-color: #374151; /* Efeito hover mais escuro */
 }
 
 .consultant-item.highlight {
-  background-color: #eff6ff;
-  border: 1px solid #dbeafe;
+  /* Destaque com a cor principal e transparência */
+  background-color: rgba(246, 209, 104, 0.1); 
+  border: 1px solid #f6d168;
 }
 
 .rank-number {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #3b82f6;
+  color: #f6d168; /* COR DE DESTAQUE */
   text-align: center;
 }
 
@@ -222,8 +234,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #9ca3af;
-  color: white;
+  background-color: #6B7280; /* Avatar padrão */
+  color: #F9FAFB;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -231,92 +243,97 @@
 }
 
 .highlight .rank-avatar {
-  background-color: #3b82f6;
+  background-color: #f6d168; /* COR DE DESTAQUE */
+  color: #111827; /* Texto escuro para contraste */
 }
 
 .rank-name {
   font-size: 1rem;
   font-weight: 500;
-  color: #111827;
+  color: #F3F4F6;
 }
 
 .rank-sales {
   font-size: 1rem;
   font-weight: 600;
-  color: #16a34a;
+  /* Mantido um verde para indicar "sucesso", mas com tom mais claro */
+  color: #34D399; 
 }
 
 .rank-separator {
   height: 10px;
   width: 100%;
-  background-image: repeating-linear-gradient(90deg, #e5e7eb, #e5e7eb 4px, transparent 4px, transparent 10px);
+  background-image: repeating-linear-gradient(90deg, #4B5563, #4B5563 4px, transparent 4px, transparent 10px);
   margin: 8px 0;
 }
 
+/* --- ESTILOS PARA SKELETON LOADING (TEMA ESCURO) --- */
+
 @keyframes skeleton-loading {
   0% {
-    background-color: #e2e8f0;
+    background-color: #374151; /* Cor inicial do skeleton */
   }
 
   100% {
-    background-color: #f8fafc;
+    background-color: #4B5563; /* Cor final do skeleton */
   }
 }
 
-.skeleton .skeleton-text,
-.skeleton .skeleton-avatar,
-.skeleton .skeleton-bar,
-.skeleton-chart {
+.home-container .skeleton .skeleton-text,
+.home-container .skeleton .skeleton-avatar,
+.home-container .skeleton-chart {
   animation: skeleton-loading 1.5s infinite alternate;
   border-radius: 4px;
 }
 
-.skeleton-text.short {
+.home-container .skeleton-text.short {
   height: 14px;
   width: 60%;
-  margin-bottom: 8px;
 }
 
-.skeleton-text.long {
+.home-container .skeleton-text.long {
   height: 28px;
-  width: 40%;
+  width: 80%;
 }
 
-.skeleton-chart {
+.home-container .skeleton-chart {
   height: 400px;
   width: 100%;
   border-radius: 12px;
 }
 
-.skeleton-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.home-container .skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
-.skeleton-bar {
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
+/* ATUALIZADO: Skeleton para a nova lista de clientes */
+.home-container .top-clients-list-skeleton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
 }
 
-.clients-card .placeholder-text {
+.home-container .client-item-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-container .skeleton-text-group {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
+.home-container .placeholder-text {
   text-align: center;
   padding: 3rem;
-  color: #a0aec0;
+  color: #6B7280; /* Cor para textos de placeholder */
   font-style: italic;
-}
-
-/* Para tornar as linhas de cliente clicáveis */
-.clients-list .clickable-row {
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  margin: -8px;
-  transition: background-color 0.2s;
-}
-
-.clients-list .clickable-row:hover {
-  background-color: #f7fafc;
 }

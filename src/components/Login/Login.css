@@ -1,17 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
+/* --- FUNDO E LAYOUT GERAL --- */
 .login-container {
     display: flex;
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
-    background-color: #f4f7fc;
+    background-color: #121828; /* Cor de fundo principal do tema */
+    color: #E5E7EB;
 }
 
+/* --- PAINEL DA ESQUERDA (BRANDING) --- */
 .login-branding {
     flex: 1.2;
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-    color: #ffffff;
+    background: linear-gradient(135deg, rgba(31, 42, 64, 0.5), rgba(18, 24, 40, 0.8)), 
+                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,55 +20,39 @@
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-.login-branding::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 200px;
-    height: 200px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-}
-
-.login-branding::after {
-    content: '';
-    position: absolute;
-    bottom: -100px;
-    right: -100px;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
+    border-right: 1px solid #374151;
 }
 
 .branding-content {
     max-width: 450px;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.branding-icon {
-    font-size: 70px;
-    margin-bottom: 24px;
-    opacity: 0.9;
-    color: #93c5fd;
+.logo-container {
+    position: relative;
+    width: 150px; /* Tamanho da logo */
+    height: 210px;
+    margin-bottom: 2rem;
 }
 
 .branding-h1 {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin: 0 0 16px 0;
     font-weight: 700;
-    letter-spacing: 1px;
+    color: #F9FAFB;
 }
 
 .branding-p {
     font-size: 1.1rem;
     line-height: 1.7;
-    opacity: 0.9;
+    color: #9CA3AF;
 }
 
+
+/* --- PAINEL DA DIREITA (FORMULÁRIO) --- */
 .login-form-area {
     flex: 1;
     display: flex;
@@ -76,14 +61,20 @@
     padding: 40px;
 }
 
-.login-form {
+/* Reutilizando a classe base do seu projeto */
+.login-form.card-base {
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     position: relative;
+    background: #1F2A40;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .login-form-h2 {
-    color: #1e293b;
+    color: #F9FAFB;
     font-size: 2rem;
     font-weight: 600;
     margin-bottom: 8px;
@@ -91,7 +82,7 @@
 }
 
 .form-subtitle {
-    color: #64748b;
+    color: #9CA3AF;
     margin-bottom: 32px;
     text-align: left;
 }
@@ -106,7 +97,7 @@
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: #6B7280;
     transition: color 0.3s ease;
 }
 
@@ -114,24 +105,26 @@
     width: 100%;
     padding: 14px 45px;
     box-sizing: border-box;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #374151;
     border-radius: 8px;
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
-    color: #334155;
-    background-color: #f8fafc;
+    color: #E5E7EB;
+    background-color: #121828;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.input-field::placeholder { color: #6B7280; }
+
 .input-field:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    border-color: #f6d168;
+    box-shadow: 0 0 0 4px rgba(246, 209, 104, 0.2);
 }
 
-.input-field:focus+.input-icon,
-.input-field:focus~.password-toggle-icon {
-    color: #3b82f6;
+.input-field:focus + .input-icon,
+.input-field:focus ~ .password-toggle-icon {
+    color: #f6d168;
 }
 
 .password-toggle-icon {
@@ -139,7 +132,7 @@
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: #6B7280;
     cursor: pointer;
     transition: color 0.3s ease;
 }
@@ -155,81 +148,83 @@
 .remember-me {
     display: flex;
     align-items: center;
-    color: #475569;
+    color: #9CA3AF;
     cursor: pointer;
 }
 
 .remember-me input {
     margin-right: 8px;
-    accent-color: #3b82f6;
+    accent-color: #f6d168; /* Checkbox dourado */
 }
 
 .forgot-password-link {
-    color: #3b82f6;
+    color: #f6d168;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
 }
 
 .forgot-password-link:hover {
-    color: #1e3a8a;
+    color: #ffffff;
 }
 
 .login-button {
     width: 100%;
     padding: 15px;
-    background: #3b82f6;
-    color: #ffffff;
+    background: #f6d168;
+    color: #111827;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(246, 209, 104, 0.2);
+    transition: all 0.2s ease;
 }
 
 .login-button:hover:not(:disabled) {
-    background-color: #2563eb;
+    box-shadow: 0 6px 20px rgba(246, 209, 104, 0.3);
     transform: translateY(-2px);
 }
 
 .login-button:disabled {
-    background-color: #93c5fd;
+    background: #4B5563;
+    color: #9CA3AF;
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 .error-message {
-    color: #dc2626;
-    background: #fee2e2;
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.1);
     text-align: center;
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 16px;
     font-size: 0.9rem;
-    border: 1px solid #fecaca;
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+/* --- LOADING OVERLAY TEMÁTICO --- */
 .loading-overlay {
     position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
-    background-color: rgba(255, 255, 255, 0.9);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(31, 42, 64, 0.8);
     backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 10;
-    border-radius: 12px;
+    border-radius: 16px; /* Para corresponder ao card */
 }
 
 .spinner {
     width: 48px;
     height: 48px;
-    border: 5px solid #dbeafe;
-    border-bottom-color: #3b82f6;
+    border: 5px solid #374151;
+    border-bottom-color: #f6d168; /* Destaque dourado */
     border-radius: 50%;
     display: inline-block;
     box-sizing: border-box;
@@ -238,17 +233,29 @@
 
 .loading-text {
     margin-top: 16px;
-    color: #1e3a8a;
+    color: #9CA3AF;
     font-size: 1rem;
     font-weight: 500;
 }
 
 @keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-    100% {
-        transform: rotate(360deg);
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+    }
+    .login-branding {
+        flex: none;
+        height: 30vh;
+        min-height: 250px;
+    }
+    .login-form-area {
+        flex: 1;
+        align-items: flex-start;
+        padding-top: 60px;
     }
 }

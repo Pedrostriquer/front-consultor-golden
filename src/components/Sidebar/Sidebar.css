@@ -1,127 +1,205 @@
+/* --- ESTRUTURA E EFEITO FLUTUANTE --- */
 .sidebar {
-    width: 260px;
-    height: 100vh;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 1rem;
-    transition: width 0.3s ease, padding 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  bottom: 1rem;
+  height: calc(100vh - 2rem);
+  background: rgba(31, 42, 64, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  overflow: hidden; 
+  z-index: 100;
 }
 
-.sidebar.collapsed {
-    width: 88px;
-    padding: 1.5rem 0.5rem;
+/* --- SEÇÃO DA LOGO --- */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0.35rem;
+  margin-bottom: 2.5rem;
+  min-height: 60px;
+  justify-content: flex-start;
 }
+
+/* Container que define o tamanho e a posição dos SVGs */
+.logo-wrapper {
+  position: relative;
+  width: 50px;
+  height: 70px;
+  flex-shrink: 0; /* Impede que o wrapper encolha */
+}
+
+.logo-text h1 {
+  font-size: 1.25rem;
+  color: #F9FAFB;
+  margin: 0;
+  font-weight: 600;
+}
+
+.logo-text p {
+  font-size: 0.8rem;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+
+/* --- SEÇÃO DO PERFIL --- */
+a.profile-link { text-decoration: none; color: inherit; }
 
 .profile-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+  padding-right: 50px;
 }
-
-.sidebar.collapsed .profile-section {
-    justify-content: center;
-}
+.profile-section:hover { background: rgba(255, 255, 255, 0.1); }
 
 .profile-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #3b82f6;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f6d168; /* Cor de Destaque */
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
 }
 
-.profile-info {
-    display: flex;
-    flex-direction: column;
-    white-space: nowrap;
-}
+.profile-info { display: flex; flex-direction: column; white-space: nowrap; }
+.profile-name { font-weight: 600; color: #F3F4F6; }
+.profile-role { font-size: 0.8rem; color: #9CA3AF; }
 
-.profile-name {
-    font-weight: 600;
-}
 
-.profile-role {
-    font-size: 0.8rem;
-    color: #6b7280;
-}
-
-.menu-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1;
-}
-
-.menu-list li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1;
-}
+/* --- ITENS DE MENU E ESTILO ATIVO --- */
+.menu-list { list-style: none; padding: 0; margin: 0; flex-grow: 1;}
+a.menu-item { text-decoration: none; }
 
 .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #6b7280;
-    font-weight: 500;
-    transition: background-color 0.2s, color 0.2s;
-    white-space: nowrap;
-}
-
-.sidebar.collapsed .menu-item {
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #9CA3AF;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+  position: relative;
 }
 
 .menu-item:hover {
-    background-color: #f3f4f6;
+  background-color: rgba(246, 209, 104, 0.1);
+  color: #f6d168;
 }
 
 .menu-item.active {
-    background-color: #3b82f6;
-    color: white;
+  background-color: #f6d168; /* Cor de Destaque */
+  color: #111827; /* Texto escuro para contraste */
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(246, 209, 104, 0.2);
 }
 
 .menu-item i {
-    font-size: 1.25rem;
-    width: 24px;
-    text-align: center;
+  font-size: 1.25rem;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
+
+/* --- RODAPÉ DA SIDEBAR --- */
 .sidebar-footer {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    border-top: 1px solid #e5e7eb;
-    padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(75, 85, 99, 0.5);
 }
 
-a.menu-item {
-    text-decoration: none;
+
+/* --- AJUSTES PARA SIDEBAR RECOLHIDA --- */
+.sidebar.collapsed .menu-item {
+  justify-content: center;
+  padding: 1rem;
+  gap: 0;
 }
 
-a.menu-item.active {
-    background-color: #3b82f6;
-    color: white;
+.sidebar.collapsed .logo-section {
+  justify-content: center;
 }
 
-a.profile-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
+.sidebar.collapsed .profile-section {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.logo-text,
+.profile-info,
+.menu-item span {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+/* ... (todo o CSS anterior até a seção da animação) ... */
+
+/* ======================================================= */
+/* ====== ANIMAÇÃO DE CONTORNO PARA A LOGO SVG ====== */
+/* ======================================================= */
+
+/* Faz o SVG ocupar 100% do 'logo-wrapper' */
+.logo-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Define a cor de PREENCHIMENTO da logo principal */
+.logo-svg path {
+  fill: #f6d168; /* A cor amarela que você queria */
+}
+
+/* O SVG da animação já está posicionado corretamente pela regra .logo-svg acima */
+.logo-svg.animated-border {
+  z-index: 2; /* Coloca a borda na frente da logo preenchida */
+}
+
+/* ATUALIZADO: O path da borda animada não tem preenchimento, apenas o contorno */
+.logo-svg.animated-border path {
+  /* fill: transparent;  */
+  stroke: #dfb541; /* Contorno branco */
+  stroke-width: 3px;
+  stroke-dasharray: 100 1200; /* Ponto de luz e um grande espaço */
+  animation: move-light 4s linear infinite;
+  
+  /* NOVO: Aplica o filtro de brilho SVG */
+  filter: url(#glow); 
+}
+
+@keyframes move-light {
+  from {
+    stroke-dashoffset: 1300; 
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }

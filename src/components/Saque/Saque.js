@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../Context/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import CountUp from 'react-countup';
 import consultantService from '../../dbServices/consultantService';
 import './Saque.css';
 
+// Funções auxiliares (sem alteração)
 const formatCurrency = (value) => {
   if (value === null || value === undefined) return "R$ 0,00";
   return `R$${value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
-
 const formatDate = (dateString) => {
   if (!dateString) return '-';
   const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
   return new Date(dateString).toLocaleString('pt-BR', options);
 };
 
+// Componente para Badges de Status
 const WithdrawStatus = ({ status }) => {
   const statusMap = {
     1: { text: 'Pendente', className: 'status-pending' },
@@ -24,6 +27,7 @@ const WithdrawStatus = ({ status }) => {
   return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
+// --- Componente Principal ---
 const Saque = () => {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +47,6 @@ const Saque = () => {
 
   const fetchHistory = useCallback(async () => {
     setIsHistoryLoading(true);
-    setError('');
     try {
       const params = { ...filters, pageNumber: pagination.pageNumber, pageSize: 10 };
       if (params.status === 0 || params.status === "0") delete params.status;
@@ -55,7 +58,7 @@ const Saque = () => {
         totalPages: Math.ceil(response.data.totalCount / response.data.pageSize) || 1,
       }));
     } catch (err) {
-      setError('Falha ao carregar o histórico de saques.');
+      console.error('Falha ao carregar o histórico de saques.');
       setHistory([]);
     } finally {
       setIsHistoryLoading(false);
@@ -123,9 +126,10 @@ const Saque = () => {
       setVerificationCode('');
       setIsModalOpen(false);
       
-      setPagination(p => ({ ...p, pageNumber: 1 }));
       if (pagination.pageNumber === 1) {
         fetchHistory();
+      } else {
+        setPagination(p => ({ ...p, pageNumber: 1 }));
       }
 
     } catch (err) {
@@ -142,68 +146,59 @@ const Saque = () => {
     setError('');
   };
 
+  // Animações
+  const pageVariants = { initial: { opacity: 0 }, in: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+  const itemVariants = { initial: { opacity: 0, y: 20 }, in: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } };
+
   return (
-    <div className="saque-page">
-      <div className="page-header">
+    <motion.div className="saque-page" variants={pageVariants} initial="initial" animate="in">
+      <motion.div className="page-header" variants={itemVariants}>
         <h1>Saque</h1>
         <p>Gerencie suas comissões e solicite seus saques.</p>
-      </div>
+      </motion.div>
 
-      <div className="card-base saque-card">
+      {/* Removido o 'saque-grid' para um layout vertical mais simples */}
+      <motion.div className="card-base saque-card" variants={itemVariants}>
         <div className="saldo-disponivel">
           <span>Saldo Disponível</span>
-          <h2 className="saldo-valor">{formatCurrency(availableBalance)}</h2>
+          <h2 className="saldo-valor">
+            <CountUp start={0} end={availableBalance} duration={1.5} prefix="R$ " separator="." decimal="," decimals={2} />
+          </h2>
         </div>
-        {error && !isModalOpen && <p className="saque-message error">{error}</p>}
-        {success && <p className="saque-message success">{success}</p>}
+        <AnimatePresence>
+          {error && !isModalOpen && <motion.p initial={{opacity:0, y:-10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-10}} className="saque-message error">{error}</motion.p>}
+          {success && <motion.p initial={{opacity:0, y:-10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-10}} className="saque-message success">{success}</motion.p>}
+        </AnimatePresence>
         <div className="saque-form">
           <label htmlFor="valor-saque">Valor do Saque</label>
           <div className="saque-input-wrapper">
             <span className="input-prefix">R$</span>
             <input id="valor-saque" type="number" placeholder="0,00" value={amount} onChange={(e) => setAmount(e.target.value)} />
           </div>
-          <button className="saque-button" onClick={handleWithdrawRequest} disabled={isLoading || isSendingCode}>
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="saque-button" onClick={handleWithdrawRequest} disabled={isLoading || isSendingCode}>
             {isSendingCode ? 'Enviando código...' : <><i className="fa-solid fa-paper-plane"></i> Solicitar Saque</>}
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="card-base history-section">
+      <motion.div className="card-base history-section" variants={itemVariants}>
         <h2>Histórico de Saques</h2>
         <div className="filters-container">
-          <select name="status" value={filters.status} onChange={handleFilterChange}>
-            <option value="0">Todos os Status</option>
-            <option value="1">Pendente</option>
-            <option value="2">Pago</option>
-            <option value="3">Cancelado</option>
-          </select>
-          <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}>
-            <option value="desc">Mais Recentes</option>
-            <option value="asc">Mais Antigos</option>
-          </select>
+          <select name="status" value={filters.status} onChange={handleFilterChange}><option value="0">Todos os Status</option><option value="1">Pendente</option><option value="2">Pago</option><option value="3">Cancelado</option></select>
+          <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}><option value="desc">Mais Recentes</option><option value="asc">Mais Antigos</option></select>
         </div>
-
         <div className="table-wrapper">
+          {/* Adicionada a classe 'withdraws-table' para especificidade */}
           <table className="withdraws-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Data</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+            <thead><tr><th>ID</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead>
             <tbody>
               {isHistoryLoading ? (
-                <tr><td colSpan="4" className="loading-cell">Carregando histórico...</td></tr>
+                [...Array(5)].map((_, i) => <tr key={i} className="skeleton-row"><td><div className="skeleton-bar"/></td><td><div className="skeleton-bar"/></td><td><div className="skeleton-bar"/></td><td><div className="skeleton-bar"/></td></tr>)
               ) : history.length > 0 ? (
                 history.map(item => (
-                  <tr key={item.id}>
-                    <td>#{item.id}</td>
-                    <td>{formatDate(item.dateCreated)}</td>
-                    <td>{formatCurrency(item.amountWithdrawn)}</td>
-                    <td><WithdrawStatus status={item.status} /></td>
-                  </tr>
+                  <motion.tr key={item.id} initial={{opacity:0}} animate={{opacity:1}} layout>
+                    <td>#{item.id}</td><td>{formatDate(item.dateCreated)}</td><td>{formatCurrency(item.amountWithdrawn)}</td><td><WithdrawStatus status={item.status} /></td>
+                  </motion.tr>
                 ))
               ) : (
                 <tr><td colSpan="4" className="empty-cell">Nenhum saque encontrado.</td></tr>
@@ -212,28 +207,32 @@ const Saque = () => {
           </table>
         </div>
 
-        <div className="pagination-controls">
-          <button onClick={() => handlePageChange(pagination.pageNumber - 1)} disabled={pagination.pageNumber === 1 || isHistoryLoading}>Anterior</button>
-          <span>Página {pagination.pageNumber} de {pagination.totalPages}</span>
-          <button onClick={() => handlePageChange(pagination.pageNumber + 1)} disabled={pagination.pageNumber === pagination.totalPages || isHistoryLoading}>Próximo</button>
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Confirmar Saque</h3>
-            <p>Um código de verificação foi enviado para o seu email. Por favor, insira-o abaixo para confirmar a operação.</p>
-            {error && <p className="saque-message error modal-error">{error}</p>}
-            <input type="text" className="modal-input" placeholder="Código de Verificação" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
-            <div className="modal-actions">
-              <button className="modal-button cancel" onClick={closeModal} disabled={isLoading}>Cancelar</button>
-              <button className="modal-button confirm" onClick={handleConfirmWithdraw} disabled={isLoading}>{isLoading ? 'Confirmando...' : 'Confirmar Saque'}</button>
-            </div>
+        {pagination.totalPages > 1 && (
+          <div className="pagination-controls">
+            <button onClick={() => handlePageChange(pagination.pageNumber - 1)} disabled={pagination.pageNumber === 1 || isHistoryLoading}>Anterior</button>
+            <span>Página {pagination.pageNumber} de {pagination.totalPages}</span>
+            <button onClick={() => handlePageChange(pagination.pageNumber + 1)} disabled={pagination.pageNumber === pagination.totalPages || isHistoryLoading}>Próximo</button>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </motion.div>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div className="modal-overlay" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
+            <motion.div className="modal-content" initial={{scale:0.9, y:20}} animate={{scale:1, y:0}} exit={{scale:0.9, y:20}}>
+              <h3><i className="fa-solid fa-shield-halved"></i> Confirmar Saque</h3>
+              <p>Um código de verificação foi enviado para o seu email. Insira-o abaixo para confirmar a operação.</p>
+              {error && <p className="saque-message error modal-error">{error}</p>}
+              <input type="text" className="modal-input" placeholder="Código de Verificação" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
+              <div className="modal-actions">
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="modal-button cancel" onClick={closeModal} disabled={isLoading}>Cancelar</motion.button>
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="modal-button confirm" onClick={handleConfirmWithdraw} disabled={isLoading}>{isLoading ? 'Confirmando...' : 'Confirmar Saque'}</motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

@@ -1,191 +1,305 @@
+/* --- LAYOUT GERAL E TEMA ESPECÍFICO PARA A PÁGINA DE DETALHES --- */
 .client-detail-page {
-  animation: fadeIn 0.5s ease-in-out;
+  color: #E5E7EB;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.client-detail-page .card-base {
+  background: #1F2A40;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.client-page-header {
+.client-detail-page .client-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  color: #4a5568;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-
-.back-button:hover {
-  background-color: #f1f5f9;
-}
-
-.whatsapp-button {
-  display: inline-flex;
-  align-items: center;
-  border: 0;
-  gap: 0.5rem;
-  background-color: #25d366;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s;
-}
-
-.whatsapp-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-}
-
-.client-info-card {
+/* --- CARD DE INFO DO CLIENTE --- */
+.client-detail-page .client-info-card {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
   padding: 2rem;
   margin-bottom: 2rem;
 }
 
-.client-avatar {
-  width: 80px;
-  height: 80px;
+.client-detail-page .client-avatar {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background-color: #3b82f6;
-  color: white;
+  background: linear-gradient(135deg, #f6d168, #d4a74e);
+  color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 600;
   flex-shrink: 0;
+  border: 4px solid #374151;
 }
 
-.client-name {
-  font-size: 2rem;
+.client-detail-page .client-name {
+  font-size: 2.25rem;
   font-weight: 700;
-  margin: 0 0 0.25rem 0;
-  color: #1a202c;
+  margin: 0 0 0.5rem 0;
+  color: #F9FAFB;
 }
 
-.client-detail {
+.client-detail-page .client-detail {
   font-size: 1rem;
-  color: #718096;
-  margin: 0;
+  color: #9CA3AF;
+  margin: 0.25rem 0;
 }
 
-.stats-grid {
+
+/* --- GRID E CARDS DE ESTATÍSTICAS --- */
+.client-detail-page .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.stat-card {
+.client-detail-page .stat-card {
   padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.client-detail-page .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.client-detail-page .stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+}
+
+.client-detail-page .stat-card.investido::before { background-color: #34D399; }
+.client-detail-page .stat-card.saldo::before { background-color: #60A5FA; }
+.client-detail-page .stat-card.comissao-paga::before { background-color: #F6D168; }
+.client-detail-page .stat-card.comissao-pendente::before { background-color: #F87171; }
+
+
+.client-detail-page .stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+}
+
+.client-detail-page .stat-card.investido .stat-icon { background-color: rgba(52, 211, 153, 0.1); color: #34D399; }
+.client-detail-page .stat-card.saldo .stat-icon { background-color: rgba(96, 165, 250, 0.1); color: #60A5FA; }
+.client-detail-page .stat-card.comissao-paga .stat-icon { background-color: rgba(246, 209, 104, 0.1); color: #F6D168; }
+.client-detail-page .stat-card.comissao-pendente .stat-icon { background-color: rgba(248, 113, 113, 0.1); color: #F87171; }
+
+
+.client-detail-page .stat-content {
   display: flex;
   flex-direction: column;
 }
 
-.stat-card span {
-  color: #718096;
-  margin-bottom: 0.5rem;
+.client-detail-page .stat-content span {
+  color: #9CA3AF;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.stat-value {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #1a202c;
+.client-detail-page .stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #F9FAFB;
+  line-height: 1.2;
 }
 
-.content-tabs {
-  padding: 1.5rem;
+
+/* --- ABAS E TABELAS --- */
+.client-detail-page .content-tabs {
+  padding: 0;
+  overflow: hidden;
 }
 
-.tabs {
+.client-detail-page .tabs {
   display: flex;
-  gap: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  gap: 1.5rem;
+  background-color: #2a3a55;
 }
 
-.tab-button {
-  padding: 0.75rem 0.25rem;
+.client-detail-page .tab-button {
+  padding: 0.75rem 0.5rem;
   border: none;
   background: none;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  color: #718096;
+  color: #9CA3AF;
   position: relative;
-  border-bottom: 2px solid transparent;
+  transition: color 0.2s;
+}
+.client-detail-page .tab-button:hover {
+  color: #f6d168;
 }
 
-.tab-button.active {
-  color: #3b82f6;
-  border-bottom-color: #3b82f6;
+.client-detail-page .tab-button.active {
+  color: #F9FAFB;
+}
+.client-detail-page .tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #f6d168;
+  border-radius: 2px;
 }
 
-.placeholder-text,
-.error-message {
+.client-detail-page .tab-count {
+  background-color: #374151;
+  color: #E5E7EB;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-left: 0.5rem;
+}
+
+.client-detail-page .tab-content {
+  padding: 1.5rem;
+}
+
+
+/* --- BOTÕES DO CABEÇALHO --- */
+.client-detail-page .back-button, .client-detail-page .whatsapp-button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.client-detail-page .back-button {
+  background-color: #374151;
+  color: #E5E7EB;
+  text-decoration: none;
+}
+.client-detail-page .back-button:hover {
+  background-color: #4B5563;
+}
+
+.client-detail-page .whatsapp-button {
+  background-color: #25d366;
+  color: white;
+}
+.client-detail-page .whatsapp-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+/* --- TABELAS MODERNAS --- */
+.client-detail-page .table-responsive { overflow-x: auto; }
+.client-detail-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.client-detail-page thead th {
+  color: #9CA3AF;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 2px solid #374151;
+}
+.client-detail-page tbody td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #374151;
+}
+.client-detail-page tbody tr:last-child td {
+  border-bottom: none;
+}
+.client-detail-page .clickable-row {
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.client-detail-page .clickable-row:hover {
+  background-color: #2a3a55;
+}
+.client-detail-page .placeholder-text {
   text-align: center;
   padding: 3rem;
   color: #a0aec0;
-  font-size: 1.1rem;
 }
 
-.error-message {
-  color: #c53030;
-  font-weight: 500;
+/* --- BADGES DE STATUS --- */
+.client-detail-page .status-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  background-color: #4B5563;
+  color: #E5E7EB;
 }
+.client-detail-page .status-badge.status-active { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.client-detail-page .status-badge.status-completed { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.client-detail-page .status-badge.status-pending { background-color: rgba(245, 158, 11, 0.2); color: #facc15; }
+.client-detail-page .status-badge.status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
 
-.pagination-controls {
+/* --- CONTROLES DE PAGINAÇÃO --- */
+.client-detail-page .pagination-controls {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
+  border-top: 1px solid #374151;
 }
-
-.pagination-controls button {
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
+.client-detail-page .pagination-controls button {
+    background-color: #1F2A40;
+    border: 1px solid #374151;
+    color: #E5E7EB;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
 }
-
-.pagination-controls button:hover:not(:disabled) {
-  background-color: #f9fafb;
+.client-detail-page .pagination-controls button:hover:not(:disabled) {
+    background-color: #374151;
+    border-color: #f6d168;
 }
-
-.pagination-controls button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.client-detail-page .pagination-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
-
-.pagination-controls span {
-  color: #6b7280;
-  font-size: 0.9rem;
+.client-detail-page .pagination-controls span {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+    font-weight: 500;
 }

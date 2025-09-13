@@ -1,146 +1,200 @@
+/* --- ESTILO GERAL DA PÁGINA --- */
 .clientes-page {
   font-family: 'Poppins', sans-serif;
+  color: #E5E7EB;
 }
 
+/* --- CABEÇALHO --- */
 .clientes-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.page-header h1 {
+.clientes-page .page-header h1 {
   font-size: 2.25rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #F9FAFB;
   margin: 0;
 }
 
-.header-actions {
+.clientes-page .header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.search-bar {
+/* --- BARRA DE BUSCA --- */
+.clientes-page .search-bar {
   display: flex;
   align-items: center;
-  background-color: white;
+  background-color: #1F2A40;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  width: 300px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  width: 350px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.search-bar input {
+.clientes-page .search-bar:focus-within {
+  border-color: #f6d168;
+  box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
+}
+
+.clientes-page .search-bar i {
+  color: #6B7280;
+}
+
+.clientes-page .search-bar input {
   border: none;
   outline: none;
-  margin-left: 0.5rem;
+  margin-left: 0.75rem;
   width: 100%;
+  background-color: transparent;
+  color: #E5E7EB;
+  font-size: 1rem;
 }
 
-.add-button {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.clientes-page .search-bar input::placeholder {
+  color: #6B7280;
 }
 
-.table-wrapper {
+/* --- TABELA (COM CORREÇÃO DE LAYOUT) --- */
+.clientes-page .table-wrapper {
   overflow-x: auto;
+  background: #1F2A40;
+  border-radius: 16px;
+  border: 1px solid #374151;
+  padding: 0.5rem;
 }
 
-table {
+.clientes-page table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed; 
 }
 
-th, td {
-  padding: 1rem 1.5rem;
+.clientes-page th, .clientes-page td {
+  padding: 1.25rem 1.5rem;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-  white-space: nowrap;
+  border-bottom: 1px solid #374151;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-thead th {
-  color: #6b7280;
+.clientes-page th:nth-child(1), .clientes-page td:nth-child(1) { width: 25%; }
+.clientes-page th:nth-child(2), .clientes-page td:nth-child(2) { width: 15%; }
+.clientes-page th:nth-child(3), .clientes-page td:nth-child(3) { width: 25%; }
+.clientes-page th:nth-child(4), .clientes-page td:nth-child(4) { width: 15%; }
+.clientes-page th:nth-child(5), .clientes-page td:nth-child(5) { width: 20%; }
+
+.clientes-page thead th {
+  color: #9CA3AF;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-tbody tr {
+.clientes-page tbody tr {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-tbody tr:hover {
-  background-color: #f9fafb;
+.clientes-page tbody tr:hover {
+  background-color: #374151;
 }
 
-.status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
+.clientes-page tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.clientes-page .saldo-positivo {
+  color: #34D399;
   font-weight: 500;
-  font-size: 0.8rem;
-  text-transform: capitalize;
 }
 
-.status-valorizando {
-  background-color: #dcfce7;
-  color: #166534;
-}
-
-.status-concluído {
-  background-color: #dbeafe;
-  color: #1e40af;
-}
-
-.status-cancelado {
-  background-color: #fee2e2;
-  color: #991b1b;
-}
-
-.text-center {
-    text-align: center;
-    padding: 2rem;
-    color: #6b7280;
-}
-  
-.pagination-controls {
+/* --- PAGINAÇÃO --- */
+.clientes-page .pagination-controls {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-top: 1.5rem;
 }
   
-.pagination-controls button {
-    background-color: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
+.clientes-page .pagination-controls button {
+    background-color: #1F2A40;
+    border: 1px solid #374151;
+    color: #E5E7EB;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
     cursor: pointer;
     font-weight: 500;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
   
-.pagination-controls button:hover:not(:disabled) {
-    background-color: #f9fafb;
+.clientes-page .pagination-controls button:hover:not(:disabled) {
+    background-color: #374151;
+    border-color: #4B5563;
 }
   
-.pagination-controls button:disabled {
-    opacity: 0.5;
+.clientes-page .pagination-controls button:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
 }
   
-.pagination-controls span {
-    color: #6b7280;
+.clientes-page .pagination-controls span {
+    color: #9CA3AF;
     font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* --- ESTADO DE VAZIO --- */
+.clientes-page .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6B7280;
+}
+
+.clientes-page .empty-state-icon {
+  background-color: #374151;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.clientes-page .empty-state-icon i {
+  font-size: 2rem;
+  color: #9CA3AF;
+}
+
+.clientes-page .empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #E5E7EB;
+  margin: 0 0 0.5rem 0;
+}
+
+.clientes-page .empty-state-message {
+  max-width: 400px;
+  margin: 0;
+  line-height: 1.5;
 }

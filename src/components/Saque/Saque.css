@@ -1,348 +1,165 @@
+/* --- LAYOUT E TEMA GERAL --- */
 .saque-page .page-header {
   margin-bottom: 2rem;
-}
-
-.saque-page .page-header h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #1a202c;
-  margin: 0;
-}
-
-.saque-page .page-header p {
-  font-size: 1rem;
-  color: #718096;
-  margin-top: 4px;
-}
-
-.saque-card {
-  max-width: 450px;
-  margin: 2rem auto 0 auto;
-  padding: 2.5rem;
   text-align: center;
 }
-
-.saldo-disponivel {
-  padding-bottom: 2rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.saldo-disponivel span {
-  font-size: 1rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.saldo-valor {
+.saque-page .page-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #16a34a;
-  margin: 0.5rem 0 0 0;
-  line-height: 1;
-}
-
-.saque-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: left;
-}
-
-.saque-form label {
-  font-weight: 500;
-  color: #4b5563;
-  margin-bottom: -0.5rem;
-}
-
-.saque-input-wrapper {
-  position: relative;
-}
-
-.input-prefix {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #9ca3af;
-}
-
-.saque-input-wrapper input {
-  width: 100%;
-  padding: 1rem 1rem 1rem 4rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-sizing: border-box;
-  outline-color: #3b82f6;
-  transition: border-color 0.2s;
-}
-
-.saque-input-wrapper input:focus {
-  border-color: #3b82f6;
-}
-
-.saque-input-wrapper input::-webkit-outer-spin-button,
-.saque-input-wrapper input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  color: #F9FAFB;
   margin: 0;
 }
-
-.saque-input-wrapper input[type=number] {
-  -moz-appearance: textfield;
-}
-
-.saque-button {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 1rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  transition: background-color 0.2s ease;
+.saque-page .page-header p {
+  font-size: 1.1rem;
+  color: #9CA3AF;
   margin-top: 0.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.saque-button:hover:not(:disabled) {
-  background-color: #2563eb;
-}
-
-.saque-button:disabled {
-  background-color: #93c5fd;
-  cursor: not-allowed;
-}
-
-.saque-message {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.saque-message.error {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-.saque-message.success {
-  background-color: #dcfce7;
-  color: #15803d;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: left;
-}
-
-.modal-content h3 {
-  margin-top: 0;
-  font-size: 1.5rem;
-  color: #1f2937;
-}
-
-.modal-content p {
-  color: #4b5563;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.modal-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-.modal-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-.modal-button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.modal-button.cancel {
-  background-color: #e5e7eb;
-  color: #4b5563;
-}
-
-.modal-button.cancel:hover {
-  background-color: #d1d5db;
-}
-
-.modal-button.confirm {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.modal-button.confirm:hover:not(:disabled) {
-  background-color: #2563eb;
-}
-
-.modal-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.modal-error {
-  margin-top: 1rem;
-  margin-bottom: 0 !important;
-}
-
-.history-section {
-  max-width: 900px;
-  margin: 3rem auto 0 auto;
+/* --- CARD DE SAQUE --- */
+.saque-page .saque-card {
   padding: 2.5rem;
+  max-width: 550px;
+  margin: 0 auto; /* Centralizado horizontalmente */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-.history-section h2 {
-  text-align: left;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: #1a202c;
+.saque-page .saque-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
-
-.filters-container {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.filters-container select {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  background-color: #fff;
-  font-size: 0.9rem;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-.withdraws-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-
-.withdraws-table th,
-.withdraws-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.withdraws-table th {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-}
-
-.withdraws-table td {
-  font-size: 0.95rem;
-  color: #374151;
-}
-
-.withdraws-table .loading-cell,
-.withdraws-table .empty-cell {
+.saque-page .saldo-disponivel {
   text-align: center;
-  padding: 2rem;
-  color: #6b7280;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #374151;
+}
+.saque-page .saldo-disponivel span {
+  font-size: 1.1rem;
+  color: #9CA3AF;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.8rem;
+/* Efeito de brilho no texto do saldo */
+@keyframes shimmer-text {
+  0% { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
+}
+.saque-page .saldo-valor {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0.75rem 0 0 0;
+  line-height: 1;
+  background: linear-gradient(90deg, #d4a74e, #f6d168, #e7c26a, #f6d168, #d4a74e);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-text 4s linear infinite;
+}
+
+/* Formulário de Saque */
+.saque-page .saque-form { display: flex; flex-direction: column; gap: 1rem; text-align: left;}
+.saque-page .saque-form label { font-weight: 500; color: #9CA3AF; margin-bottom: -0.5rem; }
+.saque-page .saque-input-wrapper { position: relative; }
+.saque-page .input-prefix { position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; font-weight: 500; color: #6B7280; }
+.saque-page .saque-input-wrapper input {
+  width: 100%;
+  padding: 1.25rem 1rem 1.25rem 5rem;
+  font-size: 1.75rem;
   font-weight: 600;
+  border-radius: 10px;
+  background-color: #121828;
+  border: 1px solid #374151;
+  color: #F9FAFB;
+  transition: all 0.2s;
 }
-
-.status-badge.status-pending {
-  background-color: #fef9c3;
-  color: #854d0e;
+.saque-page .saque-input-wrapper input:focus {
+  outline: none;
+  border-color: #f6d168;
+  box-shadow: 0 0 0 4px rgba(246, 209, 104, 0.2);
 }
-
-.status-badge.status-paid {
-  background-color: #dcfce7;
-  color: #15803d;
-}
-
-.status-badge.status-canceled {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-.pagination-controls {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #4b5563;
-}
-
-.pagination-controls button {
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #374151;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+.saque-page .saque-button {
+  background: linear-gradient(95deg, #d4a74e, #f6d168);
+  color: #111827;
+  border: none;
+  border-radius: 10px;
+  padding: 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  display: flex;
+  align-items: center; justify-content: center; gap: 0.75rem;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 20px rgba(246, 209, 104, 0.25);
+}
+.saque-page .saque-button:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(246, 209, 104, 0.35); transform: translateY(-2px); }
+.saque-page .saque-button:disabled { background: #4B5563; color: #9CA3AF; cursor: not-allowed; box-shadow: none; transform: none;}
+
+
+/* --- HISTÓRICO DE SAQUES --- */
+.saque-page .history-section {
+  padding: 2.5rem;
+  max-width: 1000px;
+  margin: 3rem auto 0 auto;
+}
+.saque-page .history-section h2 { font-size: 1.75rem; margin-bottom: 1.5rem; color: #F9FAFB; text-align: left; }
+.saque-page .filters-container { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.saque-page .filters-container select {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #2a3a55;
+  color: #E5E7EB;
+  font-size: 1rem;
 }
 
-.pagination-controls button:hover:not(:disabled) {
-  background-color: #e5e7eb;
-}
+/* --- ESTILOS DA TABELA DO HISTÓRICO (AGORA ISOLADOS) --- */
+.saque-page .table-wrapper { overflow-x: auto; }
+.saque-page .withdraws-table { width: 100%; border-collapse: collapse; text-align: left; }
+.saque-page .withdraws-table th, .saque-page .withdraws-table td { padding: 1.25rem 1rem; border-bottom: 1px solid #374151; }
+.saque-page .withdraws-table th { font-size: 0.8rem; text-transform: uppercase; color: #9CA3AF; font-weight: 500; }
+.saque-page .withdraws-table td { font-size: 0.9rem; color: #E5E7EB; font-weight: 500; }
+.saque-page .withdraws-table tbody tr:last-child td { border-bottom: none; }
+.saque-page .empty-cell { text-align: center; padding: 3rem; color: #6B7280; font-size: 1rem;}
 
-.pagination-controls button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+/* Estilos para os Badges de Status (isolados) */
+.saque-page .status-badge { padding: 0.3rem 0.8rem; border-radius: 12px; font-weight: 600; font-size: 0.75rem; }
+.saque-page .status-badge.status-pending { background-color: rgba(245, 158, 11, 0.2); color: #facc15; }
+.saque-page .status-badge.status-paid { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.saque-page .status-badge.status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+/* Mensagens de erro/sucesso (isoladas) */
+.saque-page .saque-message { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; font-weight: 500; }
+.saque-page .saque-message.error { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+.saque-page .saque-message.success { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+
+/* Paginação (isolada) */
+.saque-page .pagination-controls { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #374151; }
+.saque-page .pagination-controls button { background-color: #1F2A40; border: 1px solid #374151; color: #E5E7EB; border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.saque-page .pagination-controls button:hover:not(:disabled) { background-color: #374151; border-color: #f6d168; }
+.saque-page .pagination-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+.saque-page .pagination-controls span { color: #9CA3AF; font-size: 0.9rem; font-weight: 500; }
+
+/* Skeleton (isolado) */
+.saque-page .skeleton-row td .skeleton-bar { height: 16px; border-radius: 6px; background-color: #374151; animation: skeleton-loading 1.5s infinite alternate; }
+@keyframes skeleton-loading { 0% { background-color: #374151; } 100% { background-color: #4B5563; } }
+
+/* Modal (isolado) */
+.saque-page .modal-overlay { position: fixed; inset: 0; background-color: rgba(18, 24, 40, 0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.saque-page .modal-content { background: #1F2A40; border: 1px solid #374151; padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); color: #E5E7EB; text-align: center;}
+.saque-page .modal-content h3 { display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 1.5rem; color: #F9FAFB; margin-top: 0; }
+.saque-page .modal-content h3 i { color: #f6d168; }
+.saque-page .modal-content p { color: #9CA3AF; line-height: 1.6; font-size: 1rem; }
+.saque-page .modal-input { width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid #374151; background-color: #121828; color: #F9FAFB; font-size: 1.5rem; text-align: center; letter-spacing: 8px; margin: 1.5rem 0; transition: all 0.2s; }
+.saque-page .modal-input:focus { outline: none; border-color: #f6d168; box-shadow: 0 0 0 4px rgba(246, 209, 104, 0.2); }
+.saque-page .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
+.saque-page .modal-button { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+.saque-page .modal-button.cancel { background-color: #374151; color: #E5E7EB; }
+.saque-page .modal-button.cancel:hover { background-color: #4B5563; }
+.saque-page .modal-button.confirm { background: #f6d168; color: #111827; }
+.saque-page .modal-button.confirm:hover:not(:disabled) { box-shadow: 0 0 15px rgba(246, 209, 104, 0.3); transform: translateY(-2px); }
+.saque-page .modal-error { margin-top: 1rem; margin-bottom: 0; }

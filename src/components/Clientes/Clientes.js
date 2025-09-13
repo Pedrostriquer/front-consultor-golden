@@ -1,17 +1,36 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import consultantService from '../../dbServices/consultantService';
 import useDebounce from '../../hooks/useDebounce';
 import './Clientes.css';
 
+// Função auxiliar para formatação de moeda
 const formatCurrency = (value) => {
   if (value === null || value === undefined) return "R$ 0,00";
   return `R$${value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
+// --- Componentes Locais para UI ---
+
+// Componente para o estado de "Nenhum resultado"
+const EmptyState = ({ icon, title, message }) => (
+  <tr>
+    <td colSpan="5">
+      <div className="empty-state">
+        <div className="empty-state-icon"><i className={icon}></i></div>
+        <h3 className="empty-state-title">{title}</h3>
+        <p className="empty-state-message">{message}</p>
+      </div>
+    </td>
+  </tr>
+);
+
+
+// --- Componente Principal da Página ---
+
 const Clientes = () => {
   const [clients, setClients] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,8 +38,8 @@ const Clientes = () => {
   
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+  // O estado de isLoading foi removido, pois o loader agora é global
   const fetchClients = useCallback(async (currentPage, search) => {
-    setIsLoading(true);
     try {
       const response = await consultantService.searchMyClients(search, currentPage, 10);
       const { items, totalCount, pageSize } = response.data;
@@ -29,8 +48,6 @@ const Clientes = () => {
     } catch (error) {
       console.error("Erro ao buscar clientes:", error);
       setClients([]);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
@@ -42,6 +59,12 @@ const Clientes = () => {
 
   const handleRowClick = (clientId) => {
     navigate(`/platform/clientes/${clientId}`);
+  };
+  
+  const rowVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   return (
@@ -69,38 +92,55 @@ const Clientes = () => {
               <th>CPF/CNPJ</th>
               <th>Email</th>
               <th>Celular</th>
-              <th>Saldo</th>
+              <th>Saldo em Contratos</th>
             </tr>
           </thead>
-          <tbody>
-            {isLoading ? (
-              <tr><td colSpan="5" className="text-center">Carregando...</td></tr>
-            ) : clients.length > 0 ? (
-              clients.map(client => (
-                <tr key={client.id} onClick={() => handleRowClick(client.id)}>
-                  <td>{client.name}</td>
-                  <td>{client.cpfCnpj}</td>
-                  <td>{client.email}</td>
-                  <td>{client.phoneNumber}</td>
-                  <td>{formatCurrency(client.balance)}</td>
-                </tr>
-              ))
-            ) : (
-              <tr><td colSpan="5" className="text-center">Nenhum cliente encontrado.</td></tr>
-            )}
-          </tbody>
+          <AnimatePresence>
+            <tbody>
+              {clients.length > 0 ? (
+                clients.map(client => (
+                  <motion.tr 
+                    key={client.id} 
+                    onClick={() => handleRowClick(client.id)}
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    layout
+                  >
+                    <td>{client.name}</td>
+                    <td>{client.cpfCnpj}</td>
+                    <td>{client.email}</td>
+                    <td>{client.phoneNumber}</td>
+                    <td className="saldo-positivo">{formatCurrency(client.balance)}</td>
+                  </motion.tr>
+                ))
+              ) : (
+                <EmptyState 
+                  icon="fa-solid fa-users-slash"
+                  title="Nenhum cliente encontrado"
+                  message={searchTerm 
+                    ? `Sua busca por "${searchTerm}" não retornou resultados.`
+                    : "Você ainda não possui clientes cadastrados."
+                  }
+                />
+              )}
+            </tbody>
+          </AnimatePresence>
         </table>
       </div>
       
-      <div className="pagination-controls">
-        <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
-          Anterior
-        </button>
-        <span>Página {page} de {totalPages || 1}</span>
-        <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages || totalPages === 0}>
-          Próxima
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination-controls">
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
+            <i className="fa-solid fa-chevron-left"></i> Anterior
+          </button>
+          <span>Página {page} de {totalPages || 1}</span>
+          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages || totalPages === 0}>
+            Próxima <i className="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,44 +1,101 @@
-@keyframes pulse {
-    0% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
-    50% {
-      transform: scale(1.1);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
-  }
+/* Estilos para o LOADER DE TELA CHEIA (usado no login) */
+.loading-screen {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(17, 24, 39, 0.95);
+  z-index: 9999;
+}
+
+/* Estilos para o LOADER DE CONTEÚDO */
+.content-loader-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  /* A propriedade 'left' define o início da área de conteúdo, respeitando a sidebar */
+  left: calc(300px + 2rem); /* Posição para sidebar ABERTA */
   
-  .loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f4f7fa;
-    z-index: 9999;
+  /* AQUI ESTÁ A CENTRALIZAÇÃO NATURAL que você queria de volta */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10;
+  /* Anima a mudança de posição quando a sidebar abre/fecha */
+  transition: left 0.4s cubic-bezier(0.6, 0.05, -0.01, 0.9);
+}
+
+/* Quando a classe 'collapsed' é aplicada, ajusta a posição do overlay */
+.content-loader-overlay.collapsed {
+  left: calc(100px + 2rem); /* Posição para sidebar FECHADA */
+}
+
+
+/* --- ESTILOS COMUNS PARA AMBOS OS LOADERS --- */
+
+.loading-svg-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* IMPORTANTE: margin-left foi removido daqui para permitir a centralização automática */
+}
+
+.loading-svg {
+  width: 100px;
+  height: auto;
+  overflow: visible;
+}
+
+.logo-path {
+  fill: transparent;
+  stroke-width: 5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
+.logo-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-dashoffset: 0;
+}
+
+.logo-trail {
+  stroke: #f6d168;
+}
+
+.logo-spark {
+  stroke: #ffffff;
+  stroke-dasharray: 30 2000;
+  filter: url(#glow-loader);
+}
+
+.logo-trail, .logo-spark {
+  animation: draw-line-loader 2.5s ease-in-out infinite;
+}
+
+.loading-text {
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@keyframes draw-line-loader {
+  0% {
+    stroke-dashoffset: 2000;
   }
-  
-  .loading-content {
-    text-align: center;
+  100% {
+    stroke-dashoffset: 0;
   }
-  
-  .loading-icon {
-    font-size: 4rem; /* 64px */
-    color: #3b82f6; /* Um azul bonito */
-    animation: pulse 2s infinite ease-in-out;
-  }
-  
-  .loading-text {
-    margin-top: 1rem;
-    font-size: 1.125rem; /* 18px */
-    color: #667085; /* Um cinza suave */
-    font-weight: 500;
-  }
+}
