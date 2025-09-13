@@ -1,0 +1,105 @@
+.perfil-page .page-header { margin-bottom: 2rem; }
+.perfil-page .page-header h1 { font-size: 2.25rem; font-weight: 700; color: #1a202c; margin: 0; }
+.perfil-page .page-header p { font-size: 1rem; color: #718096; margin-top: 4px; }
+
+.perfil-card {
+  max-width: 800px;
+  margin: 2rem auto 0 auto;
+  padding: 2.5rem;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.perfil-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.perfil-name {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.perfil-role {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.perfil-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-item label {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.detail-item span {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.detail-item-full {
+  grid-column: 1 / -1; /* Ocupa a largura total */
+}
+
+.indication-link-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.indication-link-wrapper input {
+  flex-grow: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+.indication-link-wrapper button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.indication-link-wrapper button:hover {
+  background-color: #2563eb;
+}

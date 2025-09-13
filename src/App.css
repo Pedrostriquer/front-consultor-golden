@@ -1,0 +1,16 @@
+.app-container {
+  display: flex;
+}
+
+.content {
+  margin-left: 260px; /* Largura da sidebar expandida */
+  flex-grow: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  overflow-x: hidden; /* <-- ADICIONE ESTA LINHA */
+
+}
+
+.content.collapsed {
+  margin-left: 88px; /* Largura da sidebar recolhida */
+}

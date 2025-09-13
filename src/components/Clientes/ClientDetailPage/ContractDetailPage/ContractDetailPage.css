@@ -1,0 +1,271 @@
+.contract-detail-page {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.contract-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.contract-main-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.contract-title {
+    margin: 0;
+    font-size: 2rem;
+    color: #1a202c;
+}
+
+.client-link {
+    margin: 0.25rem 0 0 0;
+    color: #718096;
+}
+
+.contract-status-box {
+    text-align: right;
+}
+
+.contract-status-box span {
+    font-size: 0.9rem;
+    color: #a0aec0;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.progress-card {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.progress-text p:first-child {
+    color: #4a5568;
+}
+
+.progress-text p:last-child {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 12px;
+    background-color: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #60a5fa, #3b82f6);
+    border-radius: 99px;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-percentage {
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #3b82f6;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.details-card {
+    padding: 2rem;
+}
+
+.details-card h3 {
+    margin: 0 0 1.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.details-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.details-card li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #4a5568;
+}
+
+.details-card li strong {
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.commission-yes-text {
+    color: #16a34a !important;
+}
+
+.files-card {
+    padding: 2rem;
+}
+
+.files-card h3 {
+    margin: 0 0 1.5rem 0;
+}
+
+/* Adicione no ClientDetailPage.css para a linha ser clicável */
+.clickable-row {
+    cursor: pointer;
+}
+
+.files-card {
+    padding: 2rem;
+}
+
+.files-card h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.files-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .files-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.media-gallery h4,
+.certificates-list h4 {
+    margin: 0 0 1rem 0;
+    color: #4a5568;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+.image-thumbnail {
+    width: 100%;
+    padding-top: 100%;
+    /* Aspect ratio 1:1 */
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.image-thumbnail:hover {
+    transform: scale(1.05);
+}
+
+.image-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.certificates-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.certificates-list li a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #3b82f6;
+    font-weight: 500;
+    padding: 0.5rem;
+    border-radius: 6px;
+}
+
+.certificates-list li a:hover {
+    background-color: #eff6ff;
+}
+
+.no-files-text {
+    color: #a0aec0;
+    font-style: italic;
+}
+
+.lightbox-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    border-radius: 8px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}

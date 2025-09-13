@@ -1,0 +1,128 @@
+.extrato-page .page-header { margin-bottom: 2rem; }
+.extrato-page .page-header h1 { font-size: 2.25rem; font-weight: 700; color: #1a202c; margin: 0; }
+.extrato-page .page-header p { font-size: 1rem; color: #718096; margin-top: 4px; }
+
+.extrato-content {
+  padding: 1.5rem 2rem 2rem 2rem;
+}
+
+.extrato-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.filter-group select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+.table-wrapper { overflow-x: auto; }
+.extrato-table { width: 100%; border-collapse: collapse; }
+.extrato-table th, .extrato-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+.extrato-table th {
+  font-size: 0.8rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.extrato-table td { font-size: 0.95rem; color: #374151; }
+.extrato-table .loading-cell, .extrato-table .empty-cell {
+  text-align: center; padding: 3rem; color: #6b7280; font-style: italic;
+}
+.extrato-table .clickable-row { cursor: pointer; transition: background-color 0.2s; }
+.extrato-table .clickable-row:hover { background-color: #f9fafb; }
+
+.text-right { text-align: right !important; }
+.amount-credit { color: #16a34a; font-weight: 600; }
+.amount-debit { color: #dc2626; font-weight: 600; }
+
+.pagination-controls {
+  display: flex; justify-content: flex-end; align-items: center;
+  gap: 1rem; margin-top: 1.5rem; font-size: 0.9rem; color: #4b5563;
+}
+.pagination-controls button {
+  background-color: #f3f4f6; border: 1px solid #e5e7eb; color: #374151;
+  padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; transition: background-color 0.2s;
+}
+.pagination-controls button:hover:not(:disabled) { background-color: #e5e7eb; }
+.pagination-controls button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* --- Modal Styles --- */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: white; padding: 2rem; border-radius: 12px;
+  width: 100%; max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.close-modal-btn {
+  position: absolute; top: 0.75rem; right: 1rem;
+  background: none; border: none; font-size: 1.75rem; color: #9ca3af;
+  cursor: pointer; line-height: 1;
+}
+.close-modal-btn:hover { color: #6b7280; }
+
+.modal-content h3 {
+  margin-top: 0; margin-bottom: 1.5rem; font-size: 1.5rem; color: #1f2937;
+  padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+}
+
+.detail-item {
+  font-size: 0.95rem;
+}
+
+.detail-item span {
+  display: block;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.detail-item strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.detail-item p {
+  margin: 0;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.detail-item.full-width {
+  grid-column: 1 / -1;
+}
