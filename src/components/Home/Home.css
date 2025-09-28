@@ -1,339 +1,229 @@
-/* Estilos da Página */
-.home-container {
+.home-page {
   font-family: 'Poppins', sans-serif;
-  background-color: #121828; 
   color: #E5E7EB;
 }
 
-.dashboard-header {
-  margin-bottom: 32px;
-}
-
-.header-h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #F9FAFB;
-  margin: 0;
-}
-
-.header-p {
-  font-size: 1rem;
+.loading-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
   color: #9CA3AF;
-  margin-top: 4px;
 }
 
-/* Grid dos Cards */
-.kpi-grid {
+/* --- GRIDS DE LAYOUT --- */
+.stats-grid, .main-grid, .secondary-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 32px;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 .main-grid {
-  display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  align-items: stretch; /* Garante que os cards na mesma linha tenham a mesma altura */
 }
 
-/* Estilos Base dos Cards */
+.secondary-grid {
+  grid-template-columns: 1fr 2fr;
+}
+
+@media (max-width: 1200px) {
+  .main-grid, .secondary-grid {
+      grid-template-columns: 1fr;
+  }
+}
+
+/* --- CARD BASE --- */
 .card-base {
-  background: #1F2A40; 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: #1F2A40;
   border-radius: 16px;
-  border: 1px solid #374151; 
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.25s ease-in-out;
+  border: 1px solid #374151;
+  padding: 1.5rem;
 }
 
-.card-base:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
-  border-color: #4B5563;
-}
-
-/* Card KPI */
-.kpi-card {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  overflow: hidden;
-  padding: 20px;
-  gap: 16px;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 1rem;
 }
 
-.kpi-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  z-index: 2;
+.card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #F9FAFB;
 }
 
-.kpi-title {
-  font-size: 0.9rem;
+.card-header h3 i {
+  color: #f6d168;
+  margin-right: 0.5rem;
+}
+
+/* --- STAT CARDS (Topo) --- */
+.stat-card {
+  padding: 1.5rem;
+}
+.stat-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
   font-weight: 500;
-  color: #9CA3AF; /* Cor para títulos de KPI */
-  margin-bottom: 4px;
-  white-space: nowrap;
-}
-
-.kpi-value {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #F9FAFB; /* Cor para valores de KPI */
-}
-
-/* Card Principal (Gráfico e Clientes) */
-.main-chart-card,
-.clients-card {
-  padding: 28px;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #E5E7EB; /* Cor para títulos de card */
-  margin: 0 0 24px 0;
-}
-
-/* ======================================================= */
-/* ====== LISTA DE MELHORES CLIENTES (LAYOUT VERTICAL) ====== */
-/* ======================================================= */
-
-.home-container .clients-card {
+  color: #9CA3AF;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+.stat-card h3 i {
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+  color: #f6d168;
+}
+.stat-value {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #F9FAFB;
 }
 
-.home-container .top-clients-list {
+/* --- GRÁFICO --- */
+.chart-container {
+  height: 400px;
+}
+
+/* --- MELHORES CLIENTES --- */
+.platform-filter select {
+  background-color: #2a3a55;
+  border: 1px solid #374151;
+  color: #E5E7EB;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.client-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: space-around;
+  height: 280px; /* Altura fixa para scroll se necessário */
+  overflow-y: auto;
 }
 
-.home-container .top-client-item {
-  display: grid;
-  /* Colunas: [Rank] [Avatar] [Detalhes Flexíveis] */
-  grid-template-columns: 20px 40px 1fr;
+.client-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #374151;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.client-item:last-child {
+  border-bottom: none;
+}
+.client-item:hover {
+  background-color: #2a3a55;
+  border-radius: 8px;
+}
+
+.client-info {
+  display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 0;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(246, 209, 104, 0.2); /* Linha amarela sutil */
-  transition: background-color 0.2s ease;
+}
+.platform-logo-small {
+  height: 24px;
+  width: 24px;
+  object-fit: contain;
+}
+.client-balance {
+  font-weight: 500;
+  color: #34D399;
 }
 
-.home-container .top-client-item:last-child {
-  border-bottom: none; /* Remove a linha do último item */
+/* --- RANK DE CONSULTORES --- */
+.ranking-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-
-.home-container .top-client-item:hover {
-  background-color: rgba(255, 255, 255, 0.03); /* Hover sutil */
-}
-
-.home-container .client-rank {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #9CA3AF;
-  text-align: center;
-}
-
-.home-container .client-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #f6d168; /* COR DE DESTAQUE */
-  color: #111827; /* Texto escuro para bom contraste */
+.ranking-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #374151;
+}
+.ranking-item:last-child {
+  border-bottom: none;
+}
+.consultant-rank {
+  font-weight: 700;
+  color: #f6d168;
+  margin-right: 1.5rem;
+  width: 30px;
+}
+.consultant-name {
+  font-weight: 500;
+}
+.ranking-item.current-consultant {
+  background-color: rgba(246, 209, 104, 0.1);
+  border-radius: 8px;
+}
+.you-badge {
+  margin-left: auto;
+  background-color: #f6d168;
+  color: #111827;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* --- ANÁLISE DE PLATAFORMAS --- */
+.stats-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.stat-group h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #9CA3AF;
+}
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.stat-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.stat-percentage {
   font-weight: 600;
   font-size: 1.1rem;
-  flex-shrink: 0;
 }
-
-/* Container para os detalhes verticais */
-.home-container .client-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem; /* Pequeno espaço entre as linhas */
-  min-width: 0;
-}
-
-.home-container .client-name {
-  font-size: 1rem;
-  font-weight: 600; /* Destaque maior para o nome */
-  color: #E5E7EB;
-  line-height: 1.3;
-}
-
-.home-container .client-cpf {
-  font-size: 0.8rem;
-  color: #9CA3AF; /* Cor secundária para o CPF */
-}
-
-.home-container .client-value {
-  font-size: 1.1rem; /* Tamanho maior para o valor */
-  font-weight: 700;
-  color: #34D399;
-  margin-top: 0.25rem; /* Espaço extra antes do valor */
-}
-
-
-/* --- Estilos da Seção de Ranking --- */
-
-.ranking-section {
-  margin-top: 24px;
-  padding: 28px;
-}
-
-.consultant-ranking-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.consultant-item {
-  display: grid;
-  grid-template-columns: 50px 50px 1fr auto;
-  align-items: center;
-  gap: 16px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.consultant-item:hover {
-  background-color: #374151; /* Efeito hover mais escuro */
-}
-
-.consultant-item.highlight {
-  /* Destaque com a cor principal e transparência */
-  background-color: rgba(246, 209, 104, 0.1); 
-  border: 1px solid #f6d168;
-}
-
-.rank-number {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #f6d168; /* COR DE DESTAQUE */
-  text-align: center;
-}
-
-.rank-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #6B7280; /* Avatar padrão */
-  color: #F9FAFB;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.highlight .rank-avatar {
-  background-color: #f6d168; /* COR DE DESTAQUE */
-  color: #111827; /* Texto escuro para contraste */
-}
-
-.rank-name {
-  font-size: 1rem;
+.stat-value-small {
   font-weight: 500;
-  color: #F3F4F6;
-}
-
-.rank-sales {
   font-size: 1rem;
-  font-weight: 600;
-  /* Mantido um verde para indicar "sucesso", mas com tom mais claro */
-  color: #34D399; 
+  color: #F9FAFB;
 }
-
-.rank-separator {
-  height: 10px;
+.progress-bar-background {
+  height: 8px;
   width: 100%;
-  background-image: repeating-linear-gradient(90deg, #4B5563, #4B5563 4px, transparent 4px, transparent 10px);
-  margin: 8px 0;
-}
-
-/* --- ESTILOS PARA SKELETON LOADING (TEMA ESCURO) --- */
-
-@keyframes skeleton-loading {
-  0% {
-    background-color: #374151; /* Cor inicial do skeleton */
-  }
-
-  100% {
-    background-color: #4B5563; /* Cor final do skeleton */
-  }
-}
-
-.home-container .skeleton .skeleton-text,
-.home-container .skeleton .skeleton-avatar,
-.home-container .skeleton-chart {
-  animation: skeleton-loading 1.5s infinite alternate;
+  background-color: #374151;
   border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
 }
-
-.home-container .skeleton-text.short {
-  height: 14px;
-  width: 60%;
-}
-
-.home-container .skeleton-text.long {
-  height: 28px;
-  width: 80%;
-}
-
-.home-container .skeleton-chart {
-  height: 400px;
-  width: 100%;
-  border-radius: 12px;
-}
-
-.home-container .skeleton-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-/* ATUALIZADO: Skeleton para a nova lista de clientes */
-.home-container .top-clients-list-skeleton {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  flex-grow: 1;
-}
-
-.home-container .client-item-skeleton {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.home-container .skeleton-text-group {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-
-.home-container .placeholder-text {
-  text-align: center;
-  padding: 3rem;
-  color: #6B7280; /* Cor para textos de placeholder */
-  font-style: italic;
+.progress-bar-foreground {
+  height: 100%;
+  border-radius: 4px;
 }

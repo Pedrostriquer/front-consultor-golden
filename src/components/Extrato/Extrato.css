@@ -1,98 +1,63 @@
-/* --- LAYOUT E TEMA GERAL --- */
-.extrato-page .page-header {
-  text-align: center;
-  margin-bottom: 2rem;
+.extrato-page {
+  color: #E5E7EB;
 }
+
 .extrato-page .page-header h1 {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: #F9FAFB;
   margin: 0;
 }
+
 .extrato-page .page-header p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #9CA3AF;
   margin-top: 0.5rem;
 }
 
-.extrato-page .extrato-content {
-  padding: 2rem 2.5rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  background: #1F2A40;
-  border: 1px solid #374151;
-  border-radius: 16px;
+.extrato-content {
+  margin-top: 2rem;
+  padding: 0.5rem;
 }
 
-/* --- CONTROLES E FILTROS --- */
-.extrato-page .extrato-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #374151;
-  margin-bottom: 1rem;
-}
-.extrato-page .filter-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.extrato-page .filter-group label {
-  font-weight: 500;
-  color: #9CA3AF;
-  font-size: 0.9rem;
-}
-.extrato-page .filter-group select {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
-  background-color: #2a3a55;
-  color: #E5E7EB;
-  font-size: 1rem;
-}
-
-/* --- TABELA E LINHAS (REDESIGN) --- */
-.extrato-page .table-wrapper {
-  overflow-x: auto;
-}
-.extrato-page .extrato-table {
+.extrato-table {
   width: 100%;
-  border-collapse: collapse;
-}
-.extrato-page .extrato-table th {
-  padding: 0 1rem 1rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #6B7280;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: left;
-}
-.extrato-page .extrato-table th.text-right {
-  text-align: right;
-}
-.extrato-page .extrato-table tbody {
-  border-top: 1px solid #374151;
-}
-.extrato-page .extrato-table .clickable-row {
-  cursor: pointer;
-  transition: background-color 0.2s ease-out;
-}
-.extrato-page .extrato-table .clickable-row:hover {
-  background-color: #2a3a55;
-}
-.extrato-page .extrato-table td {
-  padding: 1.5rem 1rem;
-  border-bottom: 1px solid #374151;
-  vertical-align: middle;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-/* Célula do Ícone */
-.extrato-page .icon-cell {
+.extrato-table th, .extrato-table td {
+  text-align: left;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #374151;
+}
+
+.extrato-table thead th {
+  color: #9CA3AF;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.extrato-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+  background-color: #374151;
+}
+
+.icon-cell {
   width: 60px;
 }
-.extrato-page .transaction-icon {
+
+.transaction-icon {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -101,184 +66,59 @@
   justify-content: center;
   font-size: 1rem;
 }
-.extrato-page .transaction-icon.credit {
-  background-color: rgba(34, 197, 94, 0.1);
-  color: #4ade80;
-}
-.extrato-page .transaction-icon.debit {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #f87171;
+
+.transaction-icon.credit {
+  background-color: rgba(52, 211, 153, 0.1);
+  color: #34D399;
 }
 
-/* Célula da Descrição e Data */
-.extrato-page .transaction-description {
-  font-weight: 600;
-  color: #F9FAFB;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-.extrato-page .transaction-date {
-  font-size: 0.85rem;
-  color: #9CA3AF;
+.transaction-icon.debit {
+  background-color: rgba(248, 113, 113, 0.1);
+  color: #F87171;
 }
 
-/* Célula do Valor */
-.extrato-page .text-right {
-  text-align: right !important;
-}
-.extrato-page .amount-credit {
-  color: #4ade80;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-.extrato-page .amount-debit {
-  color: #f87171;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.extrato-page .empty-cell {
-  text-align: center;
-  padding: 4rem;
-  color: #6B7280;
-}
-
-/* --- MODAL (REDESIGN) --- */
-.extrato-page .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(18, 24, 40, 0.8);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.extrato-page .modal-content {
-  background: #1F2A40;
-  border: 1px solid #374151;
-  padding: 0;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 550px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-.extrato-page .close-modal-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.75rem;
-  color: #9ca3af;
-  cursor: pointer;
-  line-height: 1;
-  z-index: 10;
-  transition: color 0.2s ease;
-}
-.extrato-page .close-modal-btn:hover {
-  color: #f6d168;
-}
-.extrato-page .modal-loading {
-  padding: 4rem;
-  text-align: center;
-  color: #9CA3AF;
-}
-.extrato-page .modal-header {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem 2rem;
-}
-.extrato-page .modal-header.credit {
-  background: linear-gradient(90deg, #1F2A40 0%, rgba(34, 197, 94, 0.15) 100%);
-}
-.extrato-page .modal-header.debit {
-  background: linear-gradient(90deg, #1F2A40 0%, rgba(239, 68, 68, 0.15) 100%);
-}
-.extrato-page .modal-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-}
-.extrato-page .modal-header.credit .modal-icon {
-  background-color: rgba(34, 197, 94, 0.2);
-  color: #4ade80;
-}
-.extrato-page .modal-header.debit .modal-icon {
-  background-color: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-}
-.extrato-page .modal-header h3 {
-  font-size: 1.5rem;
-  color: #F9FAFB;
-  margin: 0;
-}
-.extrato-page .modal-header p {
-  color: #9CA3AF;
-  margin: 0.25rem 0 0 0;
-  font-size: 0.9rem;
-}
-.extrato-page .modal-details-grid {
-  padding: 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem 2rem;
-}
-.extrato-page .detail-item {
-  font-size: 1rem;
-}
-.extrato-page .detail-item span {
-  display: block;
-  font-size: 0.85rem;
-  color: #9CA3AF;
-  margin-bottom: 0.25rem;
+.transaction-description {
   font-weight: 500;
-}
-.extrato-page .detail-item strong {
   color: #F9FAFB;
+}
+
+.transaction-date {
+  font-size: 0.85rem;
+  color: #9CA3AF;
+  margin-top: 4px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.amount-credit {
+  color: #34D399;
   font-weight: 600;
 }
-.extrato-page .detail-item p {
-  margin: 0;
-  color: #E5E7EB;
-  line-height: 1.6;
-}
-.extrato-page .detail-item.full-width {
-  grid-column: 1 / -1;
+
+.amount-debit {
+  color: #F87171;
+  font-weight: 600;
 }
 
-/* --- SKELETON LOADER --- */
-.extrato-page .skeleton-row .skeleton-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #374151;
-}
-.extrato-page .skeleton-row .skeleton-bar {
-  height: 16px;
-  border-radius: 6px;
-  background-color: #374151;
+.empty-cell {
+  text-align: center;
+  padding: 4rem;
+  color: #9CA3AF;
 }
 
-/* --- PAGINAÇÃO --- */
-.extrato-page .pagination-controls {
+/* --- PAGINAÇÃO (COM ALINHAMENTO CORRIGIDO) --- */
+.pagination-controls {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center; /* ALTERADO DE flex-end PARA center */
   align-items: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
+  padding: 1.5rem 1rem;
   border-top: 1px solid #374151;
 }
-.extrato-page .pagination-controls button {
+
+.pagination-controls button {
   background-color: #1F2A40;
   border: 1px solid #374151;
   color: #E5E7EB;
@@ -288,16 +128,138 @@
   font-weight: 500;
   transition: all 0.2s;
 }
-.extrato-page .pagination-controls button:hover:not(:disabled) {
+
+.pagination-controls button:hover:not(:disabled) {
   background-color: #374151;
-  border-color: #f6d168;
+  border-color: #4B5563;
 }
-.extrato-page .pagination-controls button:disabled {
+
+.pagination-controls button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.extrato-page .pagination-controls span {
+
+.pagination-controls span {
   color: #9CA3AF;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* SKELETON LOADER */
+.skeleton-row .skeleton-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #374151;
+}
+.skeleton-row .skeleton-bar {
+  height: 16px;
+  background-color: #374151;
+  border-radius: 4px;
+}
+.skeleton-row td {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+      opacity: 1;
+  }
+  50% {
+      opacity: .5;
+  }
+}
+
+/* MODAL STYLES */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(17, 24, 39, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1F2A40;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  border: 1px solid #374151;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #374151;
+}
+
+.modal-header.credit { border-left: 5px solid #34D399; }
+.modal-header.debit { border-left: 5px solid #F87171; }
+
+
+.modal-header .modal-icon {
+  font-size: 1.5rem;
+}
+.modal-header.credit .modal-icon { color: #34D399; }
+.modal-header.debit .modal-icon { color: #F87171; }
+
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modal-header p {
+  margin: 0;
+  color: #9CA3AF;
+}
+
+.modal-details-grid {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.modal-details-grid .detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-details-grid .detail-item span {
+  color: #9CA3AF;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.modal-details-grid .detail-item strong {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.modal-details-grid .detail-item p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.modal-details-grid .detail-item.full-width {
+  grid-column: 1 / -1;
 }

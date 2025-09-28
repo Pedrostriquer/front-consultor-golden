@@ -62,7 +62,7 @@
   color: #6B7280;
 }
 
-/* --- TABELA (COM CORREÇÃO DE LAYOUT) --- */
+/* --- TABELA --- */
 .clientes-page .table-wrapper {
   overflow-x: auto;
   background: #1F2A40;
@@ -75,24 +75,13 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  table-layout: fixed; 
 }
 
 .clientes-page th, .clientes-page td {
   padding: 1.25rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid #374151;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-
-.clientes-page th:nth-child(1), .clientes-page td:nth-child(1) { width: 25%; }
-.clientes-page th:nth-child(2), .clientes-page td:nth-child(2) { width: 15%; }
-.clientes-page th:nth-child(3), .clientes-page td:nth-child(3) { width: 25%; }
-.clientes-page th:nth-child(4), .clientes-page td:nth-child(4) { width: 15%; }
-.clientes-page th:nth-child(5), .clientes-page td:nth-child(5) { width: 20%; }
 
 .clientes-page thead th {
   color: #9CA3AF;
@@ -120,10 +109,15 @@
   font-weight: 500;
 }
 
-/* --- PAGINAÇÃO --- */
+.platform-logo {
+  height: 24px;
+  width: auto;
+}
+
+/* --- PAGINAÇÃO (COM ALINHAMENTO CORRIGIDO) --- */
 .clientes-page .pagination-controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; /* ALTERADO DE flex-end PARA center */
     align-items: center;
     gap: 0.75rem;
     margin-top: 1.5rem;

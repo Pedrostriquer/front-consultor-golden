@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import CountUp from "react-countup";
-import consultantService from "../../../../dbServices/consultantService";
+import { mockContractsData } from "../../../../data/mockData";
 import "./ContractDetailPage.css";
 
-// Funções auxiliares (sem alteração)
+// Funções auxiliares
 const formatCurrency = (value) => {
   if (value === null || value === undefined) return "R$ 0,00";
   return `R$${value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -15,7 +15,7 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString("pt-BR");
 };
 
-// Badges de Status (sem alteração)
+// Badges de Status
 const getStatusBadge = (status, type = 'contract') => {
     const statusMap = {
         contract: {
@@ -36,23 +36,35 @@ const getStatusBadge = (status, type = 'contract') => {
 
 const ContractDetailPage = () => {
   const { clientId, contractId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [contract, setContract] = useState(null);
   const [error, setError] = useState("");
   const [lightboxImage, setLightboxImage] = useState(null);
 
+  // Verifica se a navegação veio da página de vendas
+  const comesFromVendas = location.pathname.startsWith('/platform/vendas');
+
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        const response = await consultantService.getContractDetails(clientId, contractId);
-        setContract(response.data);
+        const foundContract = mockContractsData.find(c => 
+            c.id === parseInt(contractId) && 
+            c.clientId === parseInt(clientId)
+        );
+        if (foundContract) {
+            setContract(foundContract);
+        } else {
+            setError("Contrato não encontrado ou você não tem permissão para vê-lo.");
+        }
       } catch (err) {
-        setError("Contrato não encontrado ou você não tem permissão para vê-lo.");
+        setError("Ocorreu um erro ao carregar os detalhes do contrato.");
       } 
     };
     fetchContract();
   }, [clientId, contractId]);
 
-  // Animações (sem alteração)
+  // Animações
   const pageVariants = {
     initial: { opacity: 0 },
     in: { opacity: 1, transition: { staggerChildren: 0.1, duration: 0.3 } },
@@ -72,9 +84,20 @@ const ContractDetailPage = () => {
   return (
     <motion.div className="contract-detail-page" variants={pageVariants} initial="initial" animate="in" exit="out">
         <motion.div className="contract-page-header" variants={itemVariants}>
-            <Link to={`/platform/clientes/${clientId}`} className="back-button">
-            <i className="fa-solid fa-arrow-left"></i> Voltar para {contract.clientName}
-            </Link>
+            {comesFromVendas ? (
+                <>
+                    <Link to="/platform/vendas" className="back-button">
+                        <i className="fa-solid fa-arrow-left"></i> Voltar para Vendas
+                    </Link>
+                    <button onClick={() => navigate(`/platform/clientes/${clientId}`)} className="back-button">
+                        <i className="fa-solid fa-user"></i> Ver Cliente
+                    </button>
+                </>
+            ) : (
+                <Link to={`/platform/clientes/${clientId}`} className="back-button">
+                    <i className="fa-solid fa-arrow-left"></i> Voltar para {contract.clientName}
+                </Link>
+            )}
         </motion.div>
 
         <motion.div className="contract-hero card-base" variants={itemVariants}>
@@ -147,10 +170,6 @@ const ContractDetailPage = () => {
             </ul>
             </div>
         </motion.div>
-
-        {/* ======================================================= */}
-        {/* ====== CARD DE DOCUMENTOS E MÍDIAS FOI REMOVIDO ====== */}
-        {/* ======================================================= */}
 
         <AnimatePresence>
             {lightboxImage && (

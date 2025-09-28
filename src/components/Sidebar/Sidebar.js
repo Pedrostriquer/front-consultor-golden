@@ -2,8 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Logo } from '../../components/Logo/Logo'; // Importando o componente da logo
 import './Sidebar.css';
+
+import goldenLogoImg from '../../img/logo-golden-ouro2.png';
+import diamondLogoImg from '../../img/diamond_prime_diamond (1).png';
+
 
 const getInitials = (name) => {
   if (!name) return '';
@@ -18,18 +21,24 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
   const menuItems = [
     { name: 'Home', icon: 'fa-solid fa-house', path: '/platform/dashboard' },
     { name: 'Clientes', icon: 'fa-solid fa-users', path: '/platform/clientes' },
+    { name: 'Vendas', icon: 'fa-solid fa-file-invoice-dollar', path: '/platform/vendas' },
     { name: 'Saque', icon: 'fa-solid fa-wallet', path: '/platform/saque' },
     { name: 'Extrato', icon: 'fa-solid fa-receipt', path: '/platform/extrato' },
   ];
 
   const sidebarVariants = {
-    expanded: { width: '280px', transition: { duration: 0.4, ease: [0.6, 0.05, -0.01, 0.9] } },
-    collapsed: { width: '90px', transition: { duration: 0.4, ease: [0.6, 0.05, -0.01, 0.9] } }
+    expanded: { width: '280px', transition: { duration: 0.4, ease: "easeOut" } }, // <-- CORRIGIDO
+    collapsed: { width: '90px', transition: { duration: 0.4, ease: "easeOut" } }  // <-- CORRIGIDO
   };
 
   const textVariants = {
-    hidden: { opacity: 0, x: -20, transition: { duration: 0.2 } },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.2, delay: 0.1 } },
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.2, delay: 0.2 } },
+  };
+  
+  const logoGroupVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.3, delay: 0.1, ease: "easeOut" } },
   };
 
   return (
@@ -40,17 +49,21 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
       variants={sidebarVariants}
     >
       <div className="logo-section">
-        {/* Usando o wrapper para controlar o tamanho e a sobreposição das logos */}
-        <div className="logo-wrapper">
-          <Logo className="logo-svg" />
-          <Logo className="logo-svg animated-border" aria-hidden="true" />
-        </div>
-        
-        <AnimatePresence>
-          {!isCollapsed && (
-            <motion.div className="logo-text" initial="hidden" animate="visible" exit="hidden" variants={textVariants}>
-              <h1>Golden Brasil</h1>
-              <p>Página do Consultor</p>
+        <AnimatePresence exitBeforeEnter>
+          {isCollapsed ? (
+            <motion.div key="collapsed-logo" className="collapsed-logo-wrapper" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }} transition={{ duration: 0.3 }}>
+              <i className="fa-solid fa-gem"></i>
+            </motion.div>
+          ) : (
+            <motion.div key="expanded-logo" className="expanded-logo-wrapper" initial="hidden" animate="visible" exit="hidden" variants={logoGroupVariants}>
+              <div className="logo-images">
+                <img src={goldenLogoImg} alt="Golden Brasil" className="logo-img" />
+                <img src={diamondLogoImg} alt="Diamond Prime" className="logo-img diamond" />
+              </div>
+              <motion.div className="logo-text" variants={textVariants}>
+                  <h1>Golden & Diamond</h1>
+                  <p>Plataforma do Consultor</p>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -73,7 +86,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
       <ul className="menu-list">
         {menuItems.map((item) => (
           <li key={item.name}>
-            <Link to={item.path} className={`menu-item ${location.pathname === item.path ? 'active' : ''}`}>
+            <Link to={item.path} className={`menu-item ${location.pathname.startsWith(item.path) ? 'active' : ''}`}>
               <i className={item.icon}></i>
               <AnimatePresence>
                 {!isCollapsed && (

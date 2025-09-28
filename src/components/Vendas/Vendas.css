@@ -1,0 +1,190 @@
+/* --- ESTILO GERAL DA PÁGINA DE VENDAS --- */
+.vendas-page {
+    font-family: 'Poppins', sans-serif;
+    color: #E5E7EB;
+}
+
+/* --- CABEÇALHO --- */
+.vendas-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.vendas-page .page-header h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #F9FAFB;
+    margin: 0;
+}
+
+.vendas-page .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* --- BARRA DE BUSCA --- */
+.vendas-page .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #1F2A40;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #374151;
+    width: 350px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.vendas-page .search-bar:focus-within {
+    border-color: #f6d168;
+    box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
+}
+
+.vendas-page .search-bar i {
+    color: #6B7280;
+}
+
+.vendas-page .search-bar input {
+    border: none;
+    outline: none;
+    margin-left: 0.75rem;
+    width: 100%;
+    background-color: transparent;
+    color: #E5E7EB;
+    font-size: 1rem;
+}
+
+.vendas-page .search-bar input::placeholder {
+    color: #6B7280;
+}
+
+/* --- TABELA --- */
+.vendas-page .table-wrapper {
+    overflow-x: auto;
+    background: #1F2A40;
+    border-radius: 16px;
+    border: 1px solid #374151;
+    padding: 0.5rem;
+}
+
+.vendas-page table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.vendas-page th,
+.vendas-page td {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #374151;
+}
+
+.vendas-page thead th {
+    color: #9CA3AF;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.vendas-page tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.vendas-page tbody tr:hover {
+    background-color: #374151;
+}
+
+.vendas-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- PAGINAÇÃO --- */
+.vendas-page .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.vendas-page .pagination-controls button {
+    background-color: #1F2A40;
+    border: 1px solid #374151;
+    color: #E5E7EB;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vendas-page .pagination-controls button:hover:not(:disabled) {
+    background-color: #374151;
+    border-color: #4B5563;
+}
+
+.vendas-page .pagination-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.vendas-page .pagination-controls span {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* --- ESTADO DE VAZIO E LOGOS --- */
+.vendas-page .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #6B7280;
+}
+
+.vendas-page .empty-state-icon {
+    background-color: #374151;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.vendas-page .empty-state-icon i {
+    font-size: 2rem;
+    color: #9CA3AF;
+}
+
+.vendas-page .empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #E5E7EB;
+    margin: 0 0 0.5rem 0;
+}
+
+.vendas-page .empty-state-message {
+    max-width: 400px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.platform-logo {
+    height: 24px;
+    width: auto;
+}

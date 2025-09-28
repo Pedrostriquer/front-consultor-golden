@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import consultantService from "../../dbServices/consultantService";
+import useDebounce from "../../hooks/useDebounce";
+import TableFilters from "../TableFilters/TableFilters";
 import "./Extrato.css";
 
 // --- Funções Auxiliares ---
@@ -144,21 +146,31 @@ const Extrato = () => {
     pageNumber: 1,
     totalPages: 1,
   });
-  const [filters, setFilters] = useState({ type: "all" });
+  
+  const [filters, setFilters] = useState({
+    startDate: '',
+    endDate: '',
+    minAmount: '',
+    maxAmount: '',
+    sortBy: 'date',
+    sortOrder: 'desc',
+    type: 'all'
+  });
 
   const [modalDetails, setModalDetails] = useState(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
+
+  const debouncedFilters = useDebounce(filters, 500);
 
   const fetchExtract = useCallback(async () => {
     setIsLoading(true);
     setError("");
     try {
       const params = {
-        ...filters,
+        ...debouncedFilters,
         pageNumber: pagination.pageNumber,
         pageSize: 10,
       };
-      if (params.type === "all") delete params.type;
 
       const response = await consultantService.getConsultantExtract(params);
       setExtractData(response.data.items || []);
@@ -173,16 +185,16 @@ const Extrato = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [pagination.pageNumber, filters]);
+  }, [pagination.pageNumber, debouncedFilters]);
 
   useEffect(() => {
     fetchExtract();
   }, [fetchExtract]);
 
-  const handleFilterChange = (e) => {
-    setFilters({ type: e.target.value });
-    setPagination((prev) => ({ ...prev, pageNumber: 1 }));
-  };
+  // Reseta a página para 1 quando os filtros mudam
+  useEffect(() => {
+    setPagination(prev => ({...prev, pageNumber: 1}));
+  }, [debouncedFilters]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= pagination.totalPages) {
@@ -214,6 +226,11 @@ const Extrato = () => {
     }
   };
 
+  const sortOptions = [
+    { label: 'Data', value: 'date' },
+    { label: 'Valor', value: 'amount' }
+  ];
+
   const pageVariants = {
     initial: { opacity: 0 },
     in: { opacity: 1, transition: { staggerChildren: 0.1 } },
@@ -235,23 +252,21 @@ const Extrato = () => {
         <p>Acompanhe suas movimentações de comissões e saques.</p>
       </motion.div>
 
-      <motion.div className="card-base extrato-content" variants={itemVariants}>
-        <div className="extrato-controls">
-          <div className="filter-group">
-            <label htmlFor="type-filter">Mostrar:</label>
-            <select
-              id="type-filter"
-              value={filters.type}
-              onChange={handleFilterChange}
-            >
-              <option value="all">Todas as transações</option>
-              <option value="credit">Apenas Entradas</option>
-              <option value="debit">Apenas Saídas</option>
-            </select>
-          </div>
-          {error && <p className="error-message">{error}</p>}
-        </div>
+      <motion.div variants={itemVariants}>
+        <TableFilters filters={filters} setFilters={setFilters} availableSorts={sortOptions}>
+            <div className="filter-group">
+                <label>Mostrar</label>
+                <select name="type" value={filters.type} onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}>
+                    <option value="all">Todas as transações</option>
+                    <option value="credit">Apenas Entradas</option>
+                    <option value="debit">Apenas Saídas</option>
+                </select>
+            </div>
+        </TableFilters>
+      </motion.div>
 
+      <motion.div className="card-base extrato-content" variants={itemVariants}>
+        {error && <p className="error-message">{error}</p>}
         <div className="table-wrapper">
           <table className="extrato-table">
             <thead>
@@ -307,7 +322,7 @@ const Extrato = () => {
                 ) : (
                   <tr>
                     <td colSpan="3" className="empty-cell">
-                      Nenhuma transação encontrada.
+                      Nenhuma transação encontrada para os filtros selecionados.
                     </td>
                   </tr>
                 )}

@@ -1,205 +1,164 @@
-/* --- ESTRUTURA E EFEITO FLUTUANTE --- */
 .sidebar {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  bottom: 1rem;
-  height: calc(100vh - 2rem);
-  background: rgba(31, 42, 64, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background-color: #1F2A40;
+  color: #E5E7EB;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 1rem;
-  overflow: hidden; 
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 100;
+  border-right: 1px solid #374151;
 }
 
-/* --- SEÇÃO DA LOGO --- */
+/* --- NOVA SEÇÃO DO LOGO DINÂMICO --- */
 .logo-section {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centraliza o conteúdo */
+  height: 90px;
+  border-bottom: 1px solid #374151;
+  overflow: hidden; /* Evita que o texto vaze durante a animação */
+}
+
+/* Logo quando a sidebar está RECOLHIDA */
+.collapsed-logo-wrapper {
+  font-size: 2rem;
+  color: #f6d168;
+}
+
+/* Container da logo quando a sidebar está EXPANDIDA */
+.expanded-logo-wrapper {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0 0.35rem;
-  margin-bottom: 2.5rem;
-  min-height: 60px;
-  justify-content: flex-start;
+  width: 100%;
 }
 
-/* Container que define o tamanho e a posição dos SVGs */
-.logo-wrapper {
-  position: relative;
-  width: 50px;
-  height: 70px;
-  flex-shrink: 0; /* Impede que o wrapper encolha */
+.logo-images {
+  display: flex;
+  align-items: center;
+}
+
+.logo-images .logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  /* Efeito de sobreposição */
+  margin-left: -12px;
+  border: 2px solid #1F2A40; /* Cria um contorno para separar */
+  border-radius: 50%;
+}
+
+.logo-images .logo-img:first-child {
+  margin-left: 0;
+}
+
+.logo-images .logo-img.diamond {
+  height: 28px; /* Ajuste fino para alinhar visualmente */
+}
+
+.logo-text {
+  line-height: 1.2;
 }
 
 .logo-text h1 {
-  font-size: 1.25rem;
-  color: #F9FAFB;
   margin: 0;
+  font-size: 1.25rem;
   font-weight: 600;
+  color: #F9FAFB;
+  white-space: nowrap;
 }
 
 .logo-text p {
+  margin: 0;
   font-size: 0.8rem;
   color: #9CA3AF;
-  margin: 0;
+  white-space: nowrap;
 }
 
-
 /* --- SEÇÃO DO PERFIL --- */
-a.profile-link { text-decoration: none; color: inherit; }
-
+.profile-link {
+  text-decoration: none;
+  color: inherit;
+}
 .profile-section {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  transition: background-color 0.2s ease;
-  padding-right: 50px;
+  gap: 1rem;
+  padding: 1.5rem;
+  transition: background-color 0.2s;
 }
-.profile-section:hover { background: rgba(255, 255, 255, 0.1); }
-
+.profile-section:hover {
+  background-color: #2a3a55;
+}
 .profile-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #f6d168; /* Cor de Destaque */
+  background-color: #f6d168;
   color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 700;
   flex-shrink: 0;
 }
+.profile-info {
+  line-height: 1.4;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.profile-name {
+  display: block;
+  font-weight: 600;
+}
+.profile-role {
+  font-size: 0.85rem;
+  color: #9CA3AF;
+}
 
-.profile-info { display: flex; flex-direction: column; white-space: nowrap; }
-.profile-name { font-weight: 600; color: #F3F4F6; }
-.profile-role { font-size: 0.8rem; color: #9CA3AF; }
-
-
-/* --- ITENS DE MENU E ESTILO ATIVO --- */
-.menu-list { list-style: none; padding: 0; margin: 0; flex-grow: 1;}
-a.menu-item { text-decoration: none; }
-
+/* --- LISTA DO MENU --- */
+.menu-list {
+  list-style: none;
+  padding: 1rem;
+  margin: 0;
+  flex-grow: 1;
+}
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1rem;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
   border-radius: 10px;
+  margin-bottom: 0.5rem;
   cursor: pointer;
+  text-decoration: none;
   color: #9CA3AF;
-  font-weight: 500;
   transition: background-color 0.2s, color 0.2s;
+  overflow: hidden;
   white-space: nowrap;
-  position: relative;
 }
-
-.menu-item:hover {
-  background-color: rgba(246, 209, 104, 0.1);
-  color: #f6d168;
-}
-
-.menu-item.active {
-  background-color: #f6d168; /* Cor de Destaque */
-  color: #111827; /* Texto escuro para contraste */
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(246, 209, 104, 0.2);
-}
-
 .menu-item i {
-  font-size: 1.25rem;
-  width: 24px;
+  font-size: 1.1rem;
+  width: 20px; /* Garante alinhamento dos ícones */
   text-align: center;
-  flex-shrink: 0;
 }
-
+.menu-item span {
+  font-weight: 500;
+}
+.menu-item:hover, .menu-item.active {
+  background-color: #f6d168;
+  color: #111827;
+}
 
 /* --- RODAPÉ DA SIDEBAR --- */
 .sidebar-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(75, 85, 99, 0.5);
-}
-
-
-/* --- AJUSTES PARA SIDEBAR RECOLHIDA --- */
-.sidebar.collapsed .menu-item {
-  justify-content: center;
   padding: 1rem;
-  gap: 0;
+  border-top: 1px solid #374151;
 }
 
-.sidebar.collapsed .logo-section {
-  justify-content: center;
-}
-
-.sidebar.collapsed .profile-section {
-  justify-content: center;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.logo-text,
-.profile-info,
-.menu-item span {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-
-/* ... (todo o CSS anterior até a seção da animação) ... */
-
-/* ======================================================= */
-/* ====== ANIMAÇÃO DE CONTORNO PARA A LOGO SVG ====== */
-/* ======================================================= */
-
-/* Faz o SVG ocupar 100% do 'logo-wrapper' */
-.logo-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Define a cor de PREENCHIMENTO da logo principal */
-.logo-svg path {
-  fill: #f6d168; /* A cor amarela que você queria */
-}
-
-/* O SVG da animação já está posicionado corretamente pela regra .logo-svg acima */
-.logo-svg.animated-border {
-  z-index: 2; /* Coloca a borda na frente da logo preenchida */
-}
-
-/* ATUALIZADO: O path da borda animada não tem preenchimento, apenas o contorno */
-.logo-svg.animated-border path {
-  /* fill: transparent;  */
-  stroke: #dfb541; /* Contorno branco */
-  stroke-width: 3px;
-  stroke-dasharray: 100 1200; /* Ponto de luz e um grande espaço */
-  animation: move-light 4s linear infinite;
-  
-  /* NOVO: Aplica o filtro de brilho SVG */
-  filter: url(#glow); 
-}
-
-@keyframes move-light {
-  from {
-    stroke-dashoffset: 1300; 
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+.collapse-button {
+  background-color: #2a3a55;
 }

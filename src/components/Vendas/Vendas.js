@@ -4,14 +4,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import consultantService from '../../dbServices/consultantService';
 import useDebounce from '../../hooks/useDebounce';
 import TableFilters from '../TableFilters/TableFilters';
-import './Clientes.css';
+import './Vendas.css';
 import goldenLogo from '../../img/logo-golden-ouro2.png';
 import diamondLogo from '../../img/diamond_prime_diamond (1).png';
 
-// --- Funções Auxiliares ---
+// Funções Auxiliares
 const formatCurrency = (value) => {
   if (value === null || value === undefined) return "R$ 0,00";
   return `R$${value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
+const getStatusBadge = (status) => {
+    const statusMap = {
+      1: { text: "Pendente", className: "status-pending" },
+      2: { text: "Valorizando", className: "status-active" },
+      3: { text: "Cancelado", className: "status-canceled" },
+      4: { text: "Concluído", className: "status-completed" }
+    };
+    const { text, className } = statusMap[status] || { text: "Desconhecido", className: ""};
+    return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
 const PlatformLogo = ({ platform }) => {
@@ -20,64 +31,64 @@ const PlatformLogo = ({ platform }) => {
 };
 
 const EmptyState = ({ icon, title, message }) => (
-  <tr>
-    <td colSpan="6">
-      <div className="empty-state">
-        <div className="empty-state-icon"><i className={icon}></i></div>
-        <h3 className="empty-state-title">{title}</h3>
-        <p className="empty-state-message">{message}</p>
-      </div>
-    </td>
-  </tr>
-);
+    <tr>
+      <td colSpan="6">
+        <div className="empty-state">
+          <div className="empty-state-icon"><i className={icon}></i></div>
+          <h3 className="empty-state-title">{title}</h3>
+          <p className="empty-state-message">{message}</p>
+        </div>
+      </td>
+    </tr>
+  );
 
-// --- Componente Principal ---
-const Clientes = () => {
-  const [clients, setClients] = useState([]);
+// Componente Principal
+const Vendas = () => {
+  const [contracts, setContracts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-
+  
   const [filters, setFilters] = useState({
+    startDate: '',
+    endDate: '',
     minAmount: '',
     maxAmount: '',
-    sortBy: 'name',
-    sortOrder: 'asc',
+    sortBy: 'dateCreated',
+    sortOrder: 'desc',
     platform: 'all', // <-- NOVO ESTADO
   });
-  
+
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const debouncedFilters = useDebounce(filters, 500);
 
-  const fetchClients = useCallback(async () => {
+  const fetchContracts = useCallback(async () => {
     const pageSize = 10;
     const params = {
       ...debouncedFilters,
-      minBalance: debouncedFilters.minAmount,
-      maxBalance: debouncedFilters.maxAmount,
       searchTerm: debouncedSearchTerm,
       pageNumber: page,
       pageSize: pageSize,
     };
-    const response = await consultantService.searchMyClients(params);
-    setClients(response.data.items);
+    const response = await consultantService.searchContracts(params);
+    setContracts(response.data.items);
     setTotalPages(Math.ceil(response.data.totalCount / pageSize));
   }, [page, debouncedSearchTerm, debouncedFilters]);
 
   useEffect(() => {
-    fetchClients();
-  }, [fetchClients]);
+    fetchContracts();
+  }, [fetchContracts]);
 
   useEffect(() => { setPage(1); }, [debouncedSearchTerm, debouncedFilters]);
 
-  const handleRowClick = (clientId) => {
-    navigate(`/platform/clientes/${clientId}`);
+  const handleRowClick = (clientId, contractId) => {
+    navigate(`/platform/vendas/cliente/${clientId}/contratos/${contractId}`);
   };
 
   const sortOptions = [
-    { label: 'Nome', value: 'name' },
-    { label: 'Saldo', value: 'balance' }
+    { label: 'Data', value: 'dateCreated' },
+    { label: 'Valor', value: 'amount' }
   ];
   
   const rowVariants = {
@@ -87,15 +98,15 @@ const Clientes = () => {
   };
 
   return (
-    <div className="clientes-page">
+    <div className="vendas-page">
       <div className="page-header">
-        <h1>Meus Clientes</h1>
+        <h1>Vendas</h1>
         <div className="header-actions">
           <div className="search-bar">
             <i className="fa-solid fa-magnifying-glass"></i>
             <input 
               type="text" 
-              placeholder="Buscar por nome, CPF, email..."
+              placeholder="Buscar por cliente, ID do contrato..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -106,7 +117,7 @@ const Clientes = () => {
       <TableFilters 
         filters={filters} 
         setFilters={setFilters} 
-        availableSorts={sortOptions}
+        availableSorts={sortOptions} 
         showPlatformFilter={true} // <-- NOVA PROP
       />
 
@@ -115,41 +126,39 @@ const Clientes = () => {
           <thead>
             <tr>
               <th>Plataforma</th>
-              <th>Nome</th>
-              <th>CPF/CNPJ</th>
-              <th>Email</th>
-              <th>Celular</th>
-              <th>Saldo em Contratos</th>
+              <th>ID Contrato</th>
+              <th>Cliente</th>
+              <th>Valor</th>
+              <th>Status</th>
             </tr>
           </thead>
           <AnimatePresence>
             <tbody>
-              {clients.length > 0 ? (
-                clients.map(client => (
+              {contracts.length > 0 ? (
+                contracts.map(contract => (
                   <motion.tr 
-                    key={client.id} 
-                    onClick={() => handleRowClick(client.id)}
+                    key={contract.id} 
+                    onClick={() => handleRowClick(contract.clientId, contract.id)}
                     variants={rowVariants}
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                     layout
                   >
-                    <td><PlatformLogo platform={client.platform} /></td>
-                    <td>{client.name}</td>
-                    <td>{client.cpfCnpj}</td>
-                    <td>{client.email}</td>
-                    <td>{client.phoneNumber}</td>
-                    <td className="saldo-positivo">{formatCurrency(client.balance)}</td>
+                    <td><PlatformLogo platform={contract.platform} /></td>
+                    <td>#{contract.id}</td>
+                    <td>{contract.clientName}</td>
+                    <td>{formatCurrency(contract.amount)}</td>
+                    <td>{getStatusBadge(contract.status)}</td>
                   </motion.tr>
                 ))
               ) : (
                 <EmptyState 
-                  icon="fa-solid fa-users-slash"
-                  title="Nenhum cliente encontrado"
-                  message={searchTerm || Object.values(filters).some(v => v) 
-                    ? `Sua busca e filtros não retornaram resultados.`
-                    : "Você ainda não possui clientes cadastrados."
+                  icon="fa-solid fa-file-invoice-dollar"
+                  title="Nenhum contrato encontrado"
+                  message={searchTerm || Object.values(filters).some(v => v)
+                    ? "Sua busca e filtros não retornaram resultados."
+                    : "Nenhum contrato para exibir."
                   }
                 />
               )}
@@ -173,4 +182,4 @@ const Clientes = () => {
   );
 };
 
-export default Clientes;
+export default Vendas;
