@@ -21,45 +21,68 @@
     margin: 0;
 }
 
-.vendas-page .header-actions {
+/* --- Container de Filtros e Busca --- */
+.filters-container {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
     display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* --- BARRA DE BUSCA --- */
-.vendas-page .search-bar {
-    display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-end; /* Alinha os itens na base */
+    gap: 1.5rem;
     background-color: #1F2A40;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
+    border-radius: 16px;
     border: 1px solid #374151;
-    width: 350px;
-    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.vendas-page .search-bar:focus-within {
-    border-color: #f6d168;
-    box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
+/* --- Barra de Busca (dentro do container de filtros) --- */
+.filters-container .search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #121828;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  flex-grow: 1; /* Faz a barra de busca ocupar o espaço disponível */
+  min-width: 300px;
 }
-
-.vendas-page .search-bar i {
-    color: #6B7280;
+.filters-container .search-bar:focus-within {
+  border-color: #f6d168;
+  box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
 }
+.filters-container .search-bar i { color: #6B7280; }
+.filters-container .search-bar input {
+  border: none; outline: none; margin-left: 0.75rem;
+  width: 100%; background-color: transparent; color: #E5E7EB; font-size: 1rem;
+}
+.filters-container .search-bar input::placeholder { color: #6B7280; }
 
-.vendas-page .search-bar input {
-    border: none;
-    outline: none;
-    margin-left: 0.75rem;
-    width: 100%;
-    background-color: transparent;
+
+/* --- Grupos de Filtro (Selects) --- */
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 220px;
+}
+.filter-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9CA3AF;
+}
+.filter-group select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    background-color: #121828;
     color: #E5E7EB;
     font-size: 1rem;
-}
-
-.vendas-page .search-bar input::placeholder {
-    color: #6B7280;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.75rem top 50%;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
 }
 
 /* --- TABELA --- */
@@ -81,6 +104,7 @@
 .vendas-page td {
     padding: 1.25rem 1.5rem;
     text-align: left;
+    vertical-align: middle;
     border-bottom: 1px solid #374151;
 }
 
@@ -104,6 +128,37 @@
 .vendas-page tbody tr:last-child td {
     border-bottom: none;
 }
+
+/* Coluna e Logo da Plataforma */
+.vendas-page th.platform-col {
+  width: 40px;
+  padding: 1.25rem 0 1.25rem 1.5rem;
+}
+.vendas-page td.platform-col {
+  width: 40px;
+  padding: 1.25rem 0 1.25rem 1.5rem;
+}
+.platform-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-logo-small { height: 24px; width: 24px; object-fit: contain; }
+
+/* --- BADGES DE STATUS --- */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    white-space: nowrap;
+}
+.status-pending { background-color: rgba(251, 191, 36, 0.1); color: #FBBF24; }
+.status-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+.status-completed { background-color: rgba(16, 185, 129, 0.1); color: #10B981; }
+.status-canceled { background-color: rgba(239, 68, 68, 0.1); color: #EF4444; }
+
 
 /* --- PAGINAÇÃO --- */
 .vendas-page .pagination-controls {
@@ -144,7 +199,10 @@
     font-weight: 500;
 }
 
-/* --- ESTADO DE VAZIO E LOGOS --- */
+/* --- ESTADO DE VAZIO E SKELETON --- */
+.skeleton-row .skeleton-bar { height: 16px; background-color: #374151; border-radius: 4px; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+
 .vendas-page .empty-state {
     display: flex;
     flex-direction: column;
@@ -182,9 +240,4 @@
     max-width: 400px;
     margin: 0;
     line-height: 1.5;
-}
-
-.platform-logo {
-    height: 24px;
-    width: auto;
 }

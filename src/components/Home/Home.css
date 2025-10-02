@@ -80,7 +80,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  height: 280px;
+  /* height: 280px; */
   overflow-y: auto;
 }
 .client-item {
@@ -98,11 +98,7 @@
   align-items: center;
   gap: 1rem;
 }
-.client-rank {
-  font-weight: 600;
-  color: #9CA3AF;
-  width: 25px;
-}
+
 .client-balance {
   font-weight: 500;
   color: #34D399;
@@ -284,7 +280,7 @@
   border-color: #111827 transparent transparent transparent;
 }
 
-/* --- RESTANTE DOS ESTILOS (SEM MUDANÇAS) --- */
+/* --- RESTANTE DOS ESTILOS --- */
 .levels-container .next-level-info {
   text-align: center;
   color: #9CA3AF;
@@ -337,4 +333,43 @@
 }
 .expanded-levels-list li strong {
   color: #34D399;
+}
+
+
+/* --- ESTILOS PARA O FILTRO DE CLIENTES --- */
+.client-filter-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.client-filter-controls button {
+  background-color: transparent;
+  border: 1px solid #374151;
+  color: #9CA3AF;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px; /* Botões arredondados */
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.client-filter-controls button:hover {
+  background-color: #374151;
+  color: #F9FAFB;
+}
+
+.client-filter-controls button.active-filter {
+  background-color: #f6d168;
+  color: #1F2A40;
+  border-color: #f6d168;
+  font-weight: 600;
+}
+
+/* --- ESTILO PARA A LOGO NA LISTA DE CLIENTES --- */
+.client-platform-logo {
+  width: 25px; /* Mesmo tamanho do rank antigo para não quebrar o layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

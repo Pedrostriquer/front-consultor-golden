@@ -35,6 +35,7 @@ const Home = () => {
     const [metaData, setMetaData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isLevelsExpanded, setIsLevelsExpanded] = useState(false);
+    const [clientFilter, setClientFilter] = useState('Todos'); // NOVO ESTADO PARA O FILTRO
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -60,7 +61,7 @@ const Home = () => {
 
     const commissionLevels = useMemo(() => {
         if (!metaData || !dashboardData) return null;
-        const { metas } = metaData;
+        const { metas } = metaData; 
         const currentCommission = dashboardData.actualMonthlyCommission;
         const maxGoal = metas.length > 0 ? metas[metas.length - 1].value : 0;
         let currentLevel = null, nextLevel = metas.length > 0 ? metas[0] : null;
@@ -85,6 +86,25 @@ const Home = () => {
         return { levels: metas, currentLevel, nextLevel, progress, maxGoal, amountForNextLevel };
     }, [metaData, dashboardData]);
 
+    // LÓGICA PARA FILTRAR OS CLIENTES
+    const filteredClients = useMemo(() => {
+        if (!dashboardData?.bestClients) return [];
+
+        // Adiciona uma propriedade 'platform' para simulação, já que a API ainda não a envia.
+        const clientsWithPlatform = dashboardData.bestClients.map(client => ({
+            ...client,
+            platform: 'Golden Brasil' 
+        }));
+
+        if (clientFilter === 'Golden') {
+            return clientsWithPlatform.filter(client => client.platform === 'Golden Brasil');
+        }
+        if (clientFilter === 'Diamond') {
+            return clientsWithPlatform.filter(client => client.platform === 'Diamond Prime'); // Retornará lista vazia por enquanto
+        }
+        return clientsWithPlatform; // Caso 'Todos'
+    }, [dashboardData, clientFilter]);
+
     const pageVariants = { initial: { opacity: 0 }, in: { opacity: 1, transition: { staggerChildren: 0.1 } } };
     const itemVariants = { initial: { opacity: 0, y: 20 }, in: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }};
 
@@ -108,17 +128,65 @@ const Home = () => {
                     <ResponsiveContainer width="100%" height={300}><BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}><XAxis dataKey="month" stroke="#9CA3AF" /><YAxis stroke="#9CA3AF" tickFormatter={(v) => `R$${v/1000}k`} /><Tooltip cursor={{ fill: 'rgba(246, 209, 104, 0.1)' }} contentStyle={{ backgroundColor: '#1F2A40', border: '1px solid #374151' }} /><Bar dataKey="commission" name="Comissão" fill="#f6d168" radius={[4, 4, 0, 0]} /></BarChart></ResponsiveContainer>
                 </div>
                 <div className="top-clients-container card-base">
-                    <div className="card-header"><h3>Melhores Clientes (Saldo Total)</h3></div>
-                    <ul className="client-list">{bestClients.slice(0, 5).map((client, index) => (<li key={client.id} className="client-item"><div className="client-info"><span className='client-rank'>#{index + 1}</span><span>{client.name}</span></div><span className="client-balance">{formatCurrency(client.totalBalance)}</span></li>))}</ul>
+                    {/* CABEÇALHO DO CARD ATUALIZADO COM OS FILTROS */}
+                    <div className="card-header">
+                        <h3>Melhores Clientes</h3>
+                        <div className="client-filter-controls">
+                            <button className={clientFilter === 'Todos' ? 'active-filter' : ''} onClick={() => setClientFilter('Todos')}>Todos</button>
+                            <button className={clientFilter === 'Golden' ? 'active-filter' : ''} onClick={() => setClientFilter('Golden')}>Golden</button>
+                            <button className={clientFilter === 'Diamond' ? 'active-filter' : ''} onClick={() => setClientFilter('Diamond')}>Diamond</button>
+                        </div>
+                    </div>
+                    {/* LISTA DE CLIENTES ATUALIZADA */}
+                    <ul className="client-list">
+                        {filteredClients.length > 0 ? (
+                            filteredClients.slice(0, 5).map((client) => (
+                                <li key={client.id} className="client-item">
+                                    <div className="client-info">
+                                        {/* Número do rank trocado pela logo */}
+                                        <div className="client-platform-logo">
+                                          <PlatformLogo platform={client.platform} />
+                                        </div>
+                                        <span>{client.name}</span>
+                                    </div>
+                                    <span className="client-balance">{formatCurrency(client.totalBalance)}</span>
+                                </li>
+                            ))
+                        ) : (
+                            <p className="placeholder-text">Nenhum cliente encontrado para esta plataforma.</p>
+                        )}
+                    </ul>
                 </div>
             </motion.div>
             
             <motion.div className="secondary-grid" variants={itemVariants}>
-                <div className="platform-stats-container card-base">
+                 <div className="platform-stats-container card-base">
                     <div className="card-header"><h3><i className="fa-solid fa-chart-pie"></i> Análise de Plataformas</h3></div>
                     <div className="stats-content">
-                        <div className="stat-group"><h4>Distribuição de Clientes</h4><div className="stat-item"><div className="stat-label"><PlatformLogo platform="Golden Brasil" /><span>Golden Brasil</span></div><span className="stat-percentage">100%</span></div><AnimatedProgressBar value={100} color="#f6d168" /></div>
-                        <div className="stat-group"><h4>Total de Comissão Gerada</h4><div className="stat-item"><div className="stat-label"><PlatformLogo platform="Golden Brasil" /><span>Golden Brasil</span></div><span className="stat-value-small">{formatCurrency(totalCommissionEarned, true)}</span></div></div>
+                        <div className="stat-group">
+                            <h4>Distribuição de Clientes</h4>
+                            <div className="stat-item">
+                                <div className="stat-label"><PlatformLogo platform="Golden Brasil" /><span>Golden Brasil</span></div>
+                                <span className="stat-percentage">100%</span>
+                            </div>
+                            <AnimatedProgressBar value={100} color="#f6d168" />
+                            <div className="stat-item" style={{marginTop: '1rem'}}>
+                                <div className="stat-label"><PlatformLogo platform="Diamond Prime" /><span>Diamond Prime</span></div>
+                                <span className="stat-percentage">0%</span>
+                            </div>
+                            <AnimatedProgressBar value={0} color="#6B7280" />
+                        </div>
+                        <div className="stat-group">
+                            <h4>Total de Comissão Gerada</h4>
+                            <div className="stat-item">
+                                <div className="stat-label"><PlatformLogo platform="Golden Brasil" /><span>Golden Brasil</span></div>
+                                <span className="stat-value-small">{formatCurrency(totalCommissionEarned, true)}</span>
+                            </div>
+                            <div className="stat-item" style={{marginTop: '0.5rem'}}>
+                                <div className="stat-label"><PlatformLogo platform="Diamond Prime" /><span>Diamond Prime</span></div>
+                                <span className="stat-value-small">{formatCurrency(0, true)}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -152,7 +220,23 @@ const Home = () => {
                          <AnimatePresence>
                              {isLevelsExpanded && (
                                  <motion.div className="expanded-levels-list" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
-                                     <ul>{commissionLevels.levels.map(level => (<li key={level.value} className={commissionLevels.currentLevel?.value === level.value ? 'current' : ''}><span>Atingir {formatCurrency(level.value)} em vendas</span><strong>{level.commission_percentage}% de comissão</strong></li>))}</ul>
+                                     <ul>
+                                        {commissionLevels.levels.map((level, index, allLevels) => {
+                                            const nextLevel = allLevels[index + 1];
+                                            let levelText = '';
+                                            if (nextLevel) {
+                                                levelText = `De ${formatCurrency(level.value)} a ${formatCurrency(nextLevel.value)} em vendas`;
+                                            } else {
+                                                levelText = `Acima de ${formatCurrency(level.value)} em vendas`;
+                                            }
+                                            return (
+                                                <li key={level.value} className={commissionLevels.currentLevel?.value === level.value ? 'current' : ''}>
+                                                    <span>{levelText}</span>
+                                                    <strong>{level.commission_percentage}% de comissão</strong>
+                                                </li>
+                                            );
+                                        })}
+                                     </ul>
                                  </motion.div>
                              )}
                          </AnimatePresence>
