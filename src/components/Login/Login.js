@@ -1,26 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Importa o useEffect
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '../../Context/AuthContext';
 import './Login.css';
 
-// Importando as logos
 import goldenLogoImg from '../../img/logo-golden-ouro2.png';
 import diamondLogoImg from '../../img/diamond_prime_diamond (1).png';
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth(); // Pega também o isAuthenticated
 
-  const handleLogin = (e) => {
+  // Efeito para redirecionar QUANDO a autenticação for bem-sucedida
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/platform/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simula uma chamada de API e redireciona após um tempo
-    setTimeout(() => {
-      navigate('/platform/dashboard');
-    }, 1500);
+    setError('');
+
+    try {
+      await login(email, password);
+      // A navegação agora é tratada pelo useEffect
+    } catch (err) {
+      setError('Credenciais inválidas. Verifique o seu email e password.');
+    } finally {
+        setIsLoading(false);
+    }
   };
 
-  // Variantes de animação para o Framer Motion
+  // ... (variantes de animação permanecem as mesmas)
   const leftPanelVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut', staggerChildren: 0.2 } },
@@ -39,7 +57,6 @@ function Login() {
 
   return (
     <div className="login-page-merged">
-      {/* PAINEL DA ESQUERDA - BRANDING COM ANIMAÇÕES */}
       <motion.div 
         className="login-branding"
         variants={leftPanelVariants}
@@ -57,7 +74,6 @@ function Login() {
         </div>
       </motion.div>
       
-      {/* PAINEL DA DIREITA - FORMULÁRIO */}
       <div className="login-form-area">
         <motion.div 
           className="login-form-wrapper card-base"
@@ -68,6 +84,9 @@ function Login() {
           <h2>Bem-vindo de volta!</h2>
           <p className='form-subtitle'>Acesse sua conta para continuar.</p>
           <form onSubmit={handleLogin}>
+            
+            {error && <p className="error-message">{error}</p>}
+
             <div className="input-group">
               <label htmlFor="email">Email</label>
               <div className="input-field">
@@ -76,7 +95,8 @@ function Login() {
                   type="email" 
                   id="email" 
                   placeholder="seuemail@exemplo.com"
-                  defaultValue="consultor@golden.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required 
                 />
               </div>
@@ -89,7 +109,8 @@ function Login() {
                   type="password" 
                   id="password" 
                   placeholder="••••••••" 
-                  defaultValue="123456"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required 
                 />
               </div>

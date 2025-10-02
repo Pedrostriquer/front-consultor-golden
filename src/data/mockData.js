@@ -37,20 +37,20 @@ export const mockContractsData = [
 ];
 
 export const mockWithdrawsData = [
-  { id: 1, clientId: 1, amountWithdrawn: 10000, amountReceivable: 9800, dateCreated: '2023-10-28T14:00:00Z', status: 2 },
-  { id: 2, clientId: 2, amountWithdrawn: 25000, amountReceivable: 24500, dateCreated: '2023-11-15T11:30:00Z', status: 1 },
-  { id: 3, clientId: 1, amountWithdrawn: 5000, amountReceivable: 4900, dateCreated: '2023-12-01T09:00:00Z', status: 3 },
+{ id: 1, clientId: 1, amountWithdrawn: 10000, amountReceivable: 9800, dateCreated: '2023-10-28T14:00:00Z', status: 2 },
+{ id: 2, clientId: 2, amountWithdrawn: 25000, amountReceivable: 24500, dateCreated: '2023-11-15T11:30:00Z', status: 1 },
+{ id: 3, clientId: 1, amountWithdrawn: 5000, amountReceivable: 4900, dateCreated: '2023-12-01T09:00:00Z', status: 3 },
 ];
 
 export const mockConsultantWithdrawsData = {
 totalCount: 5,
 pageSize: 10,
 items: [
-  { id: 1, dateCreated: '2023-12-01T10:00:00Z', amountWithdrawn: 500.00, status: 2 },
-  { id: 2, dateCreated: '2023-11-15T14:30:00Z', amountWithdrawn: 1200.00, status: 2 },
-  { id: 3, dateCreated: '2023-11-01T09:00:00Z', amountWithdrawn: 750.00, status: 1 },
-  { id: 4, dateCreated: '2023-10-20T18:00:00Z', amountWithdrawn: 200.00, status: 3 },
-  { id: 5, dateCreated: '2023-10-05T11:00:00Z', amountWithdrawn: 2500.00, status: 2 },
+{ id: 1, dateCreated: '2023-12-01T10:00:00Z', amountWithdrawn: 500.00, status: 2 },
+{ id: 2, dateCreated: '2023-11-15T14:30:00Z', amountWithdrawn: 1200.00, status: 2 },
+{ id: 3, dateCreated: '2023-11-01T09:00:00Z', amountWithdrawn: 750.00, status: 1 },
+{ id: 4, dateCreated: '2023-10-20T18:00:00Z', amountWithdrawn: 200.00, status: 3 },
+{ id: 5, dateCreated: '2023-10-05T11:00:00Z', amountWithdrawn: 2500.00, status: 2 },
 ]
 };
 
@@ -58,24 +58,21 @@ export const mockConsultantExtractData = {
 totalCount: 11,
 pageSize: 10,
 items: [
-  { type: 'Credit', transactionId: 101, description: 'Comissão recebida do contrato #101', date: '2023-12-05T10:00:00Z', amount: 5000.00 },
-  { type: 'Debit', transactionId: 1, description: 'Saque solicitado', date: '2023-12-01T10:00:00Z', amount: 500.00 },
-  { type: 'Credit', transactionId: 103, description: 'Comissão recebida do contrato #103', date: '2023-11-20T10:00:00Z', amount: 25000.00 },
-  { type: 'Debit', transactionId: 2, description: 'Saque solicitado', date: '2023-11-15T14:30:00Z', amount: 1200.00 },
-  { type: 'Credit', transactionId: 104, description: 'Comissão recebida do contrato #104', date: '2023-11-05T10:00:00Z', amount: 7500.00 },
-  { type: 'Debit', transactionId: 5, description: 'Saque solicitado', date: '2023-10-05T11:00:00Z', amount: 2500.00 },
-  // Novas transações
-  { type: 'Credit', transactionId: 201, description: 'Comissão recebida do contrato #201', date: '2023-09-15T10:00:00Z', amount: 10000.00 },
-  { type: 'Credit', transactionId: 203, description: 'Comissão recebida do contrato #203', date: '2023-08-20T10:00:00Z', amount: 5000.00 },
-  { type: 'Debit', transactionId: 3, description: 'Saque solicitado', date: '2023-07-01T09:00:00Z', amount: 750.00 },
-  { type: 'Credit', transactionId: 204, description: 'Comissão recebida do contrato #204', date: '2023-06-25T10:00:00Z', amount: 3000.00 },
-  { type: 'Credit', transactionId: 205, description: 'Comissão recebida do contrato #205', date: '2023-05-10T10:00:00Z', amount: 18000.00 },
+{ type: 'Credit', transactionId: 101, description: 'Comissão recebida do contrato #101', date: '2023-12-05T10:00:00Z', amount: 5000.00 },
+{ type: 'Debit', transactionId: 1, description: 'Saque solicitado', date: '2023-12-01T10:00:00Z', amount: 500.00 },
+{ type: 'Credit', transactionId: 103, description: 'Comissão recebida do contrato #103', date: '2023-11-20T10:00:00Z', amount: 25000.00 },
+{ type: 'Debit', transactionId: 2, description: 'Saque solicitado', date: '2023-11-15T14:30:00Z', amount: 1200.00 },
+{ type: 'Credit', transactionId: 104, description: 'Comissão recebida do contrato #104', date: '2023-11-05T10:00:00Z', amount: 7500.00 },
+{ type: 'Debit', transactionId: 5, description: 'Saque solicitado', date: '2023-10-05T11:00:00Z', amount: 2500.00 },
+// Novas transações
+{ type: 'Credit', transactionId: 201, description: 'Comissão recebida do contrato #201', date: '2023-09-15T10:00:00Z', amount: 10000.00 },
+{ type: 'Credit', transactionId: 203, description: 'Comissão recebida do contrato #203', date: '2023-08-20T10:00:00Z', amount: 5000.00 },
+{ type: 'Debit', transactionId: 3, description: 'Saque solicitado', date: '2023-07-01T09:00:00Z', amount: 750.00 },
+{ type: 'Credit', transactionId: 204, description: 'Comissão recebida do contrato #204', date: '2023-06-25T10:00:00Z', amount: 3000.00 },
+{ type: 'Credit', transactionId: 205, description: 'Comissão recebida do contrato #205', date: '2023-05-10T10:00:00Z', amount: 18000.00 },
 ]
 };
 
-// --- DADOS DA DASHBOARD ATUALIZADOS ---
-// Vamos calcular as estatísticas dinamicamente no `consultantService`
-// mas a estrutura base fica aqui.
 export const mockDashboardData = {
 totalClients: 13,
 totalCommissionThisMonth: 37500.00,
@@ -89,9 +86,18 @@ monthlyCommissionData: [
   { month: 'Nov', commission: 32500 },
   { month: 'Dez', commission: 37500 },
 ],
-// bestClients e platformStats serão gerados dinamicamente no serviço
-bestClients: [], 
-platformStats: {},
+bestClients: [
+  { id: 7, name: 'Isabella Costa', balance: 500000, platform: 'Diamond Prime', cpfCnpj: '222.333.444-55' },
+  { id: 6, name: 'Lucas Martins', balance: 300000, platform: 'Diamond Prime', cpfCnpj: '111.222.333-44' },
+  { id: 2, name: 'Caiuã Brandão de Mello', balance: 250000, platform: 'Golden Brasil', cpfCnpj: '075.411.521-61' },
+  { id: 12, name: 'Felipe Azevedo', balance: 220000, platform: 'Diamond Prime', cpfCnpj: '777.888.999-00' },
+  { id: 10, name: 'Gabriel Almeida', balance: 180000, platform: 'Diamond Prime', cpfCnpj: '555.666.777-88' },
+],
+platformStats: {
+  clientDistribution: { golden: 46.2, diamond: 53.8, },
+  commissionDistribution: { golden: 42.1, diamond: 57.9, },
+  totalCommission: { golden: 75000, diamond: 105000, }
+},
 ranking: [
     { id: 1, name: 'Juliana Santos', rank: 1 },
     { id: 2, name: 'Rafael Ferreira', rank: 2 },

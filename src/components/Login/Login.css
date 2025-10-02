@@ -184,6 +184,17 @@
     animation: spin 1s linear infinite;
 }
 
+.error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }

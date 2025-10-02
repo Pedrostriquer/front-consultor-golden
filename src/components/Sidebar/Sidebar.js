@@ -22,7 +22,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     { name: 'Home', icon: 'fa-solid fa-house', path: '/platform/dashboard' },
     { name: 'Clientes', icon: 'fa-solid fa-users', path: '/platform/clientes' },
     { name: 'Vendas', icon: 'fa-solid fa-file-invoice-dollar', path: '/platform/vendas' },
-    { name: 'Saque', icon: 'fa-solid fa-wallet', path: '/platform/saque' },
+    // { name: 'Saque', icon: 'fa-solid fa-wallet', path: '/platform/saque' },
     { name: 'Extrato', icon: 'fa-solid fa-receipt', path: '/platform/extrato' },
   ];
 

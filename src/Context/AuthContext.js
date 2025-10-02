@@ -1,35 +1,64 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Importar o useNavigate
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import authService from '../dbServices/authService';
+import consultantService from '../dbServices/consultantService';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate(); // 2. Inicializar o hook de navegação
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const [user] = useState({
-    id: 1,
-    name: 'Consultor Golden',
-    email: 'consultor@goldenbrasil.com',
-    cpfCnpj: '000.000.000-00',
-    commissionPercentage: 10,
-    balance: 12345.67,
-  });
+  const fetchConsultantData = async () => {
+    try {
+      const data = await consultantService.getMe();
+      // CORREÇÃO: A API retorna o objeto do utilizador diretamente, não dentro de "consultor"
+      setUser(data); 
+    } catch (error) {
+      console.error("Falha ao buscar dados do consultor:", error);
+      logout();
+    }
+  };
 
-  // 3. Implementar a função de logout
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      fetchConsultantData().finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const login = async (username, password) => {
+    try {
+      const data = await authService.login(username, password);
+      localStorage.setItem('authToken', data.accessToken);
+      await fetchConsultantData();
+      // A navegação agora é tratada pelo useEffect no Login.js, o que é mais robusto
+    } catch (error) {
+      console.error('Falha no login:', error);
+      throw error;
+    }
+  };
+
   const logout = () => {
-    // Em uma aplicação real, você limparia tokens e estado aqui
-    console.log('Logging out...');
+    setUser(null);
+    localStorage.removeItem('authToken');
     navigate('/login');
   };
 
   const value = {
     user,
-    isAuthenticated: true,
-    isLoading: false,
-    login: async () => {},
-    logout, // Usar a nova função
-    updateUserBalance: () => {},
+    isAuthenticated: !!user,
+    isLoading,
+    login,
+    logout,
   };
+
+  if (isLoading) {
+    return <div>A carregar aplicação...</div>;
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

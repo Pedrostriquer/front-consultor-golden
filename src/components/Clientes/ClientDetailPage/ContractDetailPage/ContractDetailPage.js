@@ -1,184 +1,140 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import CountUp from "react-countup";
-import { mockContractsData } from "../../../../data/mockData";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import saleService from "../../../../dbServices/saleService";
 import "./ContractDetailPage.css";
 
-// Funções auxiliares
-const formatCurrency = (value) => {
-  if (value === null || value === undefined) return "R$ 0,00";
-  return `R$${value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-};
+// --- Funções Auxiliares ---
+const formatCurrency = (value) => `R$${(value || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
-  return new Date(dateString).toLocaleDateString("pt-BR");
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("pt-BR");
 };
 
-// Badges de Status
-const getStatusBadge = (status, type = 'contract') => {
+const getStatusBadge = (status, type) => {
+    const statusText = status ? (typeof status === 'string' ? status.toUpperCase() : status) : 'DESCONHECIDO';
     const statusMap = {
-        contract: {
-            1: { text: "Pendente", className: "status-pending" },
-            2: { text: "Valorizando", className: "status-active" },
-            3: { text: "Cancelado", className: "status-canceled" },
-            4: { text: "Concluído", className: "status-completed" },
+        sale: {
+            'PENDENTE': { text: "Pendente", className: "status-pending" },
+            'VENDIDO': { text: "Vendido", className: "status-active" },
+            'RECEBIDO': { text: "Recebido", className: "status-completed" },
+            'CANCELADO': { text: "Cancelado", className: "status-canceled" },
         },
-        commission: {
-            1: { text: "Pendente", className: "status-pending" },
-            2: { text: "Recebida", className: "status-completed" },
-            3: { text: "Cancelada", className: "status-canceled" }
+        contract: {
+            1: { text: "Ativo", className: "status-active" },
+            2: { text: "Finalizado", className: "status-completed" },
+            3: { text: "Cancelado", className: "status-canceled" },
+            4: { text: "Pendente", className: "status-pending" },
         }
     };
-    const { text, className } = statusMap[type]?.[status] || { text: "Desconhecido", className: ""};
+    const { text, className } = statusMap[type]?.[statusText] || { text: statusText, className: ""};
     return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
+// --- Componente Principal ---
 const ContractDetailPage = () => {
-  const { clientId, contractId } = useParams();
-  const location = useLocation();
+  const { saleId } = useParams(); // Pega o ID da venda do URL
   const navigate = useNavigate();
-  const [contract, setContract] = useState(null);
-  const [error, setError] = useState("");
-  const [lightboxImage, setLightboxImage] = useState(null);
 
-  // Verifica se a navegação veio da página de vendas
-  const comesFromVendas = location.pathname.startsWith('/platform/vendas');
+  const [saleData, setSaleData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchContract = async () => {
-      try {
-        const foundContract = mockContractsData.find(c => 
-            c.id === parseInt(contractId) && 
-            c.clientId === parseInt(clientId)
-        );
-        if (foundContract) {
-            setContract(foundContract);
-        } else {
-            setError("Contrato não encontrado ou você não tem permissão para vê-lo.");
+    const fetchSaleDetails = async () => {
+        if (!saleId) return;
+        setIsLoading(true);
+        setError('');
+        try {
+            const data = await saleService.getSaleById(saleId); // Busca pelo ID da venda
+            setSaleData(data);
+        } catch(err) {
+            console.error("Erro ao buscar detalhes da venda:", err);
+            setError("Não foi possível carregar os detalhes da venda.");
+        } finally {
+            setIsLoading(false);
         }
-      } catch (err) {
-        setError("Ocorreu um erro ao carregar os detalhes do contrato.");
-      } 
     };
-    fetchContract();
-  }, [clientId, contractId]);
+    fetchSaleDetails();
+  }, [saleId]);
 
-  // Animações
   const pageVariants = {
     initial: { opacity: 0 },
-    in: { opacity: 1, transition: { staggerChildren: 0.1, duration: 0.3 } },
-    out: { opacity: 0 }
+    in: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
   const itemVariants = {
     initial: { opacity: 0, y: 20 },
-    in: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+    in: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
-  if (error) return <div className="contract-detail-page error-message">{error}</div>;
-  if (!contract) return null;
+  if (isLoading) {
+    return <div className="contract-detail-loading">A carregar detalhes...</div>;
+  }
+  if (error) {
+    return (
+        <div className="contract-detail-page">
+            <motion.button onClick={() => navigate(-1)} className="back-button" variants={itemVariants}>
+                <i className="fa-solid fa-arrow-left"></i> Voltar
+            </motion.button>
+            <div className="error-message">{error}</div>
+        </div>
+    );
+  }
+  if (!saleData || !saleData.contract || !saleData.client) {
+    return <div className="contract-detail-page error-message">Dados da venda incompletos ou não encontrados.</div>;
+  }
 
-  const rendimentoTotalEsperado = contract.finalAmount - contract.amount;
-  const progress = Math.min(100, (contract.currentIncome / rendimentoTotalEsperado) * 100 || 0);
+  const { contract, client } = saleData;
 
   return (
-    <motion.div className="contract-detail-page" variants={pageVariants} initial="initial" animate="in" exit="out">
+    <motion.div className="contract-detail-page" variants={pageVariants} initial="initial" animate="in">
         <motion.div className="contract-page-header" variants={itemVariants}>
-            {comesFromVendas ? (
-                <>
-                    <Link to="/platform/vendas" className="back-button">
-                        <i className="fa-solid fa-arrow-left"></i> Voltar para Vendas
-                    </Link>
-                    <button onClick={() => navigate(`/platform/clientes/${clientId}`)} className="back-button">
-                        <i className="fa-solid fa-user"></i> Ver Cliente
-                    </button>
-                </>
-            ) : (
-                <Link to={`/platform/clientes/${clientId}`} className="back-button">
-                    <i className="fa-solid fa-arrow-left"></i> Voltar para {contract.clientName}
-                </Link>
-            )}
+            <button onClick={() => navigate(-1)} className="back-button">
+                <i className="fa-solid fa-arrow-left"></i> Voltar
+            </button>
         </motion.div>
 
         <motion.div className="contract-hero card-base" variants={itemVariants}>
             <div className="hero-header">
-            <div>
-                <h1 className="contract-title">Contrato #{contract.id}</h1>
-                <p className="client-link">Cliente: {contract.clientName}</p>
-            </div>
-            <div className="contract-status-box">
-                <span>Status</span>
-                {getStatusBadge(contract.status, 'contract')}
-            </div>
-            </div>
-            <div className="progress-section">
-            <div className="progress-info">
-                <span className="progress-label">Progresso de Rendimento</span>
-                <span className="progress-values">
-                {formatCurrency(contract.currentIncome)} / <strong>{formatCurrency(rendimentoTotalEsperado)}</strong>
-                </span>
-            </div>
-            <div className="progress-bar-container">
-                <motion.div
-                className="progress-bar-fill"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                />
-            </div>
-            <div className="progress-percentage">
-                <CountUp end={progress} duration={1.5} decimals={2} suffix="%" />
-            </div>
+                <div>
+                    <h1 className="contract-title">Venda #{saleData.id} (Contrato #{contract.id})</h1>
+                    <p className="client-link" onClick={() => navigate(`/platform/clientes/${client.cpfCnpj}`)}>
+                        Cliente: {client.name}
+                    </p>
+                </div>
+                <div className="contract-status-box">
+                    <span>Status da Venda</span>
+                    {getStatusBadge(saleData.status, 'sale')}
+                </div>
             </div>
         </motion.div>
 
         <motion.div className="details-grid" variants={itemVariants}>
             <div className="details-card card-base">
-            <h3><i className="fa-solid fa-coins"></i> Valores</h3>
-            <ul>
-                <li className="detail-item"><span>Valor Investido</span> <strong>{formatCurrency(contract.amount)}</strong></li>
-                <li className="detail-item"><span>Rendimento Mensal</span> <strong>{contract.gainPercentage}%</strong></li>
-                <li className="detail-item"><span>Valor Final Estimado</span> <strong>{formatCurrency(contract.finalAmount)}</strong></li>
-            </ul>
+                <h3><i className="fa-solid fa-coins"></i> Valores</h3>
+                <ul>
+                    <li className="detail-item"><span>Valor da Venda</span> <strong>{formatCurrency(saleData.value)}</strong></li>
+                    <li className="detail-item"><span>Quantidade de Cotas</span> <strong>{contract.contractQtt}</strong></li>
+                    <li className="detail-item"><span>Valor Unitário da Cota</span> <strong>{formatCurrency(contract.contractUniValue)}</strong></li>
+                </ul>
             </div>
             <div className="details-card card-base">
-            <h3><i className="fa-solid fa-calendar-days"></i> Datas e Prazos</h3>
-            <ul>
-                <li className="detail-item"><span>Criação</span> {formatDate(contract.dateCreated)}</li>
-                <li className="detail-item"><span>Ativação</span> {formatDate(contract.activationDate)}</li>
-                <li className="detail-item"><span>Vencimento</span> {formatDate(contract.endContractDate)}</li>
-                <li className="detail-item"><span>Duração</span> {contract.duration} meses</li>
-            </ul>
+                <h3><i className="fa-solid fa-calendar-days"></i> Datas do Contrato</h3>
+                <ul>
+                    <li className="detail-item"><span>Criação</span> {formatDate(contract.dateCreated)}</li>
+                    <li className="detail-item"><span>Vencimento</span> {formatDate(contract.endContractDate)}</li>
+                    <li className="detail-item"><span>Duração</span> {contract.duration} meses</li>
+                </ul>
             </div>
             <div className="details-card card-base">
-            <h3><i className="fa-solid fa-file-invoice-dollar"></i> Comissão</h3>
-            <ul>
-                <li className="detail-item">
-                <span>Recebeu Comissão?</span>
-                <strong className={contract.commissionExists ? 'text-success' : 'text-muted'}>
-                    {contract.commissionExists ? "Sim" : "Não"}
-                </strong>
-                </li>
-                <li className="detail-item">
-                <span>Valor da Comissão</span>
-                <strong>{contract.commissionExists ? formatCurrency(contract.commissionAmount) : "N/A"}</strong>
-                </li>
-                <li className="detail-item">
-                <span>Status da Comissão</span>
-                <div>{getStatusBadge(contract.commissionStatus, 'commission')}</div>
-                </li>
-            </ul>
+                <h3><i className="fa-solid fa-file-invoice"></i> Detalhes do Contrato</h3>
+                <ul>
+                    <li className="detail-item"><span>Status do Contrato</span> <div>{getStatusBadge(contract.status, 'contract')}</div></li>
+                    <li className="detail-item"><span>Método de Pagamento</span> <strong>{contract.payMethod || 'N/A'}</strong></li>
+                    <li className="detail-item"><span>Descrição</span> <p>{saleData.description || 'Sem descrição.'}</p></li>
+                </ul>
             </div>
         </motion.div>
-
-        <AnimatePresence>
-            {lightboxImage && (
-            <motion.div className="lightbox-backdrop" onClick={() => setLightboxImage(null)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <motion.img src={lightboxImage} alt="Visualização ampliada" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }} onClick={(e) => e.stopPropagation()} />
-                <button className="lightbox-close" onClick={() => setLightboxImage(null)}>&times;</button>
-            </motion.div>
-            )}
-        </AnimatePresence>
     </motion.div>
   );
 };

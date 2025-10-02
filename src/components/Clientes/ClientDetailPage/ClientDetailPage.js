@@ -1,251 +1,225 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import CountUp from "react-countup";
-import { motion, AnimatePresence } from "framer-motion";
-import consultantService from "../../../dbServices/consultantService";
-// import LoadingScreen from "../../LoadingScreen/LoadingScreen"; // <<-- 1. IMPORTAÇÃO REMOVIDA
-import formatters from "../../../utils/formatters";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import clientService from "../../../dbServices/clientService";
+import saleService from "../../../dbServices/saleService"; // Importa o serviço de vendas
 import "./ClientDetailPage.css";
 
-const ITEMS_PER_PAGE = 5;
-
-// Funções auxiliares (sem alteração)
-const formatCurrency = (value) => {
-  if (value === null || value === undefined) return "R$ 0,00";
-  return `R$${value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-};
+// --- Funções Auxiliares ---
 const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
-  return new Date(dateString).toLocaleDateString("pt-BR");
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("pt-BR");
 };
 
-// Badges de Status (sem alteração)
-const getStatusBadge = (status, type = 'contract') => {
-    const map = {
-        contract: {
-            1: { text: "Pendente", className: "status-pending" },
-            2: { text: "Valorizando", className: "status-active" },
-            3: { text: "Cancelado", className: "status-canceled" },
-            4: { text: "Concluído", className: "status-completed" }
-        },
-        withdraw: {
-            1: { text: "Pendente", className: "status-pending" },
-            2: { text: "Aprovado", className: "status-completed" },
-            3: { text: "Negado", className: "status-canceled" },
-            4: { text: "Cancelado", className: "status-canceled" }
-        },
-        commission: {
-            1: { text: "Pendente", className: "status-pending" },
-            2: { text: "Recebida", className: "status-completed" },
-            3: { text: "Cancelada", className: "status-canceled" }
-        }
+const formatCurrency = (value) => `R$${(value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+const getStatusBadge = (status, type = 'user') => {
+    const statusText = status ? (typeof status === 'string' ? status.toUpperCase() : status) : 'DESCONHECIDO';
+    const statusMap = {
+      user: {
+        1: { text: "Ativo", className: "status-active" },
+      },
+      sale: {
+        'PENDENTE': { text: "Pendente", className: "status-pending" },
+        'VENDIDO': { text: "Vendido", className: "status-active" },
+        'RECEBIDO': { text: "Recebido", className: "status-completed" },
+        'CANCELADO': { text: "Cancelado", className: "status-canceled" },
+      }
     };
-    const { text, className } = map[type]?.[status] || { text: "Desconhecido", className: ""};
+    const { text, className } = statusMap[type]?.[statusText] || { text: "Desconhecido", className: ""};
     return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
+const TableSkeleton = ({ columns = 4 }) => (
+    <tbody>
+      {[...Array(5)].map((_, i) => (
+        <tr key={i} className="skeleton-row">
+          {[...Array(columns)].map((_, j) => (
+            <td key={j}><div className="skeleton-bar" style={{ width: `${Math.random() * 40 + 50}%` }}></div></td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  );
 
+
+// --- Componente Principal ---
 const ClientDetailPage = () => {
-  const { clientId } = useParams();
-  const [client, setClient] = useState(null);
-  const [allContracts, setAllContracts] = useState([]);
-  const [allWithdraws, setAllWithdraws] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true); // <<-- 2. ESTADO DE LOADING REMOVIDO
-  const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("contracts");
-  const [currentPage, setCurrentPage] = useState(1);
+  const { cpfCnpj } = useParams();
   const navigate = useNavigate();
-
-  const fetchAllData = useCallback(async () => {
-    // setIsLoading(true); // <<-- REMOVIDO
-    setError("");
-    try {
-      const clientPromise = consultantService.getMyClientById(clientId);
-      const contractsPromise = consultantService.getClientContracts(clientId);
-      const withdrawsPromise = consultantService.getClientWithdraws(clientId);
-      const [clientResponse, contractsResponse, withdrawsResponse] =
-        await Promise.all([clientPromise, contractsPromise, withdrawsPromise]);
-      setClient(clientResponse.data);
-      setAllContracts(contractsResponse.data);
-      setAllWithdraws(withdrawsResponse.data);
-    } catch (err) {
-      setError("Cliente não encontrado ou você não tem permissão para vê-lo.");
-    } 
-    // finally { setIsLoading(false); } // <<-- REMOVIDO
-  }, [clientId]);
-
-  useEffect(() => { fetchAllData(); }, [fetchAllData]);
-
-  const handleContactClick = () => {
-    const result = formatters.formatPhoneNumberForWhatsapp(client?.phoneNumber);
-    if (result.error) {
-        alert(result.message);
-    } else {
-        window.open(result.link, '_blank', 'noopener,noreferrer');
-    }
-  };
   
-  const { paginatedItems, totalPages } = useMemo(() => {
-    const sourceData = activeTab === "contracts" ? allContracts : allWithdraws;
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const items = sourceData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-    const pages = Math.max(1, Math.ceil(sourceData.length / ITEMS_PER_PAGE));
-    return { paginatedItems: items, totalPages: pages };
-  }, [allContracts, allWithdraws, currentPage, activeTab]);
+  const [client, setClient] = useState(null);
+  const [sales, setSales] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingSales, setIsLoadingSales] = useState(true);
+  const [error, setError] = useState("");
 
-  // Animações
+  const [salesPage, setSalesPage] = useState(1);
+  const [totalSalesPages, setTotalSalesPages] = useState(0);
+  const salesPageSize = 5;
+
+  useEffect(() => {
+    const fetchClientDetails = async () => {
+        setIsLoading(true);
+        setError("");
+        try {
+            const clientData = await clientService.getClientByCpfCnpj(cpfCnpj);
+            setClient(clientData);
+        } catch (err) {
+            console.error("Erro ao buscar dados do cliente:", err);
+            if (err.response?.status === 403) {
+                setError("Você não tem permissão para visualizar este cliente.");
+            } else {
+                setError("Não foi possível carregar os dados do cliente.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    if (cpfCnpj) {
+        fetchClientDetails();
+    }
+  }, [cpfCnpj]);
+
+  useEffect(() => {
+    const fetchSales = async () => {
+        if (!client) return; // Só busca as vendas depois que os dados do cliente carregarem
+        setIsLoadingSales(true);
+        try {
+            const salesData = await saleService.searchSales({ clientId: client.id, pageNumber: salesPage, pageSize: salesPageSize });
+            setSales(salesData.sales);
+            setTotalSalesPages(Math.ceil(salesData.totalCount / salesPageSize));
+        } catch (err) {
+            console.error("Erro ao buscar vendas:", err);
+        } finally {
+            setIsLoadingSales(false);
+        }
+    };
+    fetchSales();
+  }, [client, salesPage]);
+
+
+  const handleSaleClick = (sale) => {
+    navigate(`/platform/vendas/${sale.id}/detalhes`);
+  };
+
   const pageVariants = {
     initial: { opacity: 0 },
-    in: { opacity: 1, transition: { staggerChildren: 0.1, duration: 0.3 } },
-    out: { opacity: 0 }
+    in: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
   const itemVariants = {
     initial: { opacity: 0, y: 20 },
-    in: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-  };
-  const tabContentVariants = {
-    initial: { opacity: 0, y: 20 },
-    in: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-    out: { opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }
+    in: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
-  // if (isLoading) return <LoadingScreen />; // <<-- 3. RENDERIZAÇÃO CONDICIONAL REMOVIDA
-  if (error) return <div className="client-detail-page error-message">{error}</div>;
-  if (!client) return null; // Retorna nulo enquanto os dados não chegam
-
-  const totalInvestido = allContracts.filter((c) => c.status === 2).reduce((sum, c) => sum + c.amount, 0);
-  const totalComissaoPaga = allContracts.filter((c) => c.commissionStatus === 2).reduce((sum, c) => sum + (c.commissionAmount || 0), 0);
-  const totalComissaoPendente = allContracts.filter((c) => c.commissionStatus === 1).reduce((sum, c) => sum + (c.commissionAmount || 0), 0);
-  
-  const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "");
+  if (isLoading) {
+    return <div className="client-detail-loading">A carregar detalhes do cliente...</div>;
+  }
+  if (error) {
+    return (
+        <div className="client-detail-page">
+             <motion.button onClick={() => navigate('/platform/clientes')} className="back-button">
+                <i className="fa-solid fa-arrow-left"></i> Voltar para Meus Clientes
+            </motion.button>
+            <div className="client-detail-error">{error}</div>
+        </div>
+    );
+  }
+  if (!client) {
+    return null;
+  }
 
   return (
-    <motion.div className="client-detail-page" variants={pageVariants} initial="initial" animate="in" exit="out">
-        {/* ... O resto do seu JSX permanece exatamente o mesmo ... */}
-        <motion.div className="client-page-header" variants={itemVariants}>
-            <Link to="/platform/clientes" className="back-button">
-            <i className="fa-solid fa-arrow-left"></i> Voltar
-            </Link>
-            <button onClick={handleContactClick} className="whatsapp-button">
-            <i className="fa-brands fa-whatsapp"></i> Entrar em contato
-            </button>
-        </motion.div>
+    <motion.div className="client-detail-page" variants={pageVariants} initial="initial" animate="in">
+      <motion.button onClick={() => navigate('/platform/clientes')} className="back-button" variants={itemVariants}>
+        <i className="fa-solid fa-arrow-left"></i> Voltar para Meus Clientes
+      </motion.button>
 
-        <motion.div className="client-info-card card-base" variants={itemVariants}>
-            <div className="client-avatar">{getInitials(client.name)}</div>
-            <div className="client-info-main">
-            <h1 className="client-name">{client.name}</h1>
-            <p className="client-detail">CPF/CNPJ: {client.cpfCnpj}</p>
-            <p className="client-detail">Email: {client.email}</p>
-            </div>
-        </motion.div>
+      <motion.div className="client-header card-base" variants={itemVariants}>
+        <div className="client-info">
+          <h1>{client.name}</h1>
+          <p>{client.email}</p>
+        </div>
+        <div className="client-status">
+            <span>Status</span>
+            {getStatusBadge(client.status, 'user')}
+        </div>
+      </motion.div>
 
-        <motion.div className="stats-grid" variants={itemVariants}>
-            <div className="stat-card card-base investido">
-            <div className="stat-icon"><i className="fa-solid fa-chart-line"></i></div>
-            <div className="stat-content">
-                <span>Total Investido Ativo</span>
-                <CountUp className="stat-value" end={totalInvestido} duration={1.5} prefix="R$ " separator="." decimal="," decimals={2}/>
-            </div>
-            </div>
-            <div className="stat-card card-base saldo">
-            <div className="stat-icon"><i className="fa-solid fa-wallet"></i></div>
-            <div className="stat-content">
-                <span>Saldo do Cliente</span>
-                <CountUp className="stat-value" end={client.balance || 0} duration={1.5} prefix="R$ " separator="." decimal="," decimals={2}/>
-            </div>
-            </div>
-            <div className="stat-card card-base comissao-paga">
-            <div className="stat-icon"><i className="fa-solid fa-hand-holding-dollar"></i></div>
-            <div className="stat-content">
-                <span>Comissão Recebida</span>
-                <CountUp className="stat-value" end={totalComissaoPaga} duration={1.5} prefix="R$ " separator="." decimal="," decimals={2}/>
-            </div>
-            </div>
-            <div className="stat-card card-base comissao-pendente">
-            <div className="stat-icon"><i className="fa-solid fa-hourglass-half"></i></div>
-            <div className="stat-content">
-                <span>Comissão Pendente</span>
-                <CountUp className="stat-value" end={totalComissaoPendente} duration={1.5} prefix="R$ " separator="." decimal="," decimals={2}/>
-            </div>
-            </div>
-        </motion.div>
-
-        <motion.div className="content-tabs card-base" variants={itemVariants}>
-            <div className="tabs">
-            <button className={`tab-button ${activeTab === "contracts" ? "active" : ""}`} onClick={() => {setActiveTab("contracts"); setCurrentPage(1);}}>
-                Contratos <span className="tab-count">{allContracts.length}</span>
-            </button>
-            <button className={`tab-button ${activeTab === "withdrawals" ? "active" : ""}`} onClick={() => {setActiveTab("withdrawals"); setCurrentPage(1);}}>
-                Saques <span className="tab-count">{allWithdraws.length}</span>
-            </button>
-            </div>
-
-            <AnimatePresence mode="wait">
-            <motion.div key={activeTab} variants={tabContentVariants} initial="initial" animate="in" exit="out" className="tab-content">
-                {activeTab === "contracts" && (
-                <div className="table-responsive">
-                    <table>
-                    <thead>
-                        <tr>
-                        <th>ID</th>
-                        <th>Valor</th>
-                        <th>Status Contrato</th>
-                        <th>Comissão</th>
-                        <th>Status Comissão</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {paginatedItems.length > 0 ? (paginatedItems.map(c => (
-                        <tr key={c.id} onClick={() => navigate(`/platform/clientes/${clientId}/contratos/${c.id}`)} className="clickable-row">
-                            <td>#{c.id}</td>
-                            <td>{formatCurrency(c.amount)}</td>
-                            <td>{getStatusBadge(c.status, "contract")}</td>
-                            <td>{c.commissionExists ? formatCurrency(c.commissionAmount) : "N/A"}</td>
-                            <td>{c.commissionExists ? getStatusBadge(c.commissionStatus, "commission") : "N/A"}</td>
-                        </tr>
-                        ))) : (<tr><td colSpan="5" className="placeholder-text">Nenhum contrato encontrado.</td></tr>)}
-                    </tbody>
-                    </table>
-                </div>
-                )}
-                {activeTab === "withdrawals" && (
-                <div className="table-responsive">
-                    <table>
-                    <thead>
-                        <tr>
-                        <th>ID</th>
-                        <th>Valor Solicitado</th>
-                        <th>Valor a Receber</th>
-                        <th>Data</th>
-                        <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {paginatedItems.length > 0 ? (paginatedItems.map(w => (
-                        <tr key={w.id}>
-                            <td>#{w.id}</td>
-                            <td>{formatCurrency(w.amountWithdrawn)}</td>
-                            <td>{formatCurrency(w.amountReceivable)}</td>
-                            <td>{formatDate(w.dateCreated)}</td>
-                            <td>{getStatusBadge(w.status, "withdraw")}</td>
-                        </tr>
-                        ))) : (<tr><td colSpan="5" className="placeholder-text">Nenhum saque encontrado.</td></tr>)}
-                    </tbody>
-                    </table>
-                </div>
-                )}
-                
-                {totalPages > 1 && paginatedItems.length > 0 && (
+      <motion.div className="details-grid" variants={itemVariants}>
+        <div className="details-card card-base">
+          <h3><i className="fa-solid fa-user"></i> Informações Pessoais</h3>
+          <ul>
+            <li><span>CPF/CNPJ</span> <strong>{client.cpfCnpj}</strong></li>
+            <li><span>Telefone</span> <strong>{client.phoneNumber}</strong></li>
+            <li><span>Data de Nascimento</span> <strong>{formatDate(client.birthDate)}</strong></li>
+            <li><span>Cliente desde</span> <strong>{formatDate(client.dateCreated)}</strong></li>
+          </ul>
+        </div>
+        <div className="details-card card-base">
+          <h3><i className="fa-solid fa-location-dot"></i> Endereço</h3>
+          <ul>
+            <li><span>Rua</span> <strong>{client.address?.street}, {client.address?.number}</strong></li>
+            <li><span>Bairro</span> <strong>{client.address?.neighborhood}</strong></li>
+            <li><span>Cidade/Estado</span> <strong>{client.address?.city} / {client.address?.state}</strong></li>
+            <li><span>CEP</span> <strong>{client.address?.zipcode}</strong></li>
+          </ul>
+        </div>
+        <div className="details-card card-base">
+          <h3><i className="fa-solid fa-piggy-bank"></i> Dados Bancários</h3>
+          <ul>
+            <li><span>Banco</span> <strong>{client.bankAccount?.bank}</strong></li>
+            <li><span>Agência</span> <strong>{client.bankAccount?.agencyNumber}</strong></li>
+            <li><span>Conta</span> <strong>{client.bankAccount?.accountNumber}</strong></li>
+            <li><span>Chave PIX</span> <strong>{client.bankAccount?.pixKey}</strong></li>
+          </ul>
+        </div>
+      </motion.div>
+      
+      <motion.div className="related-info-grid" variants={itemVariants}>
+        <div className="contracts-list card-base">
+          <h3>Vendas Realizadas</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID da Venda</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              {isLoadingSales ? (
+                <TableSkeleton columns={4}/>
+              ) : (
+                <tbody>
+                  {sales && sales.length > 0 ? (
+                    sales.map(sale => (
+                      <tr key={sale.id} className="clickable-row" onClick={() => handleSaleClick(sale)}>
+                        <td>#{sale.id}</td>
+                        <td>{formatCurrency(sale.value)}</td>
+                        <td>{getStatusBadge(sale.status, 'sale')}</td>
+                        <td>{formatDate(sale.dateCreated)}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr><td colSpan="4"><p className="empty-message">Nenhuma venda encontrada para este cliente.</p></td></tr>
+                  )}
+                </tbody>
+              )}
+            </table>
+            {totalSalesPages > 1 && (
                 <div className="pagination-controls">
-                    <button onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 1}>Anterior</button>
-                    <span>Página {currentPage} de {totalPages}</span>
-                    <button onClick={() => setCurrentPage(p => p + 1)} disabled={currentPage === totalPages}>Próxima</button>
+                    <button onClick={() => setSalesPage(p => Math.max(1, p - 1))} disabled={salesPage === 1}>
+                        Anterior
+                    </button>
+                    <span>Página {salesPage} de {totalSalesPages}</span>
+                    <button onClick={() => setSalesPage(p => Math.min(totalSalesPages, p + 1))} disabled={salesPage === totalSalesPages}>
+                        Próxima
+                    </button>
                 </div>
-                )}
-            </motion.div>
-            </AnimatePresence>
-        </motion.div>
+            )}
+        </div>
+      </motion.div>
     </motion.div>
   );
 };

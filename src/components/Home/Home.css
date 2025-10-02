@@ -18,33 +18,29 @@
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
-
 .stats-grid {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
-
 .main-grid {
   grid-template-columns: 2fr 1fr;
 }
-
 .secondary-grid {
   grid-template-columns: 1fr 2fr;
 }
 
 @media (max-width: 1200px) {
   .main-grid, .secondary-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
-/* --- CARD BASE --- */
+/* --- CARD BASE E CABEÇALHO --- */
 .card-base {
   background-color: #1F2A40;
   border-radius: 16px;
   border: 1px solid #374151;
   padding: 1.5rem;
 }
-
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -53,35 +49,23 @@
   border-bottom: 1px solid #374151;
   padding-bottom: 1rem;
 }
-
 .card-header h3 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
   color: #F9FAFB;
 }
-
 .card-header h3 i {
   color: #f6d168;
   margin-right: 0.5rem;
 }
 
-/* --- STAT CARDS (Topo) --- */
-.stat-card {
-  padding: 1.5rem;
-}
+/* --- COMPONENTES DA DASHBOARD --- */
 .stat-card h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
   font-weight: 500;
   color: #9CA3AF;
-  display: flex;
-  align-items: center;
-}
-.stat-card h3 i {
-  margin-right: 0.75rem;
-  font-size: 1.2rem;
-  color: #f6d168;
 }
 .stat-value {
   margin: 0;
@@ -89,128 +73,79 @@
   font-weight: 700;
   color: #F9FAFB;
 }
-
-/* --- GRÁFICO --- */
 .chart-container {
   height: 400px;
 }
-
-/* --- MELHORES CLIENTES --- */
-.platform-filter select {
-  background-color: #2a3a55;
-  border: 1px solid #374151;
-  color: #E5E7EB;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-}
-
 .client-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  height: 280px; /* Altura fixa para scroll se necessário */
+  height: 280px;
   overflow-y: auto;
 }
-
 .client-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0.5rem;
   border-bottom: 1px solid #374151;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }
 .client-item:last-child {
   border-bottom: none;
 }
-.client-item:hover {
-  background-color: #2a3a55;
-  border-radius: 8px;
-}
-
 .client-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+.client-rank {
+  font-weight: 600;
+  color: #9CA3AF;
+  width: 25px;
+}
+.client-balance {
+  font-weight: 500;
+  color: #34D399;
 }
 .platform-logo-small {
   height: 24px;
   width: 24px;
   object-fit: contain;
 }
-.client-balance {
-  font-weight: 500;
-  color: #34D399;
-}
-
-/* --- RANK DE CONSULTORES --- */
-.ranking-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.ranking-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem 0.5rem;
-  border-bottom: 1px solid #374151;
-}
-.ranking-item:last-child {
-  border-bottom: none;
-}
-.consultant-rank {
-  font-weight: 700;
-  color: #f6d168;
-  margin-right: 1.5rem;
-  width: 30px;
-}
-.consultant-name {
-  font-weight: 500;
-}
-.ranking-item.current-consultant {
-  background-color: rgba(246, 209, 104, 0.1);
-  border-radius: 8px;
-}
-.you-badge {
-  margin-left: auto;
-  background-color: #f6d168;
-  color: #111827;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
+.placeholder-text {
+  color: #6B7280;
+  text-align: center;
+  padding: 2rem;
 }
 
 /* --- ANÁLISE DE PLATAFORMAS --- */
-.stats-content {
+.platform-stats-container .stats-content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-.stat-group h4 {
+.platform-stats-container .stat-group h4 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
   font-weight: 500;
   color: #9CA3AF;
 }
-.stat-item {
+.platform-stats-container .stat-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
 }
-.stat-label {
+.platform-stats-container .stat-label {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
-.stat-percentage {
+.platform-stats-container .stat-percentage {
   font-weight: 600;
   font-size: 1.1rem;
 }
-.stat-value-small {
+.platform-stats-container .stat-value-small {
   font-weight: 500;
   font-size: 1rem;
   color: #F9FAFB;
@@ -221,9 +156,185 @@
   background-color: #374151;
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 1rem;
 }
 .progress-bar-foreground {
   height: 100%;
   border-radius: 4px;
+}
+
+/* ======================================================================== */
+/* --- CARD DE NÍVEIS DE COMISSÃO (VERSÃO CORRIGIDA E RE-ESTILIZADA) --- */
+/* ======================================================================== */
+
+.levels-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.levels-container .progress-summary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #9CA3AF;
+  margin-bottom: 1.5rem;
+}
+
+.levels-container .progress-summary strong {
+  color: #F9FAFB;
+}
+
+/* Garante que este contêiner crie o contexto de empilhamento correto */
+.levels-container .progress-bar-container {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  background-color: #374151;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.levels-container .progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #A38A4A, #f6d168);
+  border-radius: 4px;
+  transform-origin: left;
+  z-index: 1; /* Camada mais baixa */
+}
+
+.levels-container .level-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2; /* Fica acima da barra de preenchimento */
+}
+
+/* --- NOVO ESTILO PARA A BOLINHA (MARKER) --- */
+.levels-container .marker-dot {
+  width: 16px;
+  height: 16px;
+  background-color: #1F2A40;
+  border: 3px solid #4B5563; /* Cor padrão */
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Efeito de hover para qualquer bolinha */
+.levels-container .level-marker:hover .marker-dot {
+  transform: scale(1.2); /* Aumenta um pouco de tamanho no hover */
+  border-color: #f6d168;
+}
+
+/* NOVO ESTILO PARA A BOLINHA COMPLETA */
+.levels-container .level-marker.completed .marker-dot {
+  background-color: #f6d168; /* Fundo amarelo para indicar preenchimento */
+  border-color: #1F2A40;     /* Borda escura para dar MUITO contraste */
+  transform: scale(1.0);       /* Um pouco maior para se destacar */
+}
+
+/* --- ESTILOS DO TOOLTIP (POP-UP) --- */
+.levels-container .marker-tooltip {
+  position: absolute;
+  bottom: 30px; /* Um pouco mais acima para não encostar na bolinha aumentada */
+  background-color: #111827;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease-out;
+  z-index: 99999; /* Z-index bem alto para garantir que fique sobre tudo */
+}
+
+.levels-container .level-marker:hover .marker-tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.levels-container .tooltip-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #E5E7EB;
+}
+
+.levels-container .tooltip-commission {
+  font-size: 0.8rem;
+  color: #34D399;
+}
+
+.levels-container .marker-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #111827 transparent transparent transparent;
+}
+
+/* --- RESTANTE DOS ESTILOS (SEM MUDANÇAS) --- */
+.levels-container .next-level-info {
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+.levels-container .next-level-info strong {
+  color: #f6d168;
+}
+.levels-container .levels-expand-button {
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.levels-container .levels-expand-button:hover {
+  color: #f6d168;
+}
+.levels-container .levels-expand-button i {
+  margin-left: 0.5rem;
+}
+.levels-container .expanded-levels-list {
+  overflow: hidden;
+  margin-top: 1.5rem;
+  border-top: 1px solid #374151;
+  padding-top: 1.5rem;
+}
+.expanded-levels-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.expanded-levels-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+.expanded-levels-list li.current {
+  background-color: rgba(246, 209, 104, 0.1);
+  border-left: 3px solid #f6d168;
+}
+.expanded-levels-list li span {
+  color: #9CA3AF;
+}
+.expanded-levels-list li strong {
+  color: #34D399;
 }

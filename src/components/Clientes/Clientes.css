@@ -1,10 +1,10 @@
-/* --- ESTILO GERAL DA PÁGINA --- */
+/* --- Estilos Gerais --- */
 .clientes-page {
   font-family: 'Poppins', sans-serif;
   color: #E5E7EB;
 }
 
-/* --- CABEÇALHO --- */
+/* --- Cabeçalho da Página --- */
 .clientes-page .page-header {
   display: flex;
   justify-content: space-between;
@@ -13,21 +13,19 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
-
 .clientes-page .page-header h1 {
   font-size: 2.25rem;
   font-weight: 700;
   color: #F9FAFB;
   margin: 0;
 }
-
 .clientes-page .header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* --- BARRA DE BUSCA --- */
+/* --- Barra de Busca --- */
 .clientes-page .search-bar {
   display: flex;
   align-items: center;
@@ -36,53 +34,75 @@
   border-radius: 10px;
   border: 1px solid #374151;
   width: 350px;
-  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .clientes-page .search-bar:focus-within {
   border-color: #f6d168;
   box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
 }
-
-.clientes-page .search-bar i {
-  color: #6B7280;
-}
-
+.clientes-page .search-bar i { color: #6B7280; }
 .clientes-page .search-bar input {
-  border: none;
-  outline: none;
-  margin-left: 0.75rem;
-  width: 100%;
-  background-color: transparent;
-  color: #E5E7EB;
-  font-size: 1rem;
+  border: none; outline: none; margin-left: 0.75rem;
+  width: 100%; background-color: transparent; color: #E5E7EB; font-size: 1rem;
+}
+.clientes-page .search-bar input::placeholder { color: #6B7280; }
+
+
+/* --- ESTILOS ADICIONADOS/CORRIGIDOS PARA FILTROS --- */
+.filters-container {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem; /* Adiciona espaço entre os filtros e a tabela */
+    display: flex;
+    gap: 1.5rem;
+    background-color: #1F2A40;
+    border-radius: 16px;
+    border: 1px solid #374151;
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 220px;
+}
+.filter-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9CA3AF;
+}
+.filter-group select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    background-color: #121828;
+    color: #E5E7EB;
+    font-size: 1rem;
+    cursor: pointer;
+    -webkit-appearance: none; /* Remove a aparência padrão do seletor */
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.75rem top 50%;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
 }
 
-.clientes-page .search-bar input::placeholder {
-  color: #6B7280;
-}
 
-/* --- TABELA --- */
-.clientes-page .table-wrapper {
+/* --- Tabela --- */
+.table-wrapper {
   overflow-x: auto;
   background: #1F2A40;
   border-radius: 16px;
   border: 1px solid #374151;
   padding: 0.5rem;
 }
-
 .clientes-page table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
-
 .clientes-page th, .clientes-page td {
   padding: 1.25rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid #374151;
 }
-
 .clientes-page thead th {
   color: #9CA3AF;
   font-weight: 500;
@@ -90,105 +110,45 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+.clientes-page tbody tr:last-child td { border-bottom: none; }
+.clickable-row, .clientes-page tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
+.clickable-row:hover, .clientes-page tbody tr:hover { background-color: #374151; }
 
-.clientes-page tbody tr {
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
+.clientes-page .saldo-positivo { color: #34D399; font-weight: 500; }
+.platform-logo { height: 24px; width: auto; }
 
-.clientes-page tbody tr:hover {
-  background-color: #374151;
-}
 
-.clientes-page tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.clientes-page .saldo-positivo {
-  color: #34D399;
-  font-weight: 500;
-}
-
-.platform-logo {
-  height: 24px;
-  width: auto;
-}
-
-/* --- PAGINAÇÃO (COM ALINHAMENTO CORRIGIDO) --- */
+/* --- Paginação --- */
 .clientes-page .pagination-controls {
     display: flex;
-    justify-content: center; /* ALTERADO DE flex-end PARA center */
+    justify-content: center;
     align-items: center;
     gap: 0.75rem;
     margin-top: 1.5rem;
 }
-  
 .clientes-page .pagination-controls button {
-    background-color: #1F2A40;
-    border: 1px solid #374151;
-    color: #E5E7EB;
-    border-radius: 8px;
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    background-color: #1F2A40; border: 1px solid #374151; color: #E5E7EB;
+    border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer;
+    font-weight: 500; transition: all 0.2s; display: flex;
+    align-items: center; gap: 0.5rem;
 }
-  
-.clientes-page .pagination-controls button:hover:not(:disabled) {
-    background-color: #374151;
-    border-color: #4B5563;
-}
-  
-.clientes-page .pagination-controls button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-  
-.clientes-page .pagination-controls span {
-    color: #9CA3AF;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
+.clientes-page .pagination-controls button:hover:not(:disabled) { background-color: #374151; border-color: #4B5563; }
+.clientes-page .pagination-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+.clientes-page .pagination-controls span { color: #9CA3AF; font-size: 0.9rem; font-weight: 500; }
 
-/* --- ESTADO DE VAZIO --- */
-.clientes-page .empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  text-align: center;
-  color: #6B7280;
-}
+/* --- Skeleton e Empty State --- */
+.skeleton-row .skeleton-bar { height: 16px; background-color: #374151; border-radius: 4px; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+.error-cell { text-align: center; color: #fca5a5; padding: 2rem; }
 
-.clientes-page .empty-state-icon {
-  background-color: #374151;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 4rem 2rem; text-align: center; color: #6B7280;
 }
-
-.clientes-page .empty-state-icon i {
-  font-size: 2rem;
-  color: #9CA3AF;
+.empty-state-icon {
+  background-color: #374151; width: 70px; height: 70px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
 }
-
-.clientes-page .empty-state-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #E5E7EB;
-  margin: 0 0 0.5rem 0;
-}
-
-.clientes-page .empty-state-message {
-  max-width: 400px;
-  margin: 0;
-  line-height: 1.5;
-}
+.empty-state-icon i { font-size: 2rem; color: #9CA3AF; }
+.empty-state-title { font-size: 1.25rem; font-weight: 600; color: #E5E7EB; margin: 0 0 0.5rem 0; }
+.empty-state-message { max-width: 400px; margin: 0; line-height: 1.5; }
