@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import clientService from "../../../dbServices/clientService";
-import saleService from "../../../dbServices/saleService"; // Importa o serviço de vendas
+import saleService from "../../../dbServices/saleService";
 import "./ClientDetailPage.css";
 
 // --- Funções Auxiliares ---
@@ -19,18 +19,20 @@ const getStatusBadge = (status, type = 'user') => {
       user: {
         1: { text: "Ativo", className: "status-active" },
       },
-      sale: {
-        'PENDENTE': { text: "Pendente", className: "status-pending" },
-        'VENDIDO': { text: "Vendido", className: "status-active" },
-        'RECEBIDO': { text: "Recebido", className: "status-completed" },
-        'CANCELADO': { text: "Cancelado", className: "status-canceled" },
+      // Status para Contratos (usado na tabela)
+      contract: {
+        1: { text: "Ativo", className: "status-active" },
+        3: { text: "Cancelado", className: "status-canceled" },
+        4: { text: "Pendente", className: "status-pending" },
       }
     };
-    const { text, className } = statusMap[type]?.[statusText] || { text: "Desconhecido", className: ""};
+    // Prioriza o mapa de 'contract', mas mantém um fallback genérico se necessário
+    const { text, className } = statusMap[type]?.[statusText] || { text: statusText, className: ""};
     return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
-const TableSkeleton = ({ columns = 4 }) => (
+
+const TableSkeleton = ({ columns = 5 }) => (
     <tbody>
       {[...Array(5)].map((_, i) => (
         <tr key={i} className="skeleton-row">
@@ -49,9 +51,10 @@ const ClientDetailPage = () => {
   const navigate = useNavigate();
   
   const [client, setClient] = useState(null);
-  const [sales, setSales] = useState([]);
+  // **CORREÇÃO: Voltamos a usar 'sales' para manter o sale.id**
+  const [sales, setSales] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingSales, setIsLoadingSales] = useState(true);
+  const [isLoadingSales, setIsLoadingSales] = useState(true); 
   const [error, setError] = useState("");
 
   const [salesPage, setSalesPage] = useState(1);
@@ -83,10 +86,11 @@ const ClientDetailPage = () => {
 
   useEffect(() => {
     const fetchSales = async () => {
-        if (!client) return; // Só busca as vendas depois que os dados do cliente carregarem
+        if (!client) return;
         setIsLoadingSales(true);
         try {
             const salesData = await saleService.searchSales({ clientId: client.id, pageNumber: salesPage, pageSize: salesPageSize });
+            // **CORREÇÃO: Armazenamos o array de vendas completo, sem o .map**
             setSales(salesData.sales);
             setTotalSalesPages(Math.ceil(salesData.totalCount / salesPageSize));
         } catch (err) {
@@ -99,6 +103,7 @@ const ClientDetailPage = () => {
   }, [client, salesPage]);
 
 
+  // **CORREÇÃO: A função de clique agora usa o 'sale.id' para a navegação correta**
   const handleSaleClick = (sale) => {
     navigate(`/platform/vendas/${sale.id}/detalhes`);
   };
@@ -135,6 +140,7 @@ const ClientDetailPage = () => {
         <i className="fa-solid fa-arrow-left"></i> Voltar para Meus Clientes
       </motion.button>
 
+      {/* ... (cabeçalho e detalhes do cliente permanecem os mesmos) ... */}
       <motion.div className="client-header card-base" variants={itemVariants}>
         <div className="client-info">
           <h1>{client.name}</h1>
@@ -176,33 +182,38 @@ const ClientDetailPage = () => {
         </div>
       </motion.div>
       
+      {/* --- Tabela de Contratos --- */}
       <motion.div className="related-info-grid" variants={itemVariants}>
         <div className="contracts-list card-base">
-          <h3>Vendas Realizadas</h3>
+          <h3>Contratos do Cliente</h3>
             <table>
               <thead>
                 <tr>
-                  <th>ID da Venda</th>
-                  <th>Valor</th>
+                  <th>ID do Contrato</th>
+                  <th>Valor Total</th>
+                  <th>Qtd.</th>
                   <th>Status</th>
-                  <th>Data</th>
+                  <th>Data de Início</th>
                 </tr>
               </thead>
               {isLoadingSales ? (
-                <TableSkeleton columns={4}/>
+                <TableSkeleton columns={5}/>
               ) : (
                 <tbody>
                   {sales && sales.length > 0 ? (
                     sales.map(sale => (
+                      // **CORREÇÃO: O clique passa o objeto 'sale' completo**
                       <tr key={sale.id} className="clickable-row" onClick={() => handleSaleClick(sale)}>
-                        <td>#{sale.id}</td>
-                        <td>{formatCurrency(sale.value)}</td>
-                        <td>{getStatusBadge(sale.status, 'sale')}</td>
-                        <td>{formatDate(sale.dateCreated)}</td>
+                        {/* **CORREÇÃO: Acessamos os dados do contrato via 'sale.contract'** */}
+                        <td>#{sale.contract.id}</td>
+                        <td>{formatCurrency(sale.contract.totalPrice)}</td>
+                        <td>{sale.contract.contractQtt}</td>
+                        <td>{getStatusBadge(sale.contract.status, 'contract')}</td>
+                        <td>{formatDate(sale.contract.dateCreated)}</td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan="4"><p className="empty-message">Nenhuma venda encontrada para este cliente.</p></td></tr>
+                    <tr><td colSpan="5"><p className="empty-message">Nenhum contrato encontrado para este cliente.</p></td></tr>
                   )}
                 </tbody>
               )}
