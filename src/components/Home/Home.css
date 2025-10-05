@@ -1,9 +1,14 @@
-.home-page {
+/* ================================================================ */
+/* --- ESTILOS PARA A PÁGINA HOME DO DASHBOARD (COM ESCOPO) --- */
+/* ================================================================ */
+
+/* Classe principal da página para criar o escopo */
+.dashboard-home-page {
   font-family: 'Poppins', sans-serif;
   color: #E5E7EB;
 }
 
-.loading-placeholder {
+.dashboard-home-page .d_home-loading-placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,43 +18,47 @@
 }
 
 /* --- GRIDS DE LAYOUT --- */
-.stats-grid,
-.main-grid,
-.secondary-grid {
+.dashboard-home-page .d_home-stats-grid,
+.dashboard-home-page .d_home-main-grid,
+.dashboard-home-page .d_home-secondary-grid {
   display: grid;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-.stats-grid {
+.dashboard-home-page .d_home-stats-grid {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
-.main-grid {
+.dashboard-home-page .d_home-main-grid {
   grid-template-columns: 2fr 1fr;
+  align-items: stretch;
 }
 
-.secondary-grid {
+.dashboard-home-page .d_home-secondary-grid {
   grid-template-columns: 1fr 2fr;
+  align-items: stretch;
 }
 
 @media (max-width: 1200px) {
 
-  .main-grid,
-  .secondary-grid {
+  .dashboard-home-page .d_home-main-grid,
+  .dashboard-home-page .d_home-secondary-grid {
     grid-template-columns: 1fr;
   }
 }
 
 /* --- CARD BASE E CABEÇALHO --- */
-.card-base {
+.dashboard-home-page .d_home-card-base {
   background-color: #1F2A40;
   border-radius: 16px;
   border: 1px solid #374151;
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.card-header {
+.dashboard-home-page .d_home-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,45 +67,52 @@
   padding-bottom: 1rem;
 }
 
-.card-header h3 {
+.dashboard-home-page .d_home-card-header h3 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
   color: #F9FAFB;
 }
 
-.card-header h3 i {
+.dashboard-home-page .d_home-card-header h3 i {
   color: #f6d168;
   margin-right: 0.5rem;
 }
 
 /* --- COMPONENTES DA DASHBOARD --- */
-.stat-card h3 {
+.dashboard-home-page .d_home-stat-card h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
   font-weight: 500;
   color: #9CA3AF;
 }
 
-.stat-value {
+.dashboard-home-page .d_home-stat-value {
   margin: 0;
   font-size: 2.25rem;
   font-weight: 700;
   color: #F9FAFB;
 }
 
-.chart-container {
+.dashboard-home-page .d_home-chart-container {
   height: 400px;
 }
 
-.client-list {
+.dashboard-home-page .d_home-top-clients-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dashboard-home-page .d_home-client-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-grow: 1;
   overflow-y: auto;
 }
 
-.client-item {
+.dashboard-home-page .d_home-client-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -104,72 +120,72 @@
   border-bottom: 1px solid #374151;
 }
 
-.client-item:last-child {
+.dashboard-home-page .d_home-client-item:last-child {
   border-bottom: none;
 }
 
-.client-info {
+.dashboard-home-page .d_home-client-info {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.client-balance {
+.dashboard-home-page .d_home-client-balance {
   font-weight: 500;
   color: #34D399;
 }
 
-.platform-logo-small {
+.dashboard-home-page .d_home-platform-logo-small {
   height: 24px;
   width: 24px;
   object-fit: contain;
 }
 
-.placeholder-text {
+.dashboard-home-page .d_home-placeholder-text {
   color: #6B7280;
   text-align: center;
   padding: 2rem;
 }
 
 /* --- ANÁLISE DE PLATAFORMAS --- */
-.platform-stats-container .stats-content {
+.dashboard-home-page .d_home-platform-stats-container .d_home-stats-content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.platform-stats-container .stat-group h4 {
+.dashboard-home-page .d_home-platform-stats-container .d_home-stat-group h4 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
   font-weight: 500;
   color: #9CA3AF;
 }
 
-.platform-stats-container .stat-item {
+.dashboard-home-page .d_home-platform-stats-container .d_home-stat-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
 }
 
-.platform-stats-container .stat-label {
+.dashboard-home-page .d_home-platform-stats-container .d_home-stat-label {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.platform-stats-container .stat-percentage {
+.dashboard-home-page .d_home-platform-stats-container .d_home-stat-percentage {
   font-weight: 600;
   font-size: 1.1rem;
 }
 
-.platform-stats-container .stat-value-small {
+.dashboard-home-page .d_home-platform-stats-container .d_home-stat-value-small {
   font-weight: 500;
   font-size: 1rem;
   color: #F9FAFB;
 }
 
-.progress-bar-background {
+.dashboard-home-page .d_home-progress-bar-background {
   height: 8px;
   width: 100%;
   background-color: #374151;
@@ -177,18 +193,18 @@
   overflow: hidden;
 }
 
-.progress-bar-foreground {
+.dashboard-home-page .d_home-progress-bar-foreground {
   height: 100%;
   border-radius: 4px;
 }
 
 /* --- CARD DE NÍVEIS DE COMISSÃO --- */
-.levels-container {
+.dashboard-home-page .d_home-levels-container {
   display: flex;
   flex-direction: column;
 }
 
-.levels-container .progress-summary {
+.dashboard-home-page .d_home-levels-container .d_home-progress-summary {
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
@@ -196,11 +212,11 @@
   margin-bottom: 1.5rem;
 }
 
-.levels-container .progress-summary strong {
+.dashboard-home-page .d_home-levels-container .d_home-progress-summary strong {
   color: #F9FAFB;
 }
 
-.levels-container .progress-bar-container {
+.dashboard-home-page .d_home-levels-container .d_home-progress-bar-container {
   position: relative;
   width: 100%;
   height: 18px;
@@ -209,7 +225,7 @@
   margin-top: 2rem;
 }
 
-.levels-container .progress-bar-fill {
+.dashboard-home-page .d_home-levels-container .d_home-progress-bar-fill {
   position: absolute;
   top: 0;
   left: 0;
@@ -221,7 +237,7 @@
   z-index: 1;
 }
 
-.levels-container .level-marker {
+.dashboard-home-page .d_home-levels-container .d_home-level-marker {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -231,7 +247,7 @@
   z-index: 2;
 }
 
-.levels-container .marker-dot {
+.dashboard-home-page .d_home-levels-container .d_home-marker-dot {
   width: 16px;
   height: 16px;
   background-color: #1F2A40;
@@ -241,18 +257,18 @@
   cursor: pointer;
 }
 
-.levels-container .level-marker:hover .marker-dot {
+.dashboard-home-page .d_home-levels-container .d_home-level-marker:hover .d_home-marker-dot {
   transform: scale(1.2);
   border-color: #f6d168;
 }
 
-.levels-container .level-marker.completed .marker-dot {
+.dashboard-home-page .d_home-levels-container .d_home-level-marker.completed .d_home-marker-dot {
   background-color: #f6d168;
   border-color: #1F2A40;
   transform: scale(1.0);
 }
 
-.levels-container .marker-tooltip {
+.dashboard-home-page .d_home-levels-container .d_home-marker-tooltip {
   position: absolute;
   bottom: 30px;
   background-color: #111827;
@@ -268,24 +284,24 @@
   z-index: 99999;
 }
 
-.levels-container .level-marker:hover .marker-tooltip {
+.dashboard-home-page .d_home-levels-container .d_home-level-marker:hover .d_home-marker-tooltip {
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
 }
 
-.levels-container .tooltip-value {
+.dashboard-home-page .d_home-levels-container .d_home-tooltip-value {
   font-size: 0.9rem;
   font-weight: 600;
   color: #E5E7EB;
 }
 
-.levels-container .tooltip-commission {
+.dashboard-home-page .d_home-levels-container .d_home-tooltip-commission {
   font-size: 0.8rem;
   color: #34D399;
 }
 
-.levels-container .marker-tooltip::after {
+.dashboard-home-page .d_home-levels-container .d_home-marker-tooltip::after {
   content: '';
   position: absolute;
   top: 100%;
@@ -296,18 +312,18 @@
   border-color: #111827 transparent transparent transparent;
 }
 
-.levels-container .next-level-info {
+.dashboard-home-page .d_home-levels-container .d_home-next-level-info {
   text-align: center;
   color: #9CA3AF;
   font-size: 0.9rem;
   margin-top: 1.5rem;
 }
 
-.levels-container .next-level-info strong {
+.dashboard-home-page .d_home-levels-container .d_home-next-level-info strong {
   color: #f6d168;
 }
 
-.levels-container .levels-expand-button {
+.dashboard-home-page .d_home-levels-container .d_home-levels-expand-button {
   background: none;
   border: none;
   color: #9CA3AF;
@@ -315,22 +331,22 @@
   font-size: 0.9rem;
 }
 
-.levels-container .levels-expand-button:hover {
+.dashboard-home-page .d_home-levels-container .d_home-levels-expand-button:hover {
   color: #f6d168;
 }
 
-.levels-container .levels-expand-button i {
+.dashboard-home-page .d_home-levels-container .d_home-levels-expand-button i {
   margin-left: 0.5rem;
 }
 
-.levels-container .expanded-levels-list {
+.dashboard-home-page .d_home-levels-container .d_home-expanded-levels-list {
   overflow: hidden;
   margin-top: 1.5rem;
   border-top: 1px solid #374151;
   padding-top: 1.5rem;
 }
 
-.expanded-levels-list ul {
+.dashboard-home-page .d_home-expanded-levels-list ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -339,7 +355,7 @@
   gap: 0.5rem;
 }
 
-.expanded-levels-list li {
+.dashboard-home-page .d_home-expanded-levels-list li {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1rem;
@@ -347,26 +363,26 @@
   transition: background-color 0.2s;
 }
 
-.expanded-levels-list li.current {
+.dashboard-home-page .d_home-expanded-levels-list li.current {
   background-color: rgba(246, 209, 104, 0.1);
   border-left: 3px solid #f6d168;
 }
 
-.expanded-levels-list li span {
+.dashboard-home-page .d_home-expanded-levels-list li span {
   color: #9CA3AF;
 }
 
-.expanded-levels-list li strong {
+.dashboard-home-page .d_home-expanded-levels-list li strong {
   color: #34D399;
 }
 
 /* --- FILTRO DE CLIENTES --- */
-.client-filter-controls {
+.dashboard-home-page .d_home-client-filter-controls {
   display: flex;
   gap: 0.5rem;
 }
 
-.client-filter-controls button {
+.dashboard-home-page .d_home-client-filter-controls button {
   background-color: transparent;
   border: 1px solid #374151;
   color: #9CA3AF;
@@ -378,19 +394,19 @@
   transition: all 0.2s ease-in-out;
 }
 
-.client-filter-controls button:hover {
+.dashboard-home-page .d_home-client-filter-controls button:hover {
   background-color: #374151;
   color: #F9FAFB;
 }
 
-.client-filter-controls button.active-filter {
+.dashboard-home-page .d_home-client-filter-controls button.active-filter {
   background-color: #f6d168;
   color: #1F2A40;
   border-color: #f6d168;
   font-weight: 600;
 }
 
-.client-platform-logo {
+.dashboard-home-page .d_home-client-platform-logo {
   width: 25px;
   display: flex;
   align-items: center;
@@ -398,7 +414,7 @@
 }
 
 /* --- SKELETON LOADER --- */
-@keyframes pulse {
+@keyframes d_home-pulse {
   0% {
     background-color: #2d3748;
   }
@@ -412,30 +428,30 @@
   }
 }
 
-.skeleton-loader {
-  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.dashboard-home-page .d_home-skeleton-loader {
+  animation: d_home-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   background-color: #2d3748;
   border-radius: 8px;
   width: 100%;
   height: 100%;
 }
 
-.skeleton-h1 {
+.dashboard-home-page .d_home-skeleton-h1 {
   height: 2.25rem;
   width: 60%;
   margin-bottom: 0.5rem;
 }
 
-.skeleton-p {
+.dashboard-home-page .d_home-skeleton-p {
   height: 1rem;
   width: 100%;
 }
 
-.skeleton-li {
+.dashboard-home-page .d_home-skeleton-li {
   height: 2.5rem;
   margin-bottom: 0.5rem;
 }
 
-.skeleton-chart {
+.dashboard-home-page .d_home-skeleton-chart {
   height: 300px;
 }

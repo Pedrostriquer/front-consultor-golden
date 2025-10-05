@@ -1,4 +1,4 @@
-import api from './api/api';
+import api from "./api/api";
 
 /**
  * Busca o extrato paginado do consultor.
@@ -12,12 +12,18 @@ const getConsultantExtract = async (page = 1, pageSize = 5) => {
       page,
       pageSize,
     });
-    const response = await api.get(`consultant-extract?${queryParams.toString()}`);
+    // ======================= CORREÇÃO =======================
+    // A rota no seu backend é 'api/Extract', então a chamada deve ser para 'Extract'
+    // O 'api/' já é adicionado pelo 'baseURL' do axios.
+    const response = await api.get(`Extract?${queryParams.toString()}`);
+    // =========================================================
+
     // A API retorna um objeto { items: [...], totalCount: X }
     return response.data || { items: [], totalCount: 0 };
   } catch (error) {
     console.error("Erro ao buscar o extrato do consultor:", error);
-    throw error;
+    // Retorna uma estrutura padrão em caso de erro para não quebrar a UI
+    return { items: [], totalCount: 0 };
   }
 };
 

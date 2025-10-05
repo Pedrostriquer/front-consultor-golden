@@ -23,7 +23,7 @@ import diamondLogo from "../../img/diamond_prime_diamond (1).png";
 
 // --- COMPONENTES AUXILIARES ---
 const SkeletonLoader = ({ className = "", style = {} }) => (
-  <div className={`skeleton-loader ${className}`} style={style}></div>
+  <div className={`d_home-skeleton-loader ${className}`} style={style}></div>
 );
 
 const formatCurrency = (value = 0, showDecimals = false) =>
@@ -36,15 +36,15 @@ const PlatformLogo = ({ platformId }) => (
   <img
     src={platformId === 1 ? goldenLogo : diamondLogo}
     alt={platformId === 1 ? "Golden Brasil" : "Diamond Prime"}
-    className="platform-logo-small"
+    className="d_home-platform-logo-small"
     title={platformId === 1 ? "Golden Brasil" : "Diamond Prime"}
   />
 );
 
 const AnimatedProgressBar = ({ value, color }) => (
-  <div className="progress-bar-background">
+  <div className="d_home-progress-bar-background">
     <motion.div
-      className="progress-bar-foreground"
+      className="d_home-progress-bar-foreground"
       style={{ backgroundColor: color }}
       initial={{ width: 0 }}
       animate={{ width: `${value}%` }}
@@ -57,7 +57,6 @@ const AnimatedProgressBar = ({ value, color }) => (
 const Home = () => {
   const { user } = useAuth();
 
-  // Estados
   const [commissionData, setCommissionData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
   const [clientCount, setClientCount] = useState(null);
@@ -75,7 +74,6 @@ const Home = () => {
     if (!user) return;
 
     const setupAndFetch = async () => {
-      // Registra os listeners
       dashboardSocketService.registerListener(
         "ReceiveCommissionData",
         (data) => {
@@ -144,18 +142,17 @@ const Home = () => {
   const commissionLevels = useMemo(() => {
     if (!metaData || !commissionData) return null;
     const { metas } = metaData;
-    const currentCommission = commissionData.monthlySoldCommission;
+    const currentSalesValue = commissionData.monthlySoldValue;
     const maxGoal =
       metas.length > 0
         ? [...metas].sort((a, b) => b.value - a.value)[0].value
         : 0;
-
     let currentLevel = null,
       nextLevel = metas.length > 0 ? metas[0] : null;
     const sortedMetas = [...metas].sort((a, b) => a.value - b.value);
 
     for (let i = sortedMetas.length - 1; i >= 0; i--) {
-      if (currentCommission >= sortedMetas[i].value) {
+      if (currentSalesValue >= sortedMetas[i].value) {
         currentLevel = sortedMetas[i];
         nextLevel = sortedMetas[i + 1] || null;
         break;
@@ -168,16 +165,16 @@ const Home = () => {
     const progress =
       progressEnd > progressStart
         ? Math.min(
-            ((currentCommission - progressStart) /
+            ((currentSalesValue - progressStart) /
               (progressEnd - progressStart)) *
               100,
             100
           )
-        : currentCommission >= maxGoal
+        : currentSalesValue >= maxGoal
         ? 100
         : 0;
     const amountForNextLevel = nextLevel
-      ? nextLevel.value - currentCommission
+      ? nextLevel.value - currentSalesValue
       : 0;
 
     return {
@@ -208,34 +205,35 @@ const Home = () => {
     in: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
-  if (error) return <div className="loading-placeholder">Erro: {error}</div>;
+  if (error)
+    return <div className="d_home-loading-placeholder">Erro: {error}</div>;
 
   return (
     <motion.div
-      className="home-page"
+      className="dashboard-home-page"
       variants={pageVariants}
       initial="initial"
       animate="in"
     >
-      <motion.div className="stats-grid" variants={itemVariants}>
-        <div className="stat-card card-base">
+      <motion.div className="d_home-stats-grid" variants={itemVariants}>
+        <div className="d_home-stat-card d_home-card-base">
           <h3>
             <i className="fa-solid fa-users"></i> Total de Clientes
           </h3>
           {clientCount !== null ? (
-            <p className="stat-value">
+            <p className="d_home-stat-value">
               <CountUp end={clientCount} duration={1.5} />
             </p>
           ) : (
-            <SkeletonLoader className="skeleton-h1" />
+            <SkeletonLoader className="d_home-skeleton-h1" />
           )}
         </div>
-        <div className="stat-card card-base">
+        <div className="d_home-stat-card d_home-card-base">
           <h3>
             <i className="fa-solid fa-hand-holding-dollar"></i> Comissão (Mês)
           </h3>
           {commissionData ? (
-            <p className="stat-value">
+            <p className="d_home-stat-value">
               <CountUp
                 end={commissionData.monthlySoldCommission}
                 duration={2}
@@ -246,15 +244,15 @@ const Home = () => {
               />
             </p>
           ) : (
-            <SkeletonLoader className="skeleton-h1" />
+            <SkeletonLoader className="d_home-skeleton-h1" />
           )}
         </div>
-        <div className="stat-card card-base">
+        <div className="d_home-stat-card d_home-card-base">
           <h3>
             <i className="fa-solid fa-hourglass-half"></i> Comissão Pendente
           </h3>
           {commissionData ? (
-            <p className="stat-value">
+            <p className="d_home-stat-value">
               <CountUp
                 end={commissionData.monthlyPendingCommission}
                 duration={2.5}
@@ -265,14 +263,14 @@ const Home = () => {
               />
             </p>
           ) : (
-            <SkeletonLoader className="skeleton-h1" />
+            <SkeletonLoader className="d_home-skeleton-h1" />
           )}
         </div>
       </motion.div>
 
-      <motion.div className="main-grid" variants={itemVariants}>
-        <div className="chart-container card-base">
-          <div className="card-header">
+      <motion.div className="d_home-main-grid" variants={itemVariants}>
+        <div className="d_home-chart-container d_home-card-base">
+          <div className="d_home-card-header">
             <h3>Comissões Recebidas (Últimos 6 meses)</h3>
           </div>
           {historicalData ? (
@@ -302,13 +300,13 @@ const Home = () => {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <SkeletonLoader className="skeleton-chart" />
+            <SkeletonLoader className="d_home-skeleton-chart" />
           )}
         </div>
-        <div className="top-clients-container card-base">
-          <div className="card-header">
+        <div className="d_home-top-clients-container d_home-card-base">
+          <div className="d_home-card-header">
             <h3>Melhores Clientes</h3>
-            <div className="client-filter-controls">
+            <div className="d_home-client-filter-controls">
               <button
                 className={clientFilter === "Todos" ? "active-filter" : ""}
                 onClick={() => setClientFilter("Todos")}
@@ -329,54 +327,54 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <ul className="client-list">
+          <ul className="d_home-client-list">
             {filteredClients ? (
               filteredClients.length > 0 ? (
                 filteredClients.slice(0, 5).map((client, i) => (
-                  <li key={i} className="client-item">
-                    <div className="client-info">
-                      <div className="client-platform-logo">
+                  <li key={i} className="d_home-client-item">
+                    <div className="d_home-client-info">
+                      <div className="d_home-client-platform-logo">
                         <PlatformLogo platformId={client.platform} />
                       </div>
                       <span>{client.name}</span>
                     </div>
-                    <span className="client-balance">
+                    <span className="d_home-client-balance">
                       {formatCurrency(client.totalInvested)}
                     </span>
                   </li>
                 ))
               ) : (
-                <p className="placeholder-text">
+                <p className="d_home-placeholder-text">
                   Nenhum cliente para esta plataforma.
                 </p>
               )
             ) : (
               [...Array(5)].map((_, i) => (
-                <SkeletonLoader key={i} className="skeleton-li" />
+                <SkeletonLoader key={i} className="d_home-skeleton-li" />
               ))
             )}
           </ul>
         </div>
       </motion.div>
 
-      <motion.div className="secondary-grid" variants={itemVariants}>
-        <div className="platform-stats-container card-base">
-          <div className="card-header">
+      <motion.div className="d_home-secondary-grid" variants={itemVariants}>
+        <div className="d_home-platform-stats-container d_home-card-base">
+          <div className="d_home-card-header">
             <h3>
               <i className="fa-solid fa-chart-pie"></i> Análise de Plataformas
             </h3>
           </div>
-          <div className="stats-content">
-            <div className="stat-group">
+          <div className="d_home-stats-content">
+            <div className="d_home-stat-group">
               <h4>Distribuição de Clientes</h4>
               {clientsByPlatform && clientCount !== null ? (
                 <>
-                  <div className="stat-item">
-                    <div className="stat-label">
+                  <div className="d_home-stat-item">
+                    <div className="d_home-stat-label">
                       <PlatformLogo platformId={1} />
                       <span>Golden Brasil</span>
                     </div>
-                    <span className="stat-percentage">
+                    <span className="d_home-stat-percentage">
                       {(
                         (clientsByPlatform.contratosDeMinerios /
                           (clientCount || 1)) *
@@ -393,12 +391,15 @@ const Home = () => {
                     }
                     color="#f6d168"
                   />
-                  <div className="stat-item" style={{ marginTop: "1rem" }}>
-                    <div className="stat-label">
+                  <div
+                    className="d_home-stat-item"
+                    style={{ marginTop: "1rem" }}
+                  >
+                    <div className="d_home-stat-label">
                       <PlatformLogo platformId={2} />
                       <span>Diamond Prime</span>
                     </div>
-                    <span className="stat-percentage">
+                    <span className="d_home-stat-percentage">
                       {(
                         (clientsByPlatform.diamondPrime / (clientCount || 1)) *
                         100
@@ -417,47 +418,49 @@ const Home = () => {
               ) : (
                 <>
                   <SkeletonLoader
-                    className="skeleton-p"
+                    className="d_home-skeleton-p"
                     style={{ marginBottom: "0.5rem" }}
                   />
                   <SkeletonLoader
-                    className="skeleton-li"
+                    className="d_home-skeleton-li"
                     style={{ height: "8px", marginBottom: "1rem" }}
                   />
                   <SkeletonLoader
-                    className="skeleton-p"
+                    className="d_home-skeleton-p"
                     style={{ marginBottom: "0.5rem" }}
                   />
                   <SkeletonLoader
-                    className="skeleton-li"
+                    className="d_home-skeleton-li"
                     style={{ height: "8px" }}
                   />
                 </>
               )}
             </div>
-
-            <div className="stat-group">
+            <div className="d_home-stat-group">
               <h4>Total de Vendas (Mês)</h4>
               {salesByPlatform ? (
                 <>
-                  <div className="stat-item">
-                    <div className="stat-label">
+                  <div className="d_home-stat-item">
+                    <div className="d_home-stat-label">
                       <PlatformLogo platformId={1} />
                       <span>Golden Brasil</span>
                     </div>
-                    <span className="stat-value-small">
+                    <span className="d_home-stat-value-small">
                       {formatCurrency(
                         salesByPlatform.contratosDeMinerios,
                         true
                       )}
                     </span>
                   </div>
-                  <div className="stat-item" style={{ marginTop: "0.5rem" }}>
-                    <div className="stat-label">
+                  <div
+                    className="d_home-stat-item"
+                    style={{ marginTop: "0.5rem" }}
+                  >
+                    <div className="d_home-stat-label">
                       <PlatformLogo platformId={2} />
                       <span>Diamond Prime</span>
                     </div>
-                    <span className="stat-value-small">
+                    <span className="d_home-stat-value-small">
                       {formatCurrency(salesByPlatform.diamondPrime, true)}
                     </span>
                   </div>
@@ -465,11 +468,11 @@ const Home = () => {
               ) : (
                 <>
                   <SkeletonLoader
-                    className="skeleton-p"
+                    className="d_home-skeleton-p"
                     style={{ width: "80%", marginBottom: "0.75rem" }}
                   />
                   <SkeletonLoader
-                    className="skeleton-p"
+                    className="d_home-skeleton-p"
                     style={{ width: "70%" }}
                   />
                 </>
@@ -481,15 +484,15 @@ const Home = () => {
         {commissionLevels ? (
           <motion.div
             layout
-            className="levels-container card-base"
+            className="d_home-levels-container d_home-card-base"
             variants={itemVariants}
           >
-            <motion.div layout className="card-header">
+            <motion.div layout className="d_home-card-header">
               <h3>
                 <i className="fa-solid fa-layer-group"></i> Níveis de Comissão
               </h3>
               <button
-                className="levels-expand-button"
+                className="d_home-levels-expand-button"
                 onClick={() => setIsLevelsExpanded(!isLevelsExpanded)}
               >
                 {isLevelsExpanded ? "Recolher" : "Exibir Níveis"}{" "}
@@ -500,11 +503,11 @@ const Home = () => {
                 ></i>
               </button>
             </motion.div>
-            <motion.div layout className="progress-summary">
+            <motion.div layout className="d_home-progress-summary">
               <span>
                 Vendas no mês:{" "}
                 <strong>
-                  {formatCurrency(commissionData?.monthlySoldCommission, true)}
+                  {formatCurrency(commissionData?.monthlySoldValue, true)}
                 </strong>
               </span>
               {commissionLevels.nextLevel ? (
@@ -518,9 +521,9 @@ const Home = () => {
                 <span>Você atingiu o nível máximo!</span>
               )}
             </motion.div>
-            <div className="progress-bar-container">
+            <div className="d_home-progress-bar-container">
               <motion.div
-                className="progress-bar-fill"
+                className="d_home-progress-bar-fill"
                 style={{ transformOrigin: "left" }}
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: commissionLevels.progress / 100 }}
@@ -530,22 +533,24 @@ const Home = () => {
                 const percentage =
                   (level.value / commissionLevels.maxGoal) * 100;
                 const isCompleted =
-                  commissionData?.monthlySoldCommission >= level.value;
+                  commissionData?.monthlySoldValue >= level.value;
                 return (
                   <div
                     key={level.value}
-                    className={`level-marker ${isCompleted ? "completed" : ""}`}
+                    className={`d_home-level-marker ${
+                      isCompleted ? "completed" : ""
+                    }`}
                     style={{
                       left: `calc(10px + (100% - 20px) * ${percentage / 100})`,
                     }}
                   >
-                    <div className="marker-dot"></div>
-                    <div className="marker-tooltip">
-                      <span className="tooltip-value">
+                    <div className="d_home-marker-dot"></div>
+                    <div className="d_home-marker-tooltip">
+                      <span className="d_home-tooltip-value">
                         {formatCurrency(level.value)}
                       </span>
-                      <span className="tooltip-commission">
-                        {level.commissionPercentage}%
+                      <span className="d_home-tooltip-commission">
+                        {level.commission_percentage}%
                       </span>
                     </div>
                   </div>
@@ -554,7 +559,7 @@ const Home = () => {
             </div>
             {commissionLevels.nextLevel &&
               commissionLevels.amountForNextLevel > 0 && (
-                <p className="next-level-info">
+                <p className="d_home-next-level-info">
                   Faltam{" "}
                   <strong>
                     {formatCurrency(commissionLevels.amountForNextLevel, true)}
@@ -565,7 +570,7 @@ const Home = () => {
             <AnimatePresence>
               {isLevelsExpanded && (
                 <motion.div
-                  className="expanded-levels-list"
+                  className="d_home-expanded-levels-list"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
@@ -585,7 +590,7 @@ const Home = () => {
                           {formatCurrency(allLevels[index + 1]?.value || "∞")}
                         </span>
                         <strong>
-                          {level.commissionPercentage}% de comissão
+                          {level.commission_percentage}% de comissão
                         </strong>
                       </li>
                     ))}
@@ -595,7 +600,7 @@ const Home = () => {
             </AnimatePresence>
           </motion.div>
         ) : (
-          <div className="card-base">
+          <div className="d_home-card-base">
             <SkeletonLoader style={{ height: "100%" }} />
           </div>
         )}

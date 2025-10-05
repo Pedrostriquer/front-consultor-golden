@@ -13,12 +13,14 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
+
 .clientes-page .page-header h1 {
   font-size: 2.25rem;
   font-weight: 700;
   color: #F9FAFB;
   margin: 0;
 }
+
 .clientes-page .header-actions {
   display: flex;
   align-items: center;
@@ -27,15 +29,16 @@
 
 /* --- Container de Filtros e Busca --- */
 .filters-container {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end; /* Alinha os itens na base */
-    gap: 1.5rem;
-    background-color: #1F2A40;
-    border-radius: 16px;
-    border: 1px solid #374151;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  /* Alinha os itens na base */
+  gap: 1.5rem;
+  background-color: #1F2A40;
+  border-radius: 16px;
+  border: 1px solid #374151;
 }
 
 /* --- Barra de Busca (dentro do container de filtros) --- */
@@ -46,47 +49,63 @@
   padding: 0.75rem 1rem;
   border-radius: 8px;
   border: 1px solid #374151;
-  flex-grow: 1; /* Faz a barra de busca ocupar o espaço disponível */
+  flex-grow: 1;
+  /* Faz a barra de busca ocupar o espaço disponível */
   min-width: 300px;
 }
+
 .filters-container .search-bar:focus-within {
   border-color: #f6d168;
   box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
 }
-.filters-container .search-bar i { color: #6B7280; }
-.filters-container .search-bar input {
-  border: none; outline: none; margin-left: 0.75rem;
-  width: 100%; background-color: transparent; color: #E5E7EB; font-size: 1rem;
+
+.filters-container .search-bar i {
+  color: #6B7280;
 }
-.filters-container .search-bar input::placeholder { color: #6B7280; }
+
+.filters-container .search-bar input {
+  border: none;
+  outline: none;
+  margin-left: 0.75rem;
+  width: 100%;
+  background-color: transparent;
+  color: #E5E7EB;
+  font-size: 1rem;
+}
+
+.filters-container .search-bar input::placeholder {
+  color: #6B7280;
+}
 
 
 /* --- Grupos de Filtro (Selects) --- */
 .filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 220px;
 }
+
 .filter-group label {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #9CA3AF;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #9CA3AF;
 }
+
 .filter-group select {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #374151;
-    background-color: #121828;
-    color: #E5E7EB;
-    font-size: 1rem;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-    background-position: right 0.75rem top 50%;
-    background-repeat: no-repeat;
-    background-size: 1.25em 1.25em;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #121828;
+  color: #E5E7EB;
+  font-size: 1rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem top 50%;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
 }
 
 
@@ -98,17 +117,21 @@
   border: 1px solid #374151;
   padding: 0.5rem;
 }
+
 .clientes-page table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
-.clientes-page th, .clientes-page td {
+
+.clientes-page th,
+.clientes-page td {
   padding: 1.25rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid #374151;
   vertical-align: middle;
 }
+
 .clientes-page thead th {
   color: #9CA3AF;
   font-weight: 500;
@@ -116,60 +139,151 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.clientes-page tbody tr:last-child td { border-bottom: none; }
-.clickable-row, .clientes-page tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
-.clickable-row:hover, .clientes-page tbody tr:hover { background-color: #374151; }
 
-.clientes-page .saldo-positivo { color: #34D399; font-weight: 500; }
+.clientes-page tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.clickable-row,
+.clientes-page tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover,
+.clientes-page tbody tr:hover {
+  background-color: #374151;
+}
+
+.clientes-page .saldo-positivo {
+  color: #34D399;
+  font-weight: 500;
+}
 
 /* Coluna e Logo da Plataforma */
 .clientes-page th.platform-col {
   width: 40px;
   padding: 1.25rem 0 1.25rem 1.5rem;
 }
+
 .clientes-page td.platform-col {
   width: 40px;
   padding: 1.25rem 0 1.25rem 1.5rem;
 }
+
 .platform-logo-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.platform-logo-small { height: 24px; width: 24px; object-fit: contain; }
+
+.platform-logo-small {
+  height: 24px;
+  width: 24px;
+  object-fit: contain;
+}
 
 
 /* --- Paginação --- */
 .clientes-page .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
 }
+
 .clientes-page .pagination-controls button {
-    background-color: #1F2A40; border: 1px solid #374151; color: #E5E7EB;
-    border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer;
-    font-weight: 500; transition: all 0.2s; display: flex;
-    align-items: center; gap: 0.5rem;
+  background-color: #1F2A40;
+  border: 1px solid #374151;
+  color: #E5E7EB;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-.clientes-page .pagination-controls button:hover:not(:disabled) { background-color: #374151; border-color: #4B5563; }
-.clientes-page .pagination-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
-.clientes-page .pagination-controls span { color: #9CA3AF; font-size: 0.9rem; font-weight: 500; }
+
+.clientes-page .pagination-controls button:hover:not(:disabled) {
+  background-color: #374151;
+  border-color: #4B5563;
+}
+
+.clientes-page .pagination-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.clientes-page .pagination-controls span {
+  color: #9CA3AF;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 
 /* --- Skeleton e Empty State --- */
-.skeleton-row .skeleton-bar { height: 16px; background-color: #374151; border-radius: 4px; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-.error-cell { text-align: center; color: #fca5a5; padding: 2rem; }
+.skeleton-row .skeleton-bar {
+  height: 16px;
+  background-color: #374151;
+  border-radius: 4px;
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
+}
+
+.error-cell {
+  text-align: center;
+  color: #fca5a5;
+  padding: 2rem;
+}
 
 .empty-state {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 4rem 2rem; text-align: center; color: #6B7280;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6B7280;
 }
+
 .empty-state-icon {
-  background-color: #374151; width: 70px; height: 70px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+  background-color: #374151;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
-.empty-state-icon i { font-size: 2rem; color: #9CA3AF; }
-.empty-state-title { font-size: 1.25rem; font-weight: 600; color: #E5E7EB; margin: 0 0 0.5rem 0; }
-.empty-state-message { max-width: 400px; margin: 0; line-height: 1.5; }
+
+.empty-state-icon i {
+  font-size: 2rem;
+  color: #9CA3AF;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #E5E7EB;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state-message {
+  max-width: 400px;
+  margin: 0;
+  line-height: 1.5;
+}
