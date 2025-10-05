@@ -6,7 +6,6 @@ const Perfil = () => {
   const { user } = useAuth();
   const [isCopied, setIsCopied] = useState(false);
 
-  // Função para formatar datas
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -23,8 +22,22 @@ const Perfil = () => {
     return `${firstInitial}${lastInitial}`.toUpperCase();
   };
 
+  // --- NOVA FUNÇÃO PARA CRIAR UM NOME AMIGÁVEL PARA URL ---
+  const createUrlFriendlyName = (name = "") => {
+    if (!name) return "";
+    // 1. Pega o primeiro nome
+    const firstName = name.trim().split(" ")[0];
+    // 2. Remove acentos e caracteres especiais
+    const normalized = firstName
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    // 3. Capitaliza a primeira letra e deixa o resto minúsculo
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
+  };
+
+
   if (!user) {
-    // Skeleton loader para quando os dados do usuário ainda não carregaram
+    // Skeleton loader
     return (
       <div className="perfil-page">
         <div className="page-header"><h1>Meu Perfil</h1></div>
@@ -46,7 +59,10 @@ const Perfil = () => {
     );
   }
 
-  const indicationLink = `${window.location.origin}/cadastro?ref=${user.id}`;
+  // --- LÓGICA DO LINK DE INDICAÇÃO ATUALIZADA ---
+  const friendlyConsultantName = createUrlFriendlyName(user.name);
+  const indicationLink = `https://areadocliente.goldenbrasil.com.br/cadastro?ref=${user.id}&consultor=${friendlyConsultantName}`;
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(indicationLink).then(() => {
       setIsCopied(true);
