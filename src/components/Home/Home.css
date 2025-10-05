@@ -13,23 +13,30 @@
 }
 
 /* --- GRIDS DE LAYOUT --- */
-.stats-grid, .main-grid, .secondary-grid {
+.stats-grid,
+.main-grid,
+.secondary-grid {
   display: grid;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
+
 .stats-grid {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
+
 .main-grid {
   grid-template-columns: 2fr 1fr;
 }
+
 .secondary-grid {
   grid-template-columns: 1fr 2fr;
 }
 
 @media (max-width: 1200px) {
-  .main-grid, .secondary-grid {
+
+  .main-grid,
+  .secondary-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -41,6 +48,7 @@
   border: 1px solid #374151;
   padding: 1.5rem;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -49,12 +57,14 @@
   border-bottom: 1px solid #374151;
   padding-bottom: 1rem;
 }
+
 .card-header h3 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
   color: #F9FAFB;
 }
+
 .card-header h3 i {
   color: #f6d168;
   margin-right: 0.5rem;
@@ -67,22 +77,25 @@
   font-weight: 500;
   color: #9CA3AF;
 }
+
 .stat-value {
   margin: 0;
   font-size: 2.25rem;
   font-weight: 700;
   color: #F9FAFB;
 }
+
 .chart-container {
   height: 400px;
 }
+
 .client-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  /* height: 280px; */
   overflow-y: auto;
 }
+
 .client-item {
   display: flex;
   justify-content: space-between;
@@ -90,9 +103,11 @@
   padding: 1rem 0.5rem;
   border-bottom: 1px solid #374151;
 }
+
 .client-item:last-child {
   border-bottom: none;
 }
+
 .client-info {
   display: flex;
   align-items: center;
@@ -103,11 +118,13 @@
   font-weight: 500;
   color: #34D399;
 }
+
 .platform-logo-small {
   height: 24px;
   width: 24px;
   object-fit: contain;
 }
+
 .placeholder-text {
   color: #6B7280;
   text-align: center;
@@ -120,32 +137,38 @@
   flex-direction: column;
   gap: 2rem;
 }
+
 .platform-stats-container .stat-group h4 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
   font-weight: 500;
   color: #9CA3AF;
 }
+
 .platform-stats-container .stat-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
 }
+
 .platform-stats-container .stat-label {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
+
 .platform-stats-container .stat-percentage {
   font-weight: 600;
   font-size: 1.1rem;
 }
+
 .platform-stats-container .stat-value-small {
   font-weight: 500;
   font-size: 1rem;
   color: #F9FAFB;
 }
+
 .progress-bar-background {
   height: 8px;
   width: 100%;
@@ -153,15 +176,13 @@
   border-radius: 4px;
   overflow: hidden;
 }
+
 .progress-bar-foreground {
   height: 100%;
   border-radius: 4px;
 }
 
-/* ======================================================================== */
-/* --- CARD DE NÍVEIS DE COMISSÃO (VERSÃO CORRIGIDA E RE-ESTILIZADA) --- */
-/* ======================================================================== */
-
+/* --- CARD DE NÍVEIS DE COMISSÃO --- */
 .levels-container {
   display: flex;
   flex-direction: column;
@@ -179,7 +200,6 @@
   color: #F9FAFB;
 }
 
-/* Garante que este contêiner crie o contexto de empilhamento correto */
 .levels-container .progress-bar-container {
   position: relative;
   width: 100%;
@@ -198,7 +218,7 @@
   background: linear-gradient(90deg, #A38A4A, #f6d168);
   border-radius: 4px;
   transform-origin: left;
-  z-index: 1; /* Camada mais baixa */
+  z-index: 1;
 }
 
 .levels-container .level-marker {
@@ -208,48 +228,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 2; /* Fica acima da barra de preenchimento */
+  z-index: 2;
 }
 
-/* --- NOVO ESTILO PARA A BOLINHA (MARKER) --- */
 .levels-container .marker-dot {
   width: 16px;
   height: 16px;
   background-color: #1F2A40;
-  border: 3px solid #4B5563; /* Cor padrão */
+  border: 3px solid #4B5563;
   border-radius: 50%;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
-/* Efeito de hover para qualquer bolinha */
 .levels-container .level-marker:hover .marker-dot {
-  transform: scale(1.2); /* Aumenta um pouco de tamanho no hover */
+  transform: scale(1.2);
   border-color: #f6d168;
 }
 
-/* NOVO ESTILO PARA A BOLINHA COMPLETA */
 .levels-container .level-marker.completed .marker-dot {
-  background-color: #f6d168; /* Fundo amarelo para indicar preenchimento */
-  border-color: #1F2A40;     /* Borda escura para dar MUITO contraste */
-  transform: scale(1.0);       /* Um pouco maior para se destacar */
+  background-color: #f6d168;
+  border-color: #1F2A40;
+  transform: scale(1.0);
 }
 
-/* --- ESTILOS DO TOOLTIP (POP-UP) --- */
 .levels-container .marker-tooltip {
   position: absolute;
-  bottom: 30px; /* Um pouco mais acima para não encostar na bolinha aumentada */
+  bottom: 30px;
   background-color: #111827;
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
   border: 1px solid #374151;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
   visibility: hidden;
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.2s ease-out;
-  z-index: 99999; /* Z-index bem alto para garantir que fique sobre tudo */
+  z-index: 99999;
 }
 
 .levels-container .level-marker:hover .marker-tooltip {
@@ -280,16 +296,17 @@
   border-color: #111827 transparent transparent transparent;
 }
 
-/* --- RESTANTE DOS ESTILOS --- */
 .levels-container .next-level-info {
   text-align: center;
   color: #9CA3AF;
   font-size: 0.9rem;
   margin-top: 1.5rem;
 }
+
 .levels-container .next-level-info strong {
   color: #f6d168;
 }
+
 .levels-container .levels-expand-button {
   background: none;
   border: none;
@@ -297,18 +314,22 @@
   cursor: pointer;
   font-size: 0.9rem;
 }
+
 .levels-container .levels-expand-button:hover {
   color: #f6d168;
 }
+
 .levels-container .levels-expand-button i {
   margin-left: 0.5rem;
 }
+
 .levels-container .expanded-levels-list {
   overflow: hidden;
   margin-top: 1.5rem;
   border-top: 1px solid #374151;
   padding-top: 1.5rem;
 }
+
 .expanded-levels-list ul {
   list-style: none;
   margin: 0;
@@ -317,6 +338,7 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
 .expanded-levels-list li {
   display: flex;
   justify-content: space-between;
@@ -324,19 +346,21 @@
   border-radius: 8px;
   transition: background-color 0.2s;
 }
+
 .expanded-levels-list li.current {
   background-color: rgba(246, 209, 104, 0.1);
   border-left: 3px solid #f6d168;
 }
+
 .expanded-levels-list li span {
   color: #9CA3AF;
 }
+
 .expanded-levels-list li strong {
   color: #34D399;
 }
 
-
-/* --- ESTILOS PARA O FILTRO DE CLIENTES --- */
+/* --- FILTRO DE CLIENTES --- */
 .client-filter-controls {
   display: flex;
   gap: 0.5rem;
@@ -347,7 +371,7 @@
   border: 1px solid #374151;
   color: #9CA3AF;
   padding: 0.25rem 0.75rem;
-  border-radius: 999px; /* Botões arredondados */
+  border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
@@ -366,10 +390,52 @@
   font-weight: 600;
 }
 
-/* --- ESTILO PARA A LOGO NA LISTA DE CLIENTES --- */
 .client-platform-logo {
-  width: 25px; /* Mesmo tamanho do rank antigo para não quebrar o layout */
+  width: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* --- SKELETON LOADER --- */
+@keyframes pulse {
+  0% {
+    background-color: #2d3748;
+  }
+
+  50% {
+    background-color: #4a5568;
+  }
+
+  100% {
+    background-color: #2d3748;
+  }
+}
+
+.skeleton-loader {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: #2d3748;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.skeleton-h1 {
+  height: 2.25rem;
+  width: 60%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-p {
+  height: 1rem;
+  width: 100%;
+}
+
+.skeleton-li {
+  height: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-chart {
+  height: 300px;
 }

@@ -1,8 +1,4 @@
 /* --- GERAL DA PÁGINA DE VENDAS --- */
-.vendas-page {
-  font-family: 'Poppins', sans-serif;
-}
-
 .vendas-page .page-header {
   margin-bottom: 2rem;
 }
@@ -27,33 +23,27 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* --- CONTAINER DE FILTROS REESTRUTURADO --- */
-.vendas-page .filters-container {
-  padding: 1.5rem;
+/* --- FILTROS COM A CLASSE RENOMEADA --- */
+.sales-filters-container {
+  padding: 20px;
   display: grid;
-  /* Define 5 colunas para alinhamento em telas grandes */
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 1.5rem;
-  align-items: end; /* Alinha os itens na parte inferior */
 }
 
-/* --- CAMPO DE BUSCA MELHORADO --- */
-.vendas-page .search-bar {
-  /* Ocupa 2 das 5 colunas */
-  grid-column: span 2;
+.sales-filters-container .search-bar {
+  grid-column: 1 / -1;
   position: relative;
 }
 
-.vendas-page .search-bar label {
-  display: block;
-  font-size: 0.875rem;
-  color: #9CA3AF;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
+@media (min-width: 992px) {
+  .sales-filters-container .search-bar {
+    grid-column: span 2;
+  }
 }
 
-.vendas-page .search-bar input {
+.sales-filters-container .search-bar input {
   width: 100%;
   padding: 12px 12px 12px 40px;
   border-radius: 8px;
@@ -61,61 +51,39 @@
   background-color: #111827;
   color: #E5E7EB;
   font-size: 1rem;
-  height: 48px; /* Altura consistente */
-  box-sizing: border-box;
 }
 
-.vendas-page .search-bar i {
+.sales-filters-container .search-bar i {
   position: absolute;
   left: 15px;
-  top: 52px; /* Ajustado para alinhar com o input */
+  top: 50%;
   transform: translateY(-50%);
   color: #6B7280;
 }
 
-
-/* --- GRUPOS DE FILTRO (DROPDOWNS) --- */
-.vendas-page .filter-group {
+.sales-filters-container .filter-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.vendas-page .filter-group label {
+.sales-filters-container .filter-group label {
   font-size: 0.875rem;
   color: #9CA3AF;
   font-weight: 500;
 }
 
-.vendas-page .filter-group select {
-  padding: 0 12px;
+.sales-filters-container .filter-group select {
+  padding: 12px;
   border-radius: 8px;
   border: 1px solid #374151;
   background-color: #111827;
   color: #E5E7EB;
   font-size: 1rem;
-  height: 48px; /* Altura consistente */
-  width: 100%;
-}
-
-/* --- RESPONSIVIDADE DOS FILTROS --- */
-@media (max-width: 992px) {
-  .vendas-page .filters-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablets */
-  }
-  .vendas-page .search-bar {
-    grid-column: 1 / -1; /* Ocupa a linha toda */
-  }
-}
-
-@media (max-width: 576px) {
-  .vendas-page .filters-container {
-    grid-template-columns: 1fr; /* 1 coluna em celulares */
-  }
 }
 
 
-/* --- TABELA E PAGINAÇÃO (sem alterações, mas mantidos para integridade) --- */
+/* --- TABELA E OUTROS ESTILOS --- */
 .vendas-page .table-wrapper {
   overflow-x: auto;
   padding: 10px 20px 20px 20px;
@@ -180,15 +148,16 @@
   font-weight: 500;
   transition: all 0.2s;
 }
+
 .vendas-page .pagination-controls button:hover:not(:disabled) {
   background-color: #374151;
 }
+
 .vendas-page .pagination-controls button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* --- BADGES E SKELETON --- */
 .vendas-page .status-badge {
   padding: 4px 12px;
   border-radius: 12px;
@@ -198,10 +167,23 @@
   text-align: center;
   display: inline-block;
 }
-.vendas-page .status-badge.status-active, .vendas-page .status-badge.status-completed { background-color: #059669; }
-.vendas-page .status-badge.status-canceled { background-color: #DC2626; }
-.vendas-page .status-badge.status-pending { background-color: #D97706; }
-.vendas-page .status-badge.status-default { background-color: #4B5563; }
+
+.vendas-page .status-badge.status-active,
+.vendas-page .status-badge.status-completed {
+  background-color: #059669;
+}
+
+.vendas-page .status-badge.status-canceled {
+  background-color: #DC2626;
+}
+
+.vendas-page .status-badge.status-pending {
+  background-color: #D97706;
+}
+
+.vendas-page .status-badge.status-default {
+  background-color: #4B5563;
+}
 
 .vendas-page .skeleton-bar {
   height: 16px;
@@ -209,7 +191,13 @@
   border-radius: 4px;
   animation: skeleton-loading 1.5s infinite alternate;
 }
+
 @keyframes skeleton-loading {
-  0% { background-color: #374151; }
-  100% { background-color: #4B5563; }
+  0% {
+    background-color: #374151;
+  }
+
+  100% {
+    background-color: #4B5563;
+  }
 }
