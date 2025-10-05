@@ -1,33 +1,40 @@
+/* --- GERAL DA PÁGINA DE DETALHES DO CLIENTE --- */
 .client-detail-page {
   font-family: 'Poppins', sans-serif;
-  color: #E5E7EB;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.client-detail-loading, .client-detail-error {
+/* --- MENSAGENS E ESTADOS --- */
+.client-detail-page .client-detail-loading,
+.client-detail-page .client-detail-error {
   padding: 2rem;
   text-align: center;
   font-size: 1.2rem;
-  color: #9CA3AF;
-}
-
-.client-detail-error {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 12px;
 }
 
-/* --- AJUSTES DE ESPAÇAMENTO --- */
-.back-button {
-  margin-bottom: 1.5rem; /* Adiciona espaço abaixo do botão */
+.client-detail-page .client-detail-loading {
+  color: #9CA3AF;
 }
 
-.client-header {
-  margin-bottom: 1.5rem; /* Adiciona espaço abaixo do card de cabeçalho */
+.client-detail-page .client-detail-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-/* --- ESTILOS EXISTENTES --- */
-.back-button {
+/* --- ELEMENTOS ESPECÍFICOS DA PÁGINA DO CLIENTE --- */
+.client-detail-page .card-base {
+  background-color: #1F2937;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.client-detail-page .back-button {
   background: none;
   border: none;
   color: #9CA3AF;
@@ -36,59 +43,68 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.2s;
+  transition: color 0.2s ease-in-out;
+  margin-bottom: 1.5rem;
 }
-.back-button:hover {
+.client-detail-page .back-button:hover {
   color: #f6d168;
 }
 
-.client-header {
+.client-detail-page .client-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
-.client-header h1 {
+
+.client-detail-page .client-header h1 {
   margin: 0 0 0.25rem 0;
   font-size: 2rem;
   font-weight: 700;
+  color: #F9FAFB;
 }
-.client-header p {
+.client-detail-page .client-header p {
   margin: 0;
   color: #9CA3AF;
-}
-.client-status {
-  text-align: right;
-}
-.client-status span {
-  display: block;
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-  color: #9CA3AF;
+  font-size: 1rem;
 }
 
-.details-grid, .related-info-grid {
+.client-detail-page .client-status-tag {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  white-space: nowrap;
+}
+.client-detail-page .status-ativo {
+  background-color: #10B981;
+}
+.client-detail-page .status-inativo {
+  background-color: #6B7280;
+}
+
+.client-detail-page .details-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
-.details-grid {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-.related-info-grid {
-  grid-template-columns: 1fr;
-}
 
-.details-card h3 {
+.client-detail-page .details-card h3 {
   margin: 0 0 1.5rem 0;
   font-size: 1.1rem;
   border-bottom: 1px solid #374151;
   padding-bottom: 1rem;
+  color: #E5E7EB;
+  display: flex;
+  align-items: center;
 }
-.details-card h3 i {
+.client-detail-page .details-card h3 i {
   color: #f6d168;
   margin-right: 0.75rem;
 }
-.details-card ul {
+.client-detail-page .details-card ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -96,103 +112,119 @@
   flex-direction: column;
   gap: 1rem;
 }
-.details-card li {
+.client-detail-page .details-card li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
 }
-.details-card li span {
+.client-detail-page .details-card li span {
   color: #9CA3AF;
 }
-.details-card li strong {
+.client-detail-page .details-card li strong {
   font-weight: 500;
   text-align: right;
+  color: #F9FAFB;
 }
 
-.contracts-list h3, .withdraws-list h3 {
-  margin: 0 0 1rem 0;
-  padding-bottom: 1rem;
+.client-detail-page .valor-positivo { color: #34D399; }
+.client-detail-page .valor-negativo { color: #F87171; }
+.client-detail-page .valor-neutro { color: #60A5FA; }
+.client-detail-page .valor-disponivel {
+  color: #f6d168;
+  font-weight: bold;
+}
+
+.client-detail-page .data-table-container {
+  padding: 0;
+  overflow: hidden;
+}
+
+.client-detail-page .table-tabs {
+  display: flex;
+  background-color: #111827;
   border-bottom: 1px solid #374151;
+  padding: 0 20px;
 }
 
-.contracts-list table, .withdraws-list table {
+.client-detail-page .tab-button {
+  padding: 12px 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  color: #9CA3AF;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.client-detail-page .tab-button:hover {
+  color: #E5E7EB;
+}
+.client-detail-page .tab-button.active {
+  color: #f6d168;
+  border-bottom-color: #f6d168;
+  font-weight: 600;
+}
+
+.client-detail-page .table-content {
+  padding: 20px;
+  padding-top: 10px;
+}
+
+.client-detail-page table {
   width: 100%;
   border-collapse: collapse;
 }
-.contracts-list th, .withdraws-list th {
+
+.client-detail-page th, .client-detail-page td {
+  padding: 1rem 0;
   text-align: left;
+  border-bottom: 1px solid #374151;
+  font-size: 0.95rem;
+}
+.client-detail-page tbody tr:last-child td {
+  border-bottom: none;
+}
+.client-detail-page th {
   color: #9CA3AF;
   font-weight: 500;
   font-size: 0.8rem;
   text-transform: uppercase;
   padding-bottom: 1rem;
 }
-.contracts-list td, .withdraws-list td {
-  padding: 1rem 0;
-  border-bottom: 1px solid #374151;
-}
-.contracts-list tbody tr:last-child td, .withdraws-list tbody tr:last-child td {
-  border-bottom: none;
+.client-detail-page td {
+  color: #D1D5DB;
 }
 
-.contracts-list tbody tr {
+.client-detail-page tbody tr.clickable-row {
   cursor: pointer;
   transition: background-color 0.2s;
 }
-.contracts-list tbody tr:hover {
+.client-detail-page tbody tr.clickable-row:hover {
   background-color: rgba(255, 255, 255, 0.03);
 }
 
-.empty-message {
+.client-detail-page .empty-message {
   padding: 2rem;
   text-align: center;
   color: #6B7280;
+  font-style: italic;
 }
 
-/* --- SKELETON LOADER --- */
-.skeleton-row .skeleton-bar {
-  height: 16px;
-  background-color: #374151;
-  border-radius: 4px;
-}
-.skeleton-row td {
-  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .5; }
-}
-
-/* --- PAGINATION CONTROLS --- */
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #374151;
-}
-.pagination-controls button {
-  background-color: #2a3a55;
-  border: 1px solid #374151;
-  color: #E5E7EB;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  cursor: pointer;
+.client-detail-page .status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
   font-weight: 500;
-  transition: all 0.2s;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
 }
-.pagination-controls button:hover:not(:disabled) {
-  background-color: #374151;
-  border-color: #4B5563;
-}
-.pagination-controls button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.pagination-controls span {
-  color: #9CA3AF;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
+.client-detail-page .status-badge.status-active { background-color: #059669; }
+.client-detail-page .status-badge.status-canceled { background-color: #DC2626; }
+.client-detail-page .status-badge.status-pending { background-color: #D97706; }
+.client-detail-page .status-badge.status-default { background-color: #4B5563; }

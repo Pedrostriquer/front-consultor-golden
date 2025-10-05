@@ -1,43 +1,39 @@
 import api from './api/api';
 
 /**
- * Busca uma lista paginada de vendas com base em vários parâmetros.
+ * Busca uma lista paginada de vendas com base em vários parâmetros da API.
  * @param {object} params - Os parâmetros de busca.
  * @returns {Promise<object>} - Uma promessa que resolve para um objeto com as vendas e a contagem total.
  */
 const searchSales = async (params = {}) => {
   const {
     searchTerm = '',
+    consultantId,
+    status,
+    month,
+    year,
     pageNumber = 1,
     pageSize = 10,
-    sortBy = 'id',
-    sortOrder = 'desc',
-    consultantId,
-    clientId, // Adicionado para buscar vendas de um cliente
-    status = ''
+    order = 'date_desc', // Padrão da API
   } = params;
 
   // Constrói os parâmetros da query para o URL
   const queryParams = new URLSearchParams({
-    searchTerm,
     offset: (pageNumber - 1) * pageSize,
     limit: pageSize,
-    order: sortOrder,
+    order,
   });
 
-  // Adiciona os IDs e status apenas se forem fornecidos
-  if (consultantId) {
-    queryParams.append('consultantId', consultantId);
-  }
-  if (clientId) {
-    queryParams.append('clientId', clientId);
-  }
-  if (status && status !== 'ALL') {
-    queryParams.append('status', status);
-  }
+  // Adiciona os parâmetros apenas se eles tiverem um valor válido
+  if (consultantId) queryParams.append('consultantId', consultantId);
+  if (searchTerm) queryParams.append('searchTerm', searchTerm);
+  if (status && status !== 'ALL') queryParams.append('status', status);
+  if (month && month !== 'ALL') queryParams.append('month', month);
+  if (year && year !== 'ALL') queryParams.append('year', year);
+
 
   try {
-    const response = await api.get(`Sale/search?${queryParams.toString()}`);
+    const response = await api.get(`sale/search?${queryParams.toString()}`);
     // A API retorna um objeto { sales: [...], totalCount: X }
     return response.data || { sales: [], totalCount: 0 };
   } catch (error) {
@@ -48,13 +44,12 @@ const searchSales = async (params = {}) => {
 
 /**
  * Busca os detalhes de uma única venda usando o seu ID.
- * @param {string} saleId - O ID da venda a ser buscada.
+ * @param {number} saleId - O ID da venda a ser buscada.
  * @returns {Promise<object>} - Uma promessa que resolve para o objeto da venda.
  */
 const getSaleById = async (saleId) => {
   try {
-    // Usa o endpoint GET /api/Sale/{id}
-    const response = await api.get(`Sale/${saleId}`);
+    const response = await api.get(`sale/${saleId}`);
     return response.data;
   } catch (error) {
     console.error(`Erro ao buscar venda com ID ${saleId}:`, error);
@@ -63,7 +58,6 @@ const getSaleById = async (saleId) => {
 };
 
 
-// Exporta um objeto com todos os métodos do serviço de vendas
 const saleService = {
   searchSales,
   getSaleById,

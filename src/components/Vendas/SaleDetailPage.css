@@ -1,0 +1,147 @@
+/* --- GERAL DA PÁGINA DE DETALHES DA VENDA --- */
+.sale-detail-page {
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    color: #E5E7EB;
+}
+
+/* --- ELEMENTOS ESPECÍFICOS DA PÁGINA DE DETALHES --- */
+.sale-detail-page .card-base {
+    background-color: #1F2937;
+    border-radius: 12px;
+    border: 1px solid #374151;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.sale-detail-page .back-button {
+    background: none;
+    border: none;
+    color: #9CA3AF;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+    margin-bottom: 1.5rem;
+}
+
+.sale-detail-page .back-button:hover {
+    color: #f6d168;
+}
+
+.sale-detail-page .sale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sale-detail-page .sale-header h1 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #F9FAFB;
+}
+
+.sale-detail-page .sale-header p {
+    margin: 0;
+    color: #9CA3AF;
+}
+
+.sale-detail-page .details-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.sale-detail-page .details-card h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sale-detail-page .details-card h3 i {
+    color: #f6d168;
+}
+
+.sale-detail-page .details-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sale-detail-page .details-card li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sale-detail-page .details-card li span {
+    color: #9CA3AF;
+}
+
+.sale-detail-page .details-card li strong {
+    font-weight: 500;
+    color: #F9FAFB;
+}
+
+.sale-detail-page .valor-total {
+    font-size: 1.2rem;
+    color: #E5E7EB;
+}
+
+.sale-detail-page .valor-comissao {
+    font-size: 1.2rem;
+    color: #34D399; /* Verde */
+}
+
+.sale-detail-page .description-card h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.sale-detail-page .description-card h3 i {
+    color: #f6d168;
+}
+.sale-detail-page .description-card p {
+    color: #D1D5DB;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+.sale-detail-page .description-card span {
+    font-size: 0.9rem;
+    color: #9CA3AF;
+    font-style: italic;
+}
+
+.sale-detail-page .status-badge {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.sale-detail-page .sale-detail-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}

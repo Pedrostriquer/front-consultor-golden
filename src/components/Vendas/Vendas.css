@@ -1,243 +1,215 @@
-/* --- ESTILO GERAL DA PÁGINA DE VENDAS --- */
+/* --- GERAL DA PÁGINA DE VENDAS --- */
 .vendas-page {
-    font-family: 'Poppins', sans-serif;
-    color: #E5E7EB;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* --- CABEÇALHO --- */
 .vendas-page .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .vendas-page .page-header h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #F9FAFB;
-    margin: 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #F9FAFB;
+  margin: 0;
 }
 
-/* --- Container de Filtros e Busca --- */
-.filters-container {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end; /* Alinha os itens na base */
-    gap: 1.5rem;
-    background-color: #1F2A40;
-    border-radius: 16px;
-    border: 1px solid #374151;
+.vendas-page .page-header p {
+  font-size: 1rem;
+  color: #9CA3AF;
+  margin-top: 4px;
 }
 
-/* --- Barra de Busca (dentro do container de filtros) --- */
-.filters-container .search-bar {
-  display: flex;
-  align-items: center;
-  background-color: #121828;
-  padding: 0.75rem 1rem;
+.vendas-page .card-base {
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* --- CONTAINER DE FILTROS REESTRUTURADO --- */
+.vendas-page .filters-container {
+  padding: 1.5rem;
+  display: grid;
+  /* Define 5 colunas para alinhamento em telas grandes */
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: end; /* Alinha os itens na parte inferior */
+}
+
+/* --- CAMPO DE BUSCA MELHORADO --- */
+.vendas-page .search-bar {
+  /* Ocupa 2 das 5 colunas */
+  grid-column: span 2;
+  position: relative;
+}
+
+.vendas-page .search-bar label {
+  display: block;
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.vendas-page .search-bar input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
   border-radius: 8px;
   border: 1px solid #374151;
-  flex-grow: 1; /* Faz a barra de busca ocupar o espaço disponível */
-  min-width: 300px;
-}
-.filters-container .search-bar:focus-within {
-  border-color: #f6d168;
-  box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
-}
-.filters-container .search-bar i { color: #6B7280; }
-.filters-container .search-bar input {
-  border: none; outline: none; margin-left: 0.75rem;
-  width: 100%; background-color: transparent; color: #E5E7EB; font-size: 1rem;
-}
-.filters-container .search-bar input::placeholder { color: #6B7280; }
-
-
-/* --- Grupos de Filtro (Selects) --- */
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 220px;
-}
-.filter-group label {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #9CA3AF;
-}
-.filter-group select {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #374151;
-    background-color: #121828;
-    color: #E5E7EB;
-    font-size: 1rem;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-    background-position: right 0.75rem top 50%;
-    background-repeat: no-repeat;
-    background-size: 1.25em 1.25em;
+  background-color: #111827;
+  color: #E5E7EB;
+  font-size: 1rem;
+  height: 48px; /* Altura consistente */
+  box-sizing: border-box;
 }
 
-/* --- TABELA --- */
+.vendas-page .search-bar i {
+  position: absolute;
+  left: 15px;
+  top: 52px; /* Ajustado para alinhar com o input */
+  transform: translateY(-50%);
+  color: #6B7280;
+}
+
+
+/* --- GRUPOS DE FILTRO (DROPDOWNS) --- */
+.vendas-page .filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vendas-page .filter-group label {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+.vendas-page .filter-group select {
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #111827;
+  color: #E5E7EB;
+  font-size: 1rem;
+  height: 48px; /* Altura consistente */
+  width: 100%;
+}
+
+/* --- RESPONSIVIDADE DOS FILTROS --- */
+@media (max-width: 992px) {
+  .vendas-page .filters-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablets */
+  }
+  .vendas-page .search-bar {
+    grid-column: 1 / -1; /* Ocupa a linha toda */
+  }
+}
+
+@media (max-width: 576px) {
+  .vendas-page .filters-container {
+    grid-template-columns: 1fr; /* 1 coluna em celulares */
+  }
+}
+
+
+/* --- TABELA E PAGINAÇÃO (sem alterações, mas mantidos para integridade) --- */
 .vendas-page .table-wrapper {
-    overflow-x: auto;
-    background: #1F2A40;
-    border-radius: 16px;
-    border: 1px solid #374151;
-    padding: 0.5rem;
+  overflow-x: auto;
+  padding: 10px 20px 20px 20px;
 }
 
 .vendas-page table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .vendas-page th,
 .vendas-page td {
-    padding: 1.25rem 1.5rem;
-    text-align: left;
-    vertical-align: middle;
-    border-bottom: 1px solid #374151;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #374151;
+  white-space: nowrap;
 }
 
-.vendas-page thead th {
-    color: #9CA3AF;
-    font-weight: 500;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+.vendas-page th {
+  color: #9CA3AF;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
 }
 
-.vendas-page tbody tr {
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+.vendas-page td {
+  color: #D1D5DB;
 }
 
-.vendas-page tbody tr:hover {
-    background-color: #374151;
+.vendas-page tbody tr.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.vendas-page tbody tr:last-child td {
-    border-bottom: none;
+.vendas-page tbody tr.clickable-row:hover {
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Coluna e Logo da Plataforma */
-.vendas-page th.platform-col {
-  width: 40px;
-  padding: 1.25rem 0 1.25rem 1.5rem;
+.vendas-page .empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #6B7280;
 }
-.vendas-page td.platform-col {
-  width: 40px;
-  padding: 1.25rem 0 1.25rem 1.5rem;
-}
-.platform-logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.platform-logo-small { height: 24px; width: 24px; object-fit: contain; }
 
-/* --- BADGES DE STATUS --- */
-.status-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: inline-block;
-    white-space: nowrap;
-}
-.status-pending { background-color: rgba(251, 191, 36, 0.1); color: #FBBF24; }
-.status-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
-.status-completed { background-color: rgba(16, 185, 129, 0.1); color: #10B981; }
-.status-canceled { background-color: rgba(239, 68, 68, 0.1); color: #EF4444; }
-
-
-/* --- PAGINAÇÃO --- */
 .vendas-page .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1.5rem 0 0.5rem 0;
+  border-top: 1px solid #374151;
 }
 
 .vendas-page .pagination-controls button {
-    background-color: #1F2A40;
-    border: 1px solid #374151;
-    color: #E5E7EB;
-    border-radius: 8px;
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  background-color: #2a3a55;
+  border: 1px solid #374151;
+  color: #E5E7EB;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
 }
-
 .vendas-page .pagination-controls button:hover:not(:disabled) {
-    background-color: #374151;
-    border-color: #4B5563;
+  background-color: #374151;
 }
-
 .vendas-page .pagination-controls button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.vendas-page .pagination-controls span {
-    color: #9CA3AF;
-    font-size: 0.9rem;
-    font-weight: 500;
+/* --- BADGES E SKELETON --- */
+.vendas-page .status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
 }
+.vendas-page .status-badge.status-active, .vendas-page .status-badge.status-completed { background-color: #059669; }
+.vendas-page .status-badge.status-canceled { background-color: #DC2626; }
+.vendas-page .status-badge.status-pending { background-color: #D97706; }
+.vendas-page .status-badge.status-default { background-color: #4B5563; }
 
-/* --- ESTADO DE VAZIO E SKELETON --- */
-.skeleton-row .skeleton-bar { height: 16px; background-color: #374151; border-radius: 4px; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-
-.vendas-page .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    text-align: center;
-    color: #6B7280;
+.vendas-page .skeleton-bar {
+  height: 16px;
+  background-color: #374151;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite alternate;
 }
-
-.vendas-page .empty-state-icon {
-    background-color: #374151;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-}
-
-.vendas-page .empty-state-icon i {
-    font-size: 2rem;
-    color: #9CA3AF;
-}
-
-.vendas-page .empty-state-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #E5E7EB;
-    margin: 0 0 0.5rem 0;
-}
-
-.vendas-page .empty-state-message {
-    max-width: 400px;
-    margin: 0;
-    line-height: 1.5;
+@keyframes skeleton-loading {
+  0% { background-color: #374151; }
+  100% { background-color: #4B5563; }
 }

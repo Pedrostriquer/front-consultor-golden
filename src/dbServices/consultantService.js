@@ -6,7 +6,7 @@ import api from './api/api';
  */
 const getMe = async () => {
   try {
-    const response = await api.get('Consultor/me');
+    const response = await api.get('consultant/me');
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar os dados do consultor logado:", error);

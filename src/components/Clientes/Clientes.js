@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import clientService from '../../dbServices/clientService';
@@ -12,15 +12,19 @@ import diamondLogo from '../../img/diamond_prime_diamond (1).png';
 
 
 // --- Componentes de UI Locais ---
-const PlatformLogo = ({ platform }) => (
-    <div className="platform-logo-wrapper">
-        <img src={platform === 'Golden Brasil' ? goldenLogo : diamondLogo} alt={platform} className="platform-logo-small" title={platform} />
-    </div>
-);
+const PlatformLogo = ({ platformId }) => {
+    const isGolden = platformId === 1 || platformId === 'CONTRATO_DE_MINERIOS';
+    const platform = isGolden ? 'Golden Brasil' : 'Diamond Prime';
+    return (
+        <div className="platform-logo-wrapper">
+            <img src={isGolden ? goldenLogo : diamondLogo} alt={platform} className="platform-logo-small" title={platform} />
+        </div>
+    );
+};
 
 const EmptyState = ({ icon, title, message }) => (
   <tr>
-    <td colSpan="5"> {/* Aumentado para 5 colunas */}
+    <td colSpan="4">
       <div className="empty-state">
         <div className="empty-state-icon"><i className={icon}></i></div>
         <h3 className="empty-state-title">{title}</h3>
@@ -38,7 +42,6 @@ const TableSkeleton = ({ rows = 10 }) => (
           <td><div className="skeleton-bar" style={{ width: "80%" }}></div></td>
           <td><div className="skeleton-bar" style={{ width: "60%" }}></div></td>
           <td><div className="skeleton-bar" style={{ width: "90%" }}></div></td>
-          <td><div className="skeleton-bar" style={{ width: "70%" }}></div></td>
         </tr>
       ))}
     </tbody>
@@ -47,19 +50,16 @@ const TableSkeleton = ({ rows = 10 }) => (
 // --- Componente Principal ---
 const Clientes = () => {
   const [clients, setClients] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // --- ESTADO DOS FILTROS UNIFICADO ---
   const [filters, setFilters] = useState({
-    sortBy: 'name',
-    sortOrder: 'asc',
-    platform: 'all', // Novo filtro de plataforma
+    sortBy: 'dateCreated',
+    sortOrder: 'desc',
+    platform: 'all',
   });
   
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -70,55 +70,36 @@ const Clientes = () => {
     setIsLoading(true);
     setError('');
 
-    const pageSize = 10;
+    const platformId = debouncedFilters.platform === 'golden' ? 1 : debouncedFilters.platform === 'diamond' ? 2 : undefined;
+    const isCpfCnpj = /^\d+$/.test(debouncedSearchTerm.replace(/[.-/]/g, ''));
+    
     const params = {
-      sortBy: debouncedFilters.sortBy,
-      sortOrder: debouncedFilters.sortOrder,
-      searchTerm: debouncedSearchTerm,
-      pageNumber: page,
-      pageSize: pageSize,
       consultantId: user.id,
+      name: !isCpfCnpj ? debouncedSearchTerm : undefined,
+      cpfCnpj: isCpfCnpj ? debouncedSearchTerm : undefined,
+      platformId,
+      sortBy: debouncedFilters.sortBy,
+      sortDirection: debouncedFilters.sortOrder,
     };
 
     try {
       const response = await clientService.searchClients(params);
-      // Simulação: Adiciona a propriedade 'platform' aos clientes recebidos
-      const clientsWithPlatform = response.items.map(client => ({
-          ...client,
-          platform: 'Golden Brasil'
-      }));
-      setClients(clientsWithPlatform);
-      setTotalPages(Math.ceil(response.totalCount / pageSize) || 1);
-    } catch (err) {
+      setClients(response);
+    } catch (err) { // <-- A CORREÇÃO ESTÁ AQUI
       console.error("Erro ao buscar clientes:", err);
       setError("Não foi possível carregar os clientes. Tente novamente mais tarde.");
     } finally {
         setIsLoading(false);
     }
-  }, [page, debouncedSearchTerm, debouncedFilters, user]);
+  }, [debouncedSearchTerm, debouncedFilters, user]);
 
   useEffect(() => {
     fetchClients();
   }, [fetchClients]);
 
-  useEffect(() => { setPage(1); }, [debouncedSearchTerm, debouncedFilters]);
-  
-  // --- LÓGICA DE FILTRAGEM NO FRONT-END ---
-  const visibleClients = useMemo(() => {
-    if (filters.platform === 'all') {
-      return clients;
-    }
-    return clients.filter(client => 
-        (filters.platform === 'golden' && client.platform === 'Golden Brasil') ||
-        (filters.platform === 'diamond' && client.platform === 'Diamond Prime')
-    );
-  }, [clients, filters.platform]);
-
   const handleRowClick = (client) => {
-    navigate(`/platform/clientes/${client.cpfCnpj}`);
+    navigate(`/platform/clientes/${client.cpfCnpj}`, { state: { platformId: client.platformId } });
   };
-
-  const sortOptions = [{ label: 'Nome', value: 'name' }];
   
   const rowVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -132,9 +113,7 @@ const Clientes = () => {
         <h1>Meus Clientes</h1>
       </div>
 
-      {/* --- NOVO CONTAINER DE FILTROS UNIFICADO --- */}
       <div className="filters-container card-base">
-          {/* BARRA DE BUSCA MOVIDA PARA CÁ */}
           <div className="search-bar">
             <i className="fa-solid fa-magnifying-glass"></i>
             <input 
@@ -144,28 +123,22 @@ const Clientes = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          {/* FILTRO DE PLATAFORMA NOVO */}
           <div className="filter-group">
             <label>Plataforma</label>
             <select onChange={(e) => setFilters(prev => ({...prev, platform: e.target.value}))} value={filters.platform}>
                 <option value="all">Todas as Plataformas</option>
-                <option value="golden">Golden Brasil</option>
+                <option value="golden">Golden Brasil (Contratos)</option>
                 <option value="diamond">Diamond Prime</option>
             </select>
           </div>
-          {/* FILTRO DE ORDENAÇÃO */}
           <div className="filter-group">
             <label>Ordenar por</label>
             <select onChange={(e) => {
                 const [sortBy, sortOrder] = e.target.value.split(':');
                 setFilters(prev => ({...prev, sortBy, sortOrder}));
             }} value={`${filters.sortBy}:${filters.sortOrder}`}>
-              {sortOptions.map(sort => (
-                <optgroup label={sort.label} key={sort.label}>
-                  <option value={`${sort.value}:asc`}>A-Z</option>
-                  <option value={`${sort.value}:desc`}>Z-A</option>
-                </optgroup>
-              ))}
+                <option value="dateCreated:desc">Mais Recentes</option>
+                <option value="dateCreated:asc">Mais Antigos</option>
             </select>
           </div>
       </div>
@@ -174,23 +147,22 @@ const Clientes = () => {
         <table>
           <thead>
             <tr>
-              <th className="platform-col"></th> {/* Coluna para a logo */}
+              <th className="platform-col"></th>
               <th>Nome</th>
               <th>CPF/CNPJ</th>
               <th>Email</th>
-              <th>Celular</th>
             </tr>
           </thead>
           {isLoading ? (
-             <TableSkeleton rows={5} />
+             <TableSkeleton rows={10} />
           ) : (
             <AnimatePresence>
                 <tbody>
-                {error && <tr><td colSpan="5">{error}</td></tr>}
-                {!error && visibleClients.length > 0 ? (
-                    visibleClients.map(client => (
+                {error && <tr><td colSpan="4" className="error-cell">{error}</td></tr>}
+                {!error && clients.length > 0 ? (
+                    clients.map(client => (
                     <motion.tr 
-                        key={client.id} 
+                        key={`${client.cpfCnpj}-${client.platformId}`}
                         onClick={() => handleRowClick(client)}
                         variants={rowVariants}
                         initial="hidden"
@@ -199,22 +171,17 @@ const Clientes = () => {
                         layout
                         className="clickable-row"
                     >
-                        {/* Coluna da logo adicionada */}
-                        <td className="platform-col"><PlatformLogo platform={client.platform} /></td>
+                        <td className="platform-col"><PlatformLogo platformId={client.platformId} /></td>
                         <td>{client.name}</td>
                         <td>{client.cpfCnpj}</td>
                         <td>{client.email}</td>
-                        <td>{client.phoneNumber}</td>
                     </motion.tr>
                     ))
                 ) : (
                     !isLoading && !error && <EmptyState 
                     icon="fa-solid fa-users-slash"
                     title="Nenhum cliente encontrado"
-                    message={searchTerm || filters.platform !== 'all'
-                        ? `A sua busca ou filtro não retornou resultados.`
-                        : "Você ainda não possui clientes cadastrados."
-                    }
+                    message="A sua busca ou filtro não retornou resultados."
                     />
                 )}
                 </tbody>
@@ -222,18 +189,6 @@ const Clientes = () => {
           )}
         </table>
       </div>
-      
-      {totalPages > 1 && !isLoading && (
-        <div className="pagination-controls">
-          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
-            <i className="fa-solid fa-chevron-left"></i> Anterior
-          </button>
-          <span>Página {page} de {totalPages || 1}</span>
-          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages || totalPages === 0}>
-            Próxima <i className="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-      )}
     </div>
   );
 };

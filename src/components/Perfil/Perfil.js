@@ -6,7 +6,13 @@ const Perfil = () => {
   const { user } = useAuth();
   const [isCopied, setIsCopied] = useState(false);
 
-  // Lógica para pegar as iniciais do nome (sem alterações)
+  // Função para formatar datas
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString("pt-BR", options);
+  };
+
   const getInitials = (name = "") => {
     const nameParts = name.trim().split(" ");
     if (nameParts.length === 1 && nameParts[0] !== "") {
@@ -17,14 +23,11 @@ const Perfil = () => {
     return `${firstInitial}${lastInitial}`.toUpperCase();
   };
 
-  // Se o usuário ainda não foi carregado, exibe um skeleton loader
   if (!user) {
+    // Skeleton loader para quando os dados do usuário ainda não carregaram
     return (
       <div className="perfil-page">
-        <div className="page-header">
-          <h1>Meu Perfil</h1>
-          <p>Visualize e gerencie suas informações pessoais.</p>
-        </div>
+        <div className="page-header"><h1>Meu Perfil</h1></div>
         <div className="card-base perfil-card skeleton-card">
           <div className="perfil-banner-skeleton"></div>
           <div className="perfil-avatar-skeleton"></div>
@@ -34,6 +37,8 @@ const Perfil = () => {
             <div className="skeleton-grid">
               <div className="skeleton-text long"></div>
               <div className="skeleton-text long"></div>
+              <div className="skeleton-text long"></div>
+              <div className="skeleton-text long"></div>
             </div>
           </div>
         </div>
@@ -41,7 +46,6 @@ const Perfil = () => {
     );
   }
 
-  // Lógica do link de indicação (sem alterações)
   const indicationLink = `${window.location.origin}/cadastro?ref=${user.id}`;
   const handleCopyLink = () => {
     navigator.clipboard.writeText(indicationLink).then(() => {
@@ -54,22 +58,17 @@ const Perfil = () => {
     <div className="perfil-page">
       <div className="page-header">
         <h1>Meu Perfil</h1>
-        <p>Visualize e gerencie suas informações pessoais.</p>
+        <p>Visualize e gerencie suas informações pessoais e profissionais.</p>
       </div>
 
-      {/* Card principal com a nova estrutura */}
       <div className="card-base perfil-card">
-        {/* Banner decorativo */}
         <div className="perfil-banner"></div>
-        
-        {/* Avatar sobreposto */}
         <div className="perfil-avatar">{getInitials(user.name)}</div>
 
-        {/* Conteúdo do card */}
         <div className="perfil-content">
           <div className="perfil-header-info">
             <h2 className="perfil-name">{user.name}</h2>
-            <span className="perfil-role">Consultor(a)</span>
+            <span className="perfil-role">Consultor(a) Golden & Diamond</span>
           </div>
 
           <div className="perfil-details-grid">
@@ -78,12 +77,24 @@ const Perfil = () => {
               <span>{user.email}</span>
             </div>
             <div className="detail-item">
+              <label><i className="fa-solid fa-phone"></i> Telefone</label>
+              <span>{user.phoneNumber || 'Não informado'}</span>
+            </div>
+            <div className="detail-item">
               <label><i className="fa-solid fa-id-card"></i> CPF</label>
               <span>{user.cpfCnpj}</span>
             </div>
             <div className="detail-item">
-              <label><i className="fa-solid fa-percent"></i> Comissão</label>
+                <label><i className="fa-solid fa-cake-candles"></i> Data de Nascimento</label>
+                <span>{formatDate(user.birthDate)}</span>
+            </div>
+             <div className="detail-item">
+              <label><i className="fa-solid fa-percent"></i> Comissão Padrão</label>
               <span>{user.commissionPercentage}%</span>
+            </div>
+            <div className="detail-item">
+              <label><i className="fa-solid fa-calendar-check"></i> Consultor Desde</label>
+              <span>{formatDate(user.dateCreated)}</span>
             </div>
           </div>
 
@@ -93,13 +104,9 @@ const Perfil = () => {
               <input type="text" value={indicationLink} readOnly />
               <button onClick={handleCopyLink} className={isCopied ? 'copied' : ''}>
                 {isCopied ? (
-                  <>
-                    <i className="fa-solid fa-check"></i> Copiado!
-                  </>
+                  <><i className="fa-solid fa-check"></i> Copiado!</>
                 ) : (
-                  <>
-                    <i className="fa-solid fa-copy"></i> Copiar
-                  </>
+                  <><i className="fa-solid fa-copy"></i> Copiar</>
                 )}
               </button>
             </div>

@@ -1,11 +1,11 @@
 import api from './api/api';
 
-const login = async (username, password) => {
+const login = async (email, password) => {
   try {
-    // CORRIGIDO: Rota sem a barra inicial e corpo do pedido com "email"
-    const response = await api.post('Auth/login/consultor', {
-      email: username,    // Campo alterado para "email"
-      password: password,   // Campo mantido como "password"
+    // CORRIGIDO: A rota foi ajustada para "auth/login"
+    const response = await api.post('auth/login', {
+      email: email,
+      password: password,
     });
     
     return response.data;

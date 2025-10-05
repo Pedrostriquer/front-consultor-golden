@@ -1,40 +1,36 @@
 import api from './api/api';
 
 /**
- * Busca uma lista paginada de clientes com base em vários parâmetros.
+ * Busca clientes com base em vários parâmetros.
  * @param {object} params - Os parâmetros de busca.
- * @returns {Promise<object>} - Uma promessa que resolve para um objeto com os itens e a contagem total.
+ * @returns {Promise<Array>} - Uma promessa que resolve para um array de clientes.
  */
 const searchClients = async (params = {}) => {
   const {
-    searchTerm = '',
-    pageNumber = 1,
-    pageSize = 10,
+    consultantId,
+    name,
+    cpfCnpj,
+    platformId,
     sortBy = 'name',
-    sortOrder = 'asc',
-    consultantId
+    sortDirection = 'asc',
   } = params;
 
   // Constrói os parâmetros da query para o URL
   const queryParams = new URLSearchParams({
-    name: searchTerm,
-    offset: (pageNumber - 1) * pageSize,
-    limit: pageSize,
-    order: sortOrder,
+    consultantId,
+    sortDirection,
   });
 
-  // Adiciona o ID do consultor à query apenas se ele for fornecido
-  if (consultantId) {
-    queryParams.append('consultantId', consultantId);
-  }
+  // Adiciona parâmetros opcionais apenas se tiverem valor
+  if (name) queryParams.append('name', name);
+  if (cpfCnpj) queryParams.append('cpfCnpj', cpfCnpj);
+  if (platformId) queryParams.append('platformId', platformId);
+  if (sortBy) queryParams.append('sortBy', sortBy);
 
   try {
     const response = await api.get(`Client/search?${queryParams.toString()}`);
-    // Retorna os dados no formato que a nossa aplicação espera (com items e totalCount)
-    return {
-      items: response.data,
-      totalCount: response.headers['x-total-count'] || response.data.length,
-    };
+    // A nova API retorna diretamente um array de clientes.
+    return response.data || [];
   } catch (error) {
     console.error("Erro ao buscar a lista de clientes:", error);
     throw error;
@@ -42,32 +38,25 @@ const searchClients = async (params = {}) => {
 };
 
 /**
- * Busca os detalhes de um único cliente usando o seu CPF/CNPJ.
- * @param {string} cpfCnpj - O CPF ou CNPJ do cliente a ser buscado.
- * @returns {Promise<object>} - Uma promessa que resolve para o objeto do cliente.
+ * Busca os detalhes completos de um cliente.
+ * @param {number} platformId - O ID da plataforma do cliente.
+ * @param {string} clientCpfCnpj - O CPF ou CNPJ do cliente.
+ * @returns {Promise<object>} - Uma promessa que resolve para o objeto de dados completos do cliente.
  */
-const getClientByCpfCnpj = async (cpfCnpj) => {
+const getClientDetails = async (platformId, clientCpfCnpj) => {
     try {
-        const queryParams = new URLSearchParams({ cpfCnpj });
-        const response = await api.get(`Client/search?${queryParams.toString()}`);
-        
-        // A API de busca retorna uma lista, então precisamos de pegar o primeiro (e único) resultado
-        if (response.data && response.data.length > 0) {
-            return response.data[0];
-        } else {
-            // Se a lista estiver vazia, o cliente não foi encontrado.
-            throw new Error("Cliente não encontrado");
-        }
+        const queryParams = new URLSearchParams({ platformId, clientCpfCnpj });
+        const response = await api.get(`Client/details?${queryParams.toString()}`);
+        return response.data;
     } catch (error) {
-        console.error(`Erro ao buscar cliente com CPF/CNPJ ${cpfCnpj}:`, error);
+        console.error(`Erro ao buscar detalhes do cliente com CPF/CNPJ ${clientCpfCnpj}:`, error);
         throw error;
     }
 }
 
-// Exporta um objeto com todos os métodos do serviço de cliente
 const clientService = {
   searchClients,
-  getClientByCpfCnpj,
+  getClientDetails, // Renomeado e atualizado
 };
 
 export default clientService;
