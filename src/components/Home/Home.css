@@ -64,7 +64,7 @@
   align-items: center;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid #374151;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
 }
 
 .dashboard-home-page .d_home-card-header h3 {
@@ -294,6 +294,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: #E5E7EB;
+  padding-right: 8px;
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-tooltip-commission {

@@ -1,0 +1,155 @@
+.admin-dashboard-page {
+    padding: 2rem;
+    color: #E5E7EB;
+}
+
+.admin-dashboard-page h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+/* Estilo base para todos os cards */
+.card-base {
+    background: #1F2937;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/* --- NOVO LAYOUT --- */
+
+/* Container do Ranking */
+.ranking-container-full {
+    margin-bottom: 2rem;
+}
+
+.ranking-container-full h3 {
+    margin: 0 0 1rem 0;
+    color: #E5E7EB;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 1rem;
+}
+
+/* Cabeçalho da Lista do Ranking */
+.ranking-header {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 1.5rem;
+    padding: 0 0.5rem 0.5rem;
+    font-size: 0.8rem;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.ranking-header span:last-child {
+    text-align: right;
+}
+
+
+.ranking-container-full ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ranking-container-full li {
+    display: grid;
+    grid-template-columns: 120px 1fr auto; 
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #374151;
+    transition: background-color 0.2s;
+}
+.ranking-container-full li:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+.ranking-container-full li:last-child {
+    border-bottom: none;
+    padding-bottom: 0.5rem;
+}
+
+.rank-position-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #9CA3AF;
+    text-align: left;
+}
+
+.rank-position-text.rank-1 { color: #FBBF24; } /* Ouro */
+.rank-position-text.rank-2 { color: #D1D5DB; } /* Prata */
+.rank-position-text.rank-3 { color: #A16207; } /* Bronze */
+
+.consultant-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.consultant-sales {
+    font-weight: 600;
+    color: #34D399;
+    font-size: 1.1rem;
+    text-align: right;
+    /* --- FONTE REMOVIDA --- */
+}
+
+/* Nova grade principal (Gráfico + Card combinado) */
+.main-grid-reordered {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Novo card combinado para os totais */
+.stat-card-combined {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Distribui o espaço igualmente */
+    height: 100%; /* Ocupa toda a altura da célula do grid */
+}
+
+.stat-item h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: #9CA3AF;
+    margin: 0 0 0.5rem 0;
+}
+
+.stat-item .stat-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #34D399;
+    margin: 0;
+}
+
+.stat-item .stat-value.pending {
+    color: #FBBF24;
+}
+
+/* Estilo do container do gráfico (inalterado) */
+.chart-container h3 {
+    margin: 0 0 1.5rem 0;
+    color: #E5E7EB;
+}
+
+/* Estados de Carregamento e Erro */
+.admin-dashboard-loader, .admin-dashboard-error {
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+.admin-dashboard-error { color: #fca5a5; }
+
+/* Ajustes para telas menores */
+@media (max-width: 1024px) {
+    .main-grid-reordered {
+        grid-template-columns: 1fr;
+    }
+}

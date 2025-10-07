@@ -1,0 +1,191 @@
+/* --- Estrutura Principal da Página de Login do Admin --- */
+.admin-login-page {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color: #111827; /* Fundo mais escuro para diferenciar */
+}
+
+/* --- Painel da Esquerda (Branding) --- */
+.admin-login-branding {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: #F9FAFB;
+    position: relative;
+    overflow: hidden;
+    background-color: #1F2A40; /* Cor de fundo do painel lateral */
+    border-right: 1px solid #374151;
+}
+
+.admin-branding-content {
+    text-align: center;
+    max-width: 450px;
+    z-index: 1;
+}
+
+.admin-logo-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-showcase-logo {
+    height: 50px;
+    object-fit: contain;
+}
+
+.admin-showcase-logo.diamond {
+    height: 45px;
+}
+
+.admin-logo-separator {
+    height: 40px;
+    width: 2px;
+    background-color: #6B7280; /* Cor mais neutra para o admin */
+}
+
+.admin-branding-h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    color: #E5E7EB;
+}
+
+.admin-branding-p {
+    font-size: 1.1rem;
+    color: #9CA3AF;
+    line-height: 1.6;
+}
+
+/* --- Painel da Direita (Formulário) --- */
+.admin-login-form-area {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-login-form-wrapper {
+    width: 100%;
+    max-width: 380px;
+    padding: 2rem;
+}
+
+.admin-login-form-wrapper h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #F9FAFB;
+    text-align: center;
+}
+
+.admin-form-subtitle {
+    color: #9CA3AF;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.admin-input-group {
+    margin-bottom: 1.5rem;
+}
+
+.admin-input-group label {
+    display: block;
+    color: #9CA3AF;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.admin-input-field {
+    position: relative;
+}
+
+.admin-input-field i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6B7280;
+}
+
+.admin-input-field input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    border: 1px solid #374151;
+    background-color: #1F2A40;
+    color: #E5E7EB;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-input-field input:focus {
+    outline: none;
+    border-color: #4B5563;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2);
+}
+
+.admin-login-button {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #4B5563;
+    color: #F9FAFB;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.admin-login-button:hover:not(:disabled) {
+    background-color: #6B7280;
+}
+
+.admin-login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.admin-spinner-button {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(249, 250, 251, 0.3);
+    border-top-color: #F9FAFB;
+    border-radius: 50%;
+    display: inline-block;
+    animation: admin-spin 1s linear infinite;
+}
+
+.admin-error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+@keyframes admin-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+    .admin-login-branding {
+        display: none;
+    }
+    .admin-login-form-area {
+        width: 100%;
+        padding: 2rem;
+    }
+}

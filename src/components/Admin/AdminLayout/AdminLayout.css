@@ -1,0 +1,14 @@
+.admin-layout {
+  display: flex;
+  /* Garante que o layout ocupe exatamente a altura da tela */
+  height: 100vh; 
+  /* Impede que o container principal crie uma barra de rolagem */
+  overflow: hidden; 
+  background-color: #111827;
+}
+
+.admin-content {
+  flex-grow: 1;
+  /* Cria uma barra de rolagem vertical APENAS nesta área quando o conteúdo transborda */
+  overflow-y: auto; 
+}

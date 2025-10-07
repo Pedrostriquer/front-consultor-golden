@@ -6,7 +6,13 @@ import api from './api/api';
  */
 const getMetas = async () => {
   try {
-    const response = await api.get('Meta');
+    // Adiciona o cabeçalho X-API-Key especificamente para esta requisição
+    const response = await api.get('Meta', {
+      headers: {
+        'X-API-Key': 'c7a3c3e5-8d2a-4f5a-8b1e-9c0d1e2f3a4b'
+      }
+    });
+
     // A API retorna uma lista, então pegamos o primeiro (e único) item.
     if (response.data && response.data.length > 0) {
       return response.data[0];

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -32,6 +33,11 @@ const formatCurrency = (value = 0, showDecimals = false) =>
     maximumFractionDigits: 2,
   })}`;
 
+const getFirstName = (fullName) => {
+  if (!fullName) return "";
+  return fullName.split(" ")[0];
+};
+
 const PlatformLogo = ({ platformId }) => (
   <img
     src={platformId === 1 ? goldenLogo : diamondLogo}
@@ -56,6 +62,7 @@ const AnimatedProgressBar = ({ value, color }) => (
 // --- COMPONENTE PRINCIPAL ---
 const Home = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [commissionData, setCommissionData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
@@ -74,52 +81,66 @@ const Home = () => {
     if (!user) return;
 
     const setupAndFetch = async () => {
+      console.log("LOG: Iniciando setupAndFetch...");
+
       dashboardSocketService.registerListener(
         "ReceiveCommissionData",
         (data) => {
+          console.log("LOG: ReceiveCommissionData ->", data);
           if (isMounted) setCommissionData(data);
         }
       );
       dashboardSocketService.registerListener(
         "ReceiveHistoricalCommissions",
         (data) => {
+          console.log("LOG: ReceiveHistoricalCommissions ->", data);
           if (isMounted) setHistoricalData(data);
         }
       );
       dashboardSocketService.registerListener("ReceiveTotalClients", (data) => {
+        console.log("LOG: ReceiveTotalClients ->", data);
         if (isMounted) setClientCount(data.totalClientCount);
       });
       dashboardSocketService.registerListener(
         "ReceiveClientsByPlatform",
         (data) => {
+          console.log("LOG: ReceiveClientsByPlatform ->", data);
           if (isMounted) setClientsByPlatform(data);
         }
       );
       dashboardSocketService.registerListener("ReceiveTopClients", (data) => {
+        console.log("LOG: ReceiveTopClients ->", data);
         if (isMounted) setTopClients(data);
       });
       dashboardSocketService.registerListener(
         "ReceiveSalesByPlatform",
         (data) => {
+          console.log("LOG: ReceiveSalesByPlatform ->", data);
           if (isMounted) setSalesByPlatform(data);
         }
       );
       dashboardSocketService.registerListener("DashboardLoadError", (msg) => {
+        console.error("LOG: DashboardLoadError ->", msg);
         if (isMounted) setError(msg);
       });
 
       try {
+        console.log("LOG: Buscando dados de metas...");
         const metaResponse = await metaService.getMetas();
+        console.log("LOG: Resposta de Metas ->", metaResponse);
         if (isMounted) setMetaData(metaResponse);
       } catch (err) {
-        console.error("Erro ao buscar metas:", err);
+        console.error("LOG: Erro ao buscar metas:", err);
       }
 
       try {
+        console.log("LOG: Conectando SignalR e iniciando geração de dados...");
         await dashboardSocketService.startConnection();
         await dashboardService.startDataGeneration();
+        console.log("LOG: Conexão bem-sucedida e requisição enviada.");
       } catch (err) {
         if (isMounted) setError("Falha ao iniciar a busca de dados.");
+        console.error("LOG: Erro na conexão SignalR ou geração de dados:", err);
       }
     };
 
@@ -130,6 +151,20 @@ const Home = () => {
       dashboardSocketService.clearListeners();
     };
   }, [user]);
+
+  // ======================= INÍCIO DA CORREÇÃO =======================
+  /**
+   * Navega para a página de detalhes do cliente, passando o platformId no estado.
+   * @param {object} client - O objeto do cliente contendo cpfCnpj e platform.
+   */
+  const handleClientClick = (client) => {
+    if (client && client.cpfCnpj && client.platform) {
+      navigate(`/platform/clientes/${client.cpfCnpj}`, {
+        state: { platformId: client.platform },
+      });
+    }
+  };
+  // ======================= FIM DA CORREÇÃO =======================
 
   const chartData = useMemo(() => {
     if (!historicalData) return [];
@@ -331,12 +366,18 @@ const Home = () => {
             {filteredClients ? (
               filteredClients.length > 0 ? (
                 filteredClients.slice(0, 5).map((client, i) => (
-                  <li key={i} className="d_home-client-item">
+                  // ======================= INÍCIO DA CORREÇÃO =======================
+                  <li
+                    key={i}
+                    className="d_home-client-item clickable"
+                    onClick={() => handleClientClick(client)}
+                  >
+                  {/* ======================= FIM DA CORREÇÃO ======================= */}
                     <div className="d_home-client-info">
                       <div className="d_home-client-platform-logo">
                         <PlatformLogo platformId={client.platform} />
                       </div>
-                      <span>{client.name}</span>
+                      <span>{getFirstName(client.name)}</span>
                     </div>
                     <span className="d_home-client-balance">
                       {formatCurrency(client.totalInvested)}
