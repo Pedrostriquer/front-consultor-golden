@@ -28,7 +28,7 @@ const searchClients = async (params = {}) => {
   if (sortBy) queryParams.append('sortBy', sortBy);
 
   try {
-    const response = await api.get(`Client/search?${queryParams.toString()}`);
+    const response = await api.get(`Client/search2?${queryParams.toString()}`);
     // A nova API retorna diretamente um array de clientes.
     return response.data || [];
   } catch (error) {

@@ -1,40 +1,33 @@
-/* --- GERAL DA PÁGINA DE DETALHES DO CLIENTE --- */
+/* --- GERAL DA PÁGINA --- */
 .client-detail-page {
-  font-family: 'Poppins', sans-serif;
-  padding: 20px;
+  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  color: #E5E7EB;
 }
 
-/* --- MENSAGENS E ESTADOS --- */
-.client-detail-page .client-detail-loading,
-.client-detail-page .client-detail-error {
+.client-detail-loading,
+.client-detail-error {
   padding: 2rem;
   text-align: center;
   font-size: 1.2rem;
-  border-radius: 12px;
 }
 
-.client-detail-page .client-detail-loading {
-  color: #9CA3AF;
-}
-
-.client-detail-page .client-detail-error {
+.client-detail-error {
   background-color: rgba(239, 68, 68, 0.1);
   color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  border: 1px solid #ef444433;
 }
 
-/* --- ELEMENTOS ESPECÍFICOS DA PÁGINA DO CLIENTE --- */
-.client-detail-page .card-base {
-  background-color: #1F2937;
+.card-base {
+  background-color: #1F2A40;
   border-radius: 12px;
   border: 1px solid #374151;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.client-detail-page .back-button {
+.back-button {
   background: none;
   border: none;
   color: #9CA3AF;
@@ -43,55 +36,51 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.2s;
   margin-bottom: 1.5rem;
 }
-.client-detail-page .back-button:hover {
-  color: #f6d168;
+
+.back-button:hover {
+  color: #E5E7EB;
 }
 
-.client-detail-page .client-header {
+.client-header {
+  margin-bottom: 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  align-items: flex-start;
 }
 
-.client-detail-page .client-header h1 {
+.client-header h1 {
   margin: 0 0 0.25rem 0;
   font-size: 2rem;
-  font-weight: 700;
   color: #F9FAFB;
 }
-.client-detail-page .client-header p {
+
+.client-header p {
   margin: 0;
   color: #9CA3AF;
-  font-size: 1rem;
 }
 
-.client-detail-page .client-status-tag {
-  padding: 6px 16px;
-  border-radius: 20px;
+.client-status-tag {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  color: #fff;
-  white-space: nowrap;
+  text-transform: uppercase;
 }
-.client-detail-page .status-ativo {
-  background-color: #10B981;
-}
-.client-detail-page .status-inativo {
-  background-color: #6B7280;
-}
+.client-status-tag.status-ativo { background-color: #059669; color: #A7F3D0; }
+.client-status-tag.status-inativo { background-color: #991B1B; color: #FECACA; }
 
-.client-detail-page .details-grid {
+
+.details-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-.client-detail-page .details-card h3 {
+.details-card h3 {
   margin: 0 0 1.5rem 0;
   font-size: 1.1rem;
   border-bottom: 1px solid #374151;
@@ -99,12 +88,10 @@
   color: #E5E7EB;
   display: flex;
   align-items: center;
+  gap: 0.75rem;
 }
-.client-detail-page .details-card h3 i {
-  color: #f6d168;
-  margin-right: 0.75rem;
-}
-.client-detail-page .details-card ul {
+
+.details-card ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -112,119 +99,145 @@
   flex-direction: column;
   gap: 1rem;
 }
-.client-detail-page .details-card li {
+
+.details-card li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.95rem;
 }
-.client-detail-page .details-card li span {
+
+.details-card li span {
   color: #9CA3AF;
 }
-.client-detail-page .details-card li strong {
+
+.details-card li strong {
   font-weight: 500;
-  text-align: right;
   color: #F9FAFB;
+  text-align: right;
 }
+.details-card li strong.valor-neutro { color: #A5B4FC; }
+.details-card li strong.valor-negativo { color: #FCA5A5; }
+.details-card li strong.valor-disponivel { color: #34D399; }
 
-.client-detail-page .valor-positivo { color: #34D399; }
-.client-detail-page .valor-negativo { color: #F87171; }
-.client-detail-page .valor-neutro { color: #60A5FA; }
-.client-detail-page .valor-disponivel {
-  color: #f6d168;
-  font-weight: bold;
-}
 
-.client-detail-page .data-table-container {
+.data-table-container {
   padding: 0;
   overflow: hidden;
 }
 
-.client-detail-page .table-tabs {
+.data-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table-container th,
+.data-table-container td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid #374151;
+}
+
+.data-table-container tbody tr:last-child td {
+  border-bottom: none;
+}
+.data-table-container tbody tr.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.data-table-container tbody tr.clickable-row:hover {
+  background-color: #37415155;
+}
+
+
+.data-table-container th {
+  color: #9CA3AF;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.data-table-container td.valor-disponivel {
+  color: #34D399;
+  font-weight: 500;
+}
+
+
+.table-tabs {
   display: flex;
-  background-color: #111827;
   border-bottom: 1px solid #374151;
   padding: 0 20px;
 }
 
-.client-detail-page .tab-button {
+.tab-button {
   padding: 12px 20px;
   cursor: pointer;
   background-color: transparent;
   border: none;
   border-bottom: 3px solid transparent;
   font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
   color: #9CA3AF;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.client-detail-page .tab-button:hover {
-  color: #E5E7EB;
-}
-.client-detail-page .tab-button.active {
-  color: #f6d168;
-  border-bottom-color: #f6d168;
+.tab-button:hover { color: #FFF; }
+
+.tab-button.active {
+  color: #A5B4FC;
+  border-bottom-color: #A5B4FC;
   font-weight: 600;
 }
 
-.client-detail-page .table-content {
-  padding: 20px;
+.table-content {
   padding-top: 10px;
 }
 
-.client-detail-page table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.client-detail-page th, .client-detail-page td {
-  padding: 1rem 0;
-  text-align: left;
-  border-bottom: 1px solid #374151;
-  font-size: 0.95rem;
-}
-.client-detail-page tbody tr:last-child td {
-  border-bottom: none;
-}
-.client-detail-page th {
-  color: #9CA3AF;
-  font-weight: 500;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  padding-bottom: 1rem;
-}
-.client-detail-page td {
-  color: #D1D5DB;
-}
-
-.client-detail-page tbody tr.clickable-row {
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.client-detail-page tbody tr.clickable-row:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-.client-detail-page .empty-message {
-  padding: 2rem;
+.empty-message {
   text-align: center;
   color: #6B7280;
-  font-style: italic;
+  padding: 2rem;
 }
 
-.client-detail-page .status-badge {
+.status-badge {
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.8rem;
-  font-weight: 500;
-  color: #fff;
-  text-align: center;
-  display: inline-block;
+  font-weight: 600;
 }
-.client-detail-page .status-badge.status-active { background-color: #059669; }
-.client-detail-page .status-badge.status-canceled { background-color: #DC2626; }
-.client-detail-page .status-badge.status-pending { background-color: #D97706; }
-.client-detail-page .status-badge.status-default { background-color: #4B5563; }
+.status-badge.status-completed { background-color: #059669; color: #A7F3D0; }
+.status-badge.status-canceled { background-color: #991B1B; color: #FECACA; }
+.status-badge.status-pending { background-color: #9A3412; color: #FDE68A; }
+.status-badge.status-active { background-color: #1D4ED8; color: #BFDBFE; }
+.status-badge.status-default { background-color: #4B5563; color: #E5E7EB; }
+
+/* --- Estilos da Paginação --- */
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #374151;
+  color: #9CA3AF;
+  font-size: 0.9rem;
+}
+
+.pagination-controls button {
+  background-color: #374151;
+  color: #E5E7EB;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #4B5563;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
