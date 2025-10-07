@@ -43,14 +43,12 @@ const ManageMetasModal = ({ isOpen, onClose }) => {
 
     const handleLevelChange = (index, field, value) => {
         const newLevels = [...editingMeta.metas];
-        // Permite que o campo fique vazio temporariamente para digitação
         newLevels[index][field] = value;
         setEditingMeta(prev => ({ ...prev, metas: newLevels }));
     };
 
     const handleLevelBlur = (index, field, value) => {
         const newLevels = [...editingMeta.metas];
-        // Ao sair do campo, formata para número ou 0 se estiver vazio
         newLevels[index][field] = parseFloat(value) || 0;
         setEditingMeta(prev => ({ ...prev, metas: newLevels }));
     };
@@ -66,8 +64,19 @@ const ManageMetasModal = ({ isOpen, onClose }) => {
 
     const handleSave = async () => {
         if (!editingMeta) return;
+
+        // ======================= INÍCIO DA VALIDAÇÃO =======================
+        if (!editingMeta.name || editingMeta.name.trim() === '') {
+            alert('Por favor, adicione um nome para a meta.');
+            return;
+        }
+        if (!editingMeta.description || editingMeta.description.trim() === '') {
+            alert('Por favor, adicione uma descrição para a meta.');
+            return;
+        }
+        // ======================= FIM DA VALIDAÇÃO =======================
+
         try {
-            // Garante que todos os valores sejam números antes de salvar
             const sanitizedMeta = {
                 ...editingMeta,
                 metas: editingMeta.metas.map(level => ({
@@ -84,7 +93,10 @@ const ManageMetasModal = ({ isOpen, onClose }) => {
             setEditingMeta(null);
             setSelectedMetaId(null);
             fetchMetas();
-        } catch (error) { console.error("Erro ao salvar meta", error); }
+        } catch (error) { 
+            console.error("Erro ao salvar meta", error);
+            alert("Ocorreu um erro ao salvar a meta. Tente novamente.");
+        }
     };
 
     const handleDelete = async (id) => {
@@ -178,7 +190,6 @@ const ManageMetasModal = ({ isOpen, onClose }) => {
 // ================ COMPONENTE PRINCIPAL DA PÁGINA ===================
 // ===================================================================
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    // ...
     if (totalPages <= 1) return null;
     return (
       <div className="pagination-controls"><button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}><i className="fa-solid fa-arrow-left"></i> Anterior</button><span>Página {currentPage} de {totalPages}</span><button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>Próxima <i className="fa-solid fa-arrow-right"></i></button></div>
@@ -186,7 +197,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 };
 
 const AdminConsultantList = () => {
-    // ... (toda a lógica do componente principal permanece a mesma)
     const [consultants, setConsultants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
