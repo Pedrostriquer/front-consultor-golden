@@ -6,10 +6,10 @@ import api from './api/api';
  * @param {string} password - A senha do consultor.
  * @returns {Promise<object>} - A promessa que resolve para os dados de autenticação.
  */
-const login = async (cpfCnpj, password) => {
+const login = async (email, password) => {
     try {
         const response = await api.post('auth/login', {
-            cpfCnpj,
+            email,
             password,
         });
 
