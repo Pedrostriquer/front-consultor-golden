@@ -56,9 +56,10 @@ const Perfil = () => {
 
   const friendlyConsultantName = createUrlFriendlyName(user.name);
   const indicationLink = `https://areadocliente.goldenbrasil.com.br/cadastro?ref=${user.id}&consultor=${friendlyConsultantName}`;
-  const bindingLink = `https://areadocliente.goldenbrasil.com.br/vincular?consultorId=${
-    user.id
-  }&consultorName=${encodeURIComponent(user.name)}`;
+
+  const bindingLink = `https://areadocliente.goldenbrasil.com.br/vincular?search=${encodeURIComponent(
+    user.name
+  )}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(indicationLink).then(() => {
