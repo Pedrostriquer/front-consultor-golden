@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import saleService from "../../dbServices/saleService";
+import clientService from "../../dbServices/clientService";
 import "./SaleDetailPage.css";
+
 
 // --- Funções Auxiliares ---
 const formatCurrency = (value) =>
@@ -10,6 +12,7 @@ const formatCurrency = (value) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
   const options = {
@@ -21,6 +24,7 @@ const formatDate = (dateString) => {
   };
   return new Date(dateString).toLocaleDateString("pt-BR", options);
 };
+
 const getStatusBadge = (status) => {
   const statusText = String(status).toUpperCase();
   const statusMap = {
@@ -36,13 +40,18 @@ const getStatusBadge = (status) => {
   return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
-// --- Componente Principal ---
 const SaleDetailPage = () => {
   const { saleId } = useParams();
   const navigate = useNavigate();
   const [sale, setSale] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // Estados para o Recibo
+  const [receiptFile, setReceiptFile] = useState(null);
+  const [receiptDescription, setReceiptDescription] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState({ text: "", type: "" });
 
   useEffect(() => {
     const fetchSaleDetails = async () => {
@@ -61,42 +70,71 @@ const SaleDetailPage = () => {
         setIsLoading(false);
       }
     };
-
     fetchSaleDetails();
   }, [saleId]);
 
-  if (isLoading) {
-    // Você pode criar um componente de Skeleton Loader aqui se desejar
-    return <div className="sale-detail-page">Carregando...</div>;
-  }
+  const handleUploadReceipt = async (e) => {
+    e.preventDefault();
 
-  if (error) {
+    // VALIDAÇÃO DE PLATAFORMA (Somente Contrato de Minérios - ID 1)
+    if (sale.platformId !== "CONTRATO_DE_MINERIOS") {
+      setUploadMessage({
+        text: "Upload direto permitido apenas para a plataforma Contrato de Minérios.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!receiptFile) {
+      setUploadMessage({
+        text: "Selecione um arquivo primeiro.",
+        type: "error",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadMessage({ text: "", type: "" });
+
+    try {
+      // Faz a requisição direta para a nova rota do backend de Minérios (localhost:5097)
+      await clientService.addContractReceiptMineriosDirect(
+        sale.clientCpfCnpj,
+        sale.contractId,
+        (receiptDescription + ": Adicionado pelo consultor") || "Recibo enviado pelo consultor via Portal",
+        receiptFile
+      );
+
+      setUploadMessage({
+        text: "Recibo anexado com sucesso diretamente no sistema de minérios!",
+        type: "success",
+      });
+      setReceiptFile(null);
+      setReceiptDescription("");
+    } catch (err) {
+      console.error("Erro no upload direto:", err);
+      setUploadMessage({
+        text: "Erro ao enviar recibo. Verifique se o servidor de minérios (5097) está rodando.",
+        type: "error",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  if (isLoading) return <div className="sale-detail-page">Carregando...</div>;
+  if (error)
     return <div className="sale-detail-page sale-detail-error">{error}</div>;
-  }
+  if (!sale) return null;
 
-  if (!sale) {
-    return null;
-  }
-
-  // Calcula a comissão baseada na percentagem do consultor
   const commissionValue =
     sale.value * (sale.consultant?.commissionPercentage / 100);
-
-  const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    in: {
-      opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.1, duration: 0.5 },
-    },
-  };
 
   return (
     <motion.div
       className="sale-detail-page"
-      variants={pageVariants}
-      initial="initial"
-      animate="in"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       <button onClick={() => navigate(-1)} className="back-button">
         <i className="fa-solid fa-arrow-left"></i> Voltar para Vendas
@@ -128,6 +166,7 @@ const SaleDetailPage = () => {
             </li>
           </ul>
         </div>
+
         <div className="details-card card-base">
           <h3>
             <i className="fa-solid fa-file-invoice-dollar"></i> Valores
@@ -139,29 +178,64 @@ const SaleDetailPage = () => {
                 {formatCurrency(sale.value)}
               </strong>
             </li>
-            {sale && sale.status != "RECEBIDO" && (
-              <li>
-                <span>
-                  Comissão Meta Atual ({sale.consultant?.commissionPercentage}%)
-                </span>
-                <strong className="valor-comissao">
-                  {formatCurrency(commissionValue)}
-                </strong>
-              </li>
-            )}
-
-            {sale && sale.status == "RECEBIDO" && (
-              <li>
-                <span>
-                  Comissão Recebida ({sale.consultant?.commissionPercentage}%)
-                </span>
-                <strong className="valor-comissao">
-                  {formatCurrency(commissionValue)}
-                </strong>
-              </li>
-            )}
+            <li>
+              <span>Comissão ({sale.consultant?.commissionPercentage}%)</span>
+              <strong className="valor-comissao">
+                {formatCurrency(commissionValue)}
+              </strong>
+            </li>
           </ul>
         </div>
+
+        {/* SEÇÃO DE UPLOAD CONDICIONAL: APARECE APENAS SE FOR PLATAFORMA ID 1 */}
+        {sale.platformId === "CONTRATO_DE_MINERIOS" ? (
+          <div className="receipt-upload-card card-base">
+            <h3>
+              <i className="fa-solid fa-file-arrow-up"></i> Anexar Recibo
+              (Direto)
+            </h3>
+            <form onSubmit={handleUploadReceipt}>
+              <div className="form-group">
+                <label>Descrição do Recibo</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Comprovante de transferência"
+                  value={receiptDescription}
+                  onChange={(e) => setReceiptDescription(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Arquivo (PDF ou Imagem)</label>
+                <input
+                  type="file"
+                  onChange={(e) => setReceiptFile(e.target.files[0])}
+                  accept=".pdf,image/*"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="upload-button"
+                disabled={isUploading}
+              >
+                {isUploading ? "Enviando..." : "Enviar para Minérios"}
+              </button>
+
+              {uploadMessage.text && (
+                <div className={`upload-msg ${uploadMessage.type}`}>
+                  {uploadMessage.text}
+                </div>
+              )}
+            </form>
+          </div>
+        ) : (
+          <div className="card-base">
+            <p style={{ color: "#9CA3AF", fontSize: "0.9rem" }}>
+              <i className="fa-solid fa-info-circle"></i> O envio direto de
+              recibos não está disponível para esta plataforma.
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="description-card card-base">

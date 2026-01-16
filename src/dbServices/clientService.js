@@ -1,4 +1,9 @@
 import api from './api/api';
+import axios from 'axios';
+
+// const MINERIOS_API_URL = "http://localhost:5097/api/Receipt";
+const MINERIOS_API_URL = "https://backend.demelloagent.app/api/Receipt";
+
 
 /**
  * Busca clientes com base em vários parâmetros.
@@ -54,9 +59,28 @@ const getClientDetails = async (platformId, clientCpfCnpj) => {
     }
 }
 
+/**
+ * Envia um recibo DIRETAMENTE para o backend de Contratos de Minérios.
+ */
+const addContractReceiptMineriosDirect = async (clientCpfCnpj, contractId, description, file) => {
+  const formData = new FormData();
+  formData.append("clientCpfCnpj", clientCpfCnpj);
+  formData.append("contractId", contractId);
+  formData.append("description", description);
+  formData.append("file", file);
+
+  // Requisição direta para o localhost:5097
+  const response = await axios.post(
+    `${MINERIOS_API_URL}/contract-consultor-adding`,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+  return response.data;
+};
 const clientService = {
   searchClients,
   getClientDetails, // Renomeado e atualizado
+  addContractReceiptMineriosDirect
 };
 
 export default clientService;

@@ -145,3 +145,74 @@
     padding: 1rem;
     text-align: center;
 }
+
+/* --- ESTILOS DO UPLOAD DE RECIBO --- */
+.receipt-upload-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.receipt-upload-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.receipt-upload-card label {
+    font-size: 0.9rem;
+    color: #9CA3AF;
+}
+
+.receipt-upload-card input[type="text"] {
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 10px;
+    color: white;
+}
+
+.receipt-upload-card input[type="file"] {
+    color: #9CA3AF;
+    font-size: 0.85rem;
+}
+
+.upload-button {
+    background-color: #f6d168;
+    color: #111827;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.upload-button:hover:not(:disabled) {
+    background-color: #e5c057;
+    transform: translateY(-2px);
+}
+
+.upload-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.upload-msg {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.upload-msg.success {
+    background-color: rgba(52, 211, 153, 0.1);
+    color: #34D399;
+    border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.upload-msg.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #F87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
