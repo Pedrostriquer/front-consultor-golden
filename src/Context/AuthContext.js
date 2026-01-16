@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react'; // Adicionado useCallback
 import { useNavigate } from 'react-router-dom';
 import authService from '../dbServices/authService';
 import consultantService from '../dbServices/consultantService';
@@ -10,17 +10,25 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchConsultantData = async () => {
+  // 1. Envolver o logout em useCallback para ser usado como dependência
+  const logout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem('authToken');
+    navigate('/login');
+  }, [navigate]);
+
+  // 2. Envolver fetchConsultantData em useCallback
+  const fetchConsultantData = useCallback(async () => {
     try {
       const data = await consultantService.getMe();
-      // CORREÇÃO: A API retorna o objeto do utilizador diretamente, não dentro de "consultor"
       setUser(data); 
     } catch (error) {
       console.error("Falha ao buscar dados do consultor:", error);
       logout();
     }
-  };
+  }, [logout]);
 
+  // 3. Adicionar fetchConsultantData às dependências do useEffect
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -28,24 +36,17 @@ export const AuthProvider = ({ children }) => {
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [fetchConsultantData]); // <--- fetchConsultantData adicionada aqui
 
   const login = async (username, password) => {
     try {
       const data = await authService.login(username, password);
       localStorage.setItem('authToken', data.accessToken);
       await fetchConsultantData();
-      // A navegação agora é tratada pelo useEffect no Login.js, o que é mais robusto
     } catch (error) {
       console.error('Falha no login:', error);
       throw error;
     }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('authToken');
-    navigate('/login');
   };
 
   const value = {
