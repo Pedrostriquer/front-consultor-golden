@@ -13,8 +13,6 @@ api.interceptors.request.use(async config => {
     tokenType = 'Admin';
   }
 
-  // Adicione este log para depuração
-  console.log(`Enviando requisição para ${config.url} com token do tipo: ${tokenType}`);
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

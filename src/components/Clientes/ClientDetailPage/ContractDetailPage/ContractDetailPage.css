@@ -1,4 +1,3 @@
-/* --- GERAL DA PÁGINA DE DETALHES DO CONTRATO --- */
 .contract-detail-page {
   font-family: 'Poppins', sans-serif;
   padding: 20px;
@@ -7,7 +6,6 @@
   color: #E5E7EB;
 }
 
-/* --- ELEMENTOS ESPECÍFICOS DA PÁGINA DO CONTRATO --- */
 .contract-detail-page .card-base {
   background-color: #1F2937;
   border-radius: 12px;
@@ -28,6 +26,7 @@
   transition: color 0.2s;
   margin-bottom: 1.5rem;
 }
+
 .contract-detail-page .back-button:hover {
   color: #f6d168;
 }
@@ -51,15 +50,6 @@
   color: #9CA3AF;
 }
 
-.contract-detail-page .contract-header .status-badge {
-  padding: 8px 18px;
-  font-size: 1rem;
-}
-
-.contract-detail-page .progress-card {
-  margin-bottom: 1.5rem;
-}
-
 .contract-detail-page .progress-card h3 {
   margin: 0 0 1.5rem 0;
   font-size: 1.2rem;
@@ -67,12 +57,6 @@
   color: #E5E7EB;
   border-bottom: 1px solid #374151;
   padding-bottom: 1rem;
-}
-
-.contract-detail-page .progress-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
 .contract-detail-page .progress-labels {
@@ -93,30 +77,29 @@
 .contract-detail-page .progress-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, #f6d168, #d3a429);
-  border-radius: 6px;
 }
 
-.contract-detail-page .details-grid, 
-.contract-detail-page .details-grid-diamond {
+.contract-detail-page .details-grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .contract-detail-page .metric-card {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  justify-content: center;
 }
 
 .contract-detail-page .metric-card span {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #9CA3AF;
 }
 
 .contract-detail-page .metric-card strong {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #F9FAFB;
 }
@@ -125,17 +108,159 @@
   color: #34D399;
 }
 
-.contract-detail-page .status-badge {
+.highlight-withdraw {
+  border-left: 4px solid #f6d168 !important;
+  position: relative;
+}
+
+.next-withdraw-info {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.next-withdraw-info small {
+  color: #9CA3AF;
+  font-size: 0.75rem;
+}
+
+.today-label {
+  color: #34D399;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.view-all-dates {
+  background: rgba(246, 209, 104, 0.1);
+  border: 1px solid rgba(246, 209, 104, 0.3);
+  color: #f6d168;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: fit-content;
+}
+
+.view-all-dates:hover {
+  background: #f6d168;
+  color: #111827;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 450px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: #9CA3AF;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.withdraw-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.withdraw-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: #111827;
+  border-left: 4px solid transparent;
+}
+
+.withdraw-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.withdraw-index {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+}
+
+.withdraw-date {
+  font-weight: 500;
+}
+
+.date-past {
+  border-color: #EF4444;
+  opacity: 0.7;
+}
+
+.date-past .withdraw-date {
+  color: #FCA5A5;
+}
+
+.date-today {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.date-today .withdraw-date {
+  color: #34D399;
+  font-weight: 700;
+}
+
+.date-future {
+  border-color: #3B82F6;
+}
+
+.date-future .withdraw-date {
+  color: #60A5FA;
+}
+
+.status-badge {
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
   color: #fff;
-  text-align: center;
-  display: inline-block;
 }
 
-.contract-detail-page .status-badge.status-active { background-color: #059669; }
-.contract-detail-page .status-badge.status-canceled { background-color: #DC2626; }
-.contract-detail-page .status-badge.status-pending { background-color: #D97706; }
-.contract-detail-page .status-badge.status-default { background-color: #4B5563; }
+.status-badge.status-active {
+  background-color: #059669;
+}
+
+.status-badge.status-canceled {
+  background-color: #DC2626;
+}
+
+.status-badge.status-default {
+  background-color: #4B5563;
+}
