@@ -6,11 +6,9 @@ import { useAuth } from "../../Context/AuthContext";
 import useDebounce from "../../hooks/useDebounce";
 import "./Clientes.css";
 
-// --- Logos ---
 import goldenLogo from "../../img/logo-golden-ouro2.png";
 import diamondLogo from "../../img/diamond_prime_diamond (1).png";
 
-// --- Componentes de UI Locais ---
 const PlatformLogo = ({ platformId }) => {
   const isGolden = platformId === 1 || platformId === "CONTRATO_DE_MINERIOS";
   const platform = isGolden ? "Golden Brasil" : "Diamond Prime";
@@ -40,7 +38,7 @@ const EmptyState = ({ icon, title, message }) => (
   </tr>
 );
 
-const TableSkeleton = ({ rows = 10 }) => (
+const TableSkeleton = ({ rows = 5 }) => (
   <tbody>
     {[...Array(rows)].map((_, i) => (
       <tr key={i} className="skeleton-row">
@@ -61,12 +59,14 @@ const TableSkeleton = ({ rows = 10 }) => (
   </tbody>
 );
 
-// --- Componente Principal ---
 const Clientes = () => {
   const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -78,6 +78,10 @@ const Clientes = () => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const debouncedFilters = useDebounce(filters, 500);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchTerm, debouncedFilters]);
 
   const fetchClients = useCallback(async () => {
     if (!user) return;
@@ -105,7 +109,6 @@ const Clientes = () => {
       const response = await clientService.searchClients(params);
       setClients(response);
     } catch (err) {
-      // <-- A CORREÇÃO ESTÁ AQUI
       console.error("Erro ao buscar clientes:", err);
       setError(
         "Não foi possível carregar os clientes. Tente novamente mais tarde."
@@ -119,6 +122,11 @@ const Clientes = () => {
     fetchClients();
   }, [fetchClients]);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentClients = clients.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(clients.length / itemsPerPage);
+
   const handleRowClick = (client) => {
     navigate(`/platform/clientes/${client.cpfCnpj}`, {
       state: { platformId: client.platformId },
@@ -126,15 +134,23 @@ const Clientes = () => {
   };
 
   const rowVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-    exit: { opacity: 0, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.2 } },
+    exit: { opacity: 0, x: 10, transition: { duration: 0.1 } },
   };
 
   return (
     <div className="clientes-page">
       <div className="page-header">
-        <h1>Meus Clientes</h1>
+        <div>
+          <h1>Meus Clientes</h1>
+          {!isLoading && (
+            <p className="total-count">
+              Total: <strong>{clients.length}</strong>{" "}
+              {clients.length === 1 ? "cliente" : "clientes"}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="filters-container card-base">
@@ -186,10 +202,10 @@ const Clientes = () => {
             </tr>
           </thead>
           {isLoading ? (
-            <TableSkeleton rows={10} />
+            <TableSkeleton rows={5} />
           ) : (
-            <AnimatePresence>
-              <tbody>
+            <AnimatePresence mode="wait">
+              <tbody key={currentPage}>
                 {error && (
                   <tr>
                     <td colSpan="4" className="error-cell">
@@ -197,8 +213,8 @@ const Clientes = () => {
                     </td>
                   </tr>
                 )}
-                {!error && clients.length > 0
-                  ? clients.map((client) => (
+                {!error && currentClients.length > 0
+                  ? currentClients.map((client) => (
                       <motion.tr
                         key={`${client.cpfCnpj}-${client.platformId}`}
                         onClick={() => handleRowClick(client)}
@@ -230,6 +246,26 @@ const Clientes = () => {
           )}
         </table>
       </div>
+
+      {!isLoading && clients.length > itemsPerPage && (
+        <div className="pagination-controls">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
+            <i className="fa-solid fa-chevron-left"></i> Anterior
+          </button>
+          <span>
+            Página {currentPage} de {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            Próximo <i className="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

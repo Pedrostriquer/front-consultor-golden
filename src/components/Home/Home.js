@@ -12,17 +12,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import CountUp from "react-countup";
 import "./Home.css";
 
-// --- SERVIÇOS ---
 import { dashboardSocketService } from "../../dbServices/dashboardSocketService";
 import dashboardService from "../../dbServices/dashboardService";
 import { useAuth } from "../../Context/AuthContext";
 import metaService from "../../dbServices/metaService";
 
-// --- ASSETS ---
 import goldenLogo from "../../img/logo-golden-ouro2.png";
 import diamondLogo from "../../img/diamond_prime_diamond (1).png";
 
-// --- COMPONENTES AUXILIARES ---
 const SkeletonLoader = ({ className = "", style = {} }) => (
   <div className={`d_home-skeleton-loader ${className}`} style={style}></div>
 );
@@ -59,7 +56,6 @@ const AnimatedProgressBar = ({ value, color }) => (
   </div>
 );
 
-// --- COMPONENTE PRINCIPAL ---
 const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -81,66 +77,52 @@ const Home = () => {
     if (!user) return;
 
     const setupAndFetch = async () => {
-      console.log("LOG: Iniciando setupAndFetch...");
-
       dashboardSocketService.registerListener(
         "ReceiveCommissionData",
         (data) => {
-          console.log("LOG: ReceiveCommissionData ->", data);
           if (isMounted) setCommissionData(data);
         }
       );
       dashboardSocketService.registerListener(
         "ReceiveHistoricalCommissions",
         (data) => {
-          console.log("LOG: ReceiveHistoricalCommissions ->", data);
           if (isMounted) setHistoricalData(data);
         }
       );
       dashboardSocketService.registerListener("ReceiveTotalClients", (data) => {
-        console.log("LOG: ReceiveTotalClients ->", data);
         if (isMounted) setClientCount(data.totalClientCount);
       });
       dashboardSocketService.registerListener(
         "ReceiveClientsByPlatform",
         (data) => {
-          console.log("LOG: ReceiveClientsByPlatform ->", data);
           if (isMounted) setClientsByPlatform(data);
         }
       );
       dashboardSocketService.registerListener("ReceiveTopClients", (data) => {
-        console.log("LOG: ReceiveTopClients ->", data);
         if (isMounted) setTopClients(data);
       });
       dashboardSocketService.registerListener(
         "ReceiveSalesByPlatform",
         (data) => {
-          console.log("LOG: ReceiveSalesByPlatform ->", data);
           if (isMounted) setSalesByPlatform(data);
         }
       );
       dashboardSocketService.registerListener("DashboardLoadError", (msg) => {
-        console.error("LOG: DashboardLoadError ->", msg);
         if (isMounted) setError(msg);
       });
 
       try {
-        console.log("LOG: Buscando dados de metas...");
         const metaResponse = await metaService.getMetas();
-        console.log("LOG: Resposta de Metas ->", metaResponse);
         if (isMounted) setMetaData(metaResponse);
       } catch (err) {
-        console.error("LOG: Erro ao buscar metas:", err);
+        console.error(err);
       }
 
       try {
-        console.log("LOG: Conectando SignalR e iniciando geração de dados...");
         await dashboardSocketService.startConnection();
         await dashboardService.startDataGeneration();
-        console.log("LOG: Conexão bem-sucedida e requisição enviada.");
       } catch (err) {
         if (isMounted) setError("Falha ao iniciar a busca de dados.");
-        console.error("LOG: Erro na conexão SignalR ou geração de dados:", err);
       }
     };
 
@@ -152,11 +134,6 @@ const Home = () => {
     };
   }, [user]);
 
-  // ======================= INÍCIO DA CORREÇÃO =======================
-  /**
-   * Navega para a página de detalhes do cliente, passando o platformId no estado.
-   * @param {object} client - O objeto do cliente contendo cpfCnpj e platform.
-   */
   const handleClientClick = (client) => {
     if (client && client.cpfCnpj && client.platform) {
       navigate(`/platform/clientes/${client.cpfCnpj}`, {
@@ -164,13 +141,12 @@ const Home = () => {
       });
     }
   };
-  // ======================= FIM DA CORREÇÃO =======================
 
   const chartData = useMemo(() => {
     if (!historicalData) return [];
     return historicalData.map((item) => ({
       month: item.month.split("/")[0].substring(0, 3),
-      commission: item.value,
+      faturamento: item.value,
     }));
   }, [historicalData]);
 
@@ -306,7 +282,7 @@ const Home = () => {
       <motion.div className="d_home-main-grid" variants={itemVariants}>
         <div className="d_home-chart-container d_home-card-base">
           <div className="d_home-card-header">
-            <h3>Comissões Recebidas (Últimos 6 meses)</h3>
+            <h3>Faturamento (Últimos 6 meses)</h3>
           </div>
           {historicalData ? (
             <ResponsiveContainer width="100%" height={300}>
@@ -317,18 +293,25 @@ const Home = () => {
                 <XAxis dataKey="month" stroke="#9CA3AF" />
                 <YAxis
                   stroke="#9CA3AF"
-                  tickFormatter={(v) => `R$${v / 1000}k`}
+                  tickFormatter={(v) =>
+                    v >= 1000 ? `R$ ${v / 1000}k` : `R$ ${v}`
+                  }
                 />
                 <Tooltip
                   cursor={{ fill: "rgba(246, 209, 104, 0.1)" }}
+                  formatter={(value) => [
+                    formatCurrency(value, true),
+                    "Faturamento",
+                  ]}
                   contentStyle={{
                     backgroundColor: "#1F2A40",
                     border: "1px solid #374151",
+                    borderRadius: "8px",
                   }}
                 />
                 <Bar
-                  dataKey="commission"
-                  name="Comissão"
+                  dataKey="faturamento"
+                  name="Faturamento"
                   fill="#f6d168"
                   radius={[4, 4, 0, 0]}
                 />
@@ -366,13 +349,11 @@ const Home = () => {
             {filteredClients ? (
               filteredClients.length > 0 ? (
                 filteredClients.slice(0, 5).map((client, i) => (
-                  // ======================= INÍCIO DA CORREÇÃO =======================
                   <li
                     key={i}
                     className="d_home-client-item clickable"
                     onClick={() => handleClientClick(client)}
                   >
-                  {/* ======================= FIM DA CORREÇÃO ======================= */}
                     <div className="d_home-client-info">
                       <div className="d_home-client-platform-logo">
                         <PlatformLogo platformId={client.platform} />
