@@ -4,12 +4,6 @@ import axios from 'axios';
 // const MINERIOS_API_URL = "http://localhost:5097/api/Receipt";
 const MINERIOS_API_URL = "https://backend.demelloagent.app/api/Receipt";
 
-
-/**
- * Busca clientes com base em vários parâmetros.
- * @param {object} params - Os parâmetros de busca.
- * @returns {Promise<Array>} - Uma promessa que resolve para um array de clientes.
- */
 const searchClients = async (params = {}) => {
   const {
     consultantId,
@@ -18,15 +12,17 @@ const searchClients = async (params = {}) => {
     platformId,
     sortBy = 'name',
     sortDirection = 'asc',
+    offset = 0, // Novo
+    limit = 20  // Novo
   } = params;
 
-  // Constrói os parâmetros da query para o URL
   const queryParams = new URLSearchParams({
     consultantId,
     sortDirection,
+    offset, // Repassa para o backend
+    limit   // Repassa para o backend
   });
 
-  // Adiciona parâmetros opcionais apenas se tiverem valor
   if (name) queryParams.append('name', name);
   if (cpfCnpj) queryParams.append('cpfCnpj', cpfCnpj);
   if (platformId) queryParams.append('platformId', platformId);
@@ -34,7 +30,6 @@ const searchClients = async (params = {}) => {
 
   try {
     const response = await api.get(`Client/search2?${queryParams.toString()}`);
-    // A nova API retorna diretamente um array de clientes.
     return response.data || [];
   } catch (error) {
     console.error("Erro ao buscar a lista de clientes:", error);

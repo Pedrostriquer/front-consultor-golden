@@ -103,6 +103,8 @@ const Clientes = () => {
       platformId,
       sortBy: debouncedFilters.sortBy,
       sortDirection: debouncedFilters.sortOrder,
+      offset: (currentPage - 1) * itemsPerPage,
+      limit: itemsPerPage,
     };
 
     try {
@@ -116,16 +118,13 @@ const Clientes = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [debouncedSearchTerm, debouncedFilters, user]);
+  }, [debouncedSearchTerm, debouncedFilters, user, currentPage]);
 
   useEffect(() => {
     fetchClients();
   }, [fetchClients]);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentClients = clients.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(clients.length / itemsPerPage);
+  const isLastPage = clients.length < itemsPerPage;
 
   const handleRowClick = (client) => {
     navigate(`/platform/clientes/${client.cpfCnpj}`, {
@@ -146,8 +145,7 @@ const Clientes = () => {
           <h1>Meus Clientes</h1>
           {!isLoading && (
             <p className="total-count">
-              Total: <strong>{clients.length}</strong>{" "}
-              {clients.length === 1 ? "cliente" : "clientes"}
+              Página: <strong>{currentPage}</strong>
             </p>
           )}
         </div>
@@ -202,7 +200,7 @@ const Clientes = () => {
             </tr>
           </thead>
           {isLoading ? (
-            <TableSkeleton rows={5} />
+            <TableSkeleton rows={itemsPerPage} />
           ) : (
             <AnimatePresence mode="wait">
               <tbody key={currentPage}>
@@ -213,8 +211,8 @@ const Clientes = () => {
                     </td>
                   </tr>
                 )}
-                {!error && currentClients.length > 0
-                  ? currentClients.map((client) => (
+                {!error && clients.length > 0
+                  ? clients.map((client) => (
                       <motion.tr
                         key={`${client.cpfCnpj}-${client.platformId}`}
                         onClick={() => handleRowClick(client)}
@@ -247,7 +245,7 @@ const Clientes = () => {
         </table>
       </div>
 
-      {!isLoading && clients.length > itemsPerPage && (
+      {!isLoading && (
         <div className="pagination-controls">
           <button
             disabled={currentPage === 1}
@@ -255,11 +253,9 @@ const Clientes = () => {
           >
             <i className="fa-solid fa-chevron-left"></i> Anterior
           </button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
+          <span>Página {currentPage}</span>
           <button
-            disabled={currentPage === totalPages}
+            disabled={isLastPage}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
             Próximo <i className="fa-solid fa-chevron-right"></i>
