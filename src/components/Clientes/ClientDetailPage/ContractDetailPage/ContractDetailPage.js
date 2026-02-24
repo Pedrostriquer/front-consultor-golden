@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./ContractDetailPage.css";
 
+// Mantém a formatação visual correta (usando UTC para exibir a string)
 function formatDate(dateString) {
   if (!dateString) return "N/A";
   const date = new Date(dateString);
@@ -151,18 +152,32 @@ const ContractDetailPage = () => {
     };
   }
 
+  // --- CORREÇÃO DE FUSO HORÁRIO ---
+  
+  // Função auxiliar: Converte a string UTC para um objeto Date LOCAL, 
+  // mas mantendo os números do dia/mês/ano originais.
+  // Ex: "2023-10-24T00:00Z" vira "24/10/2023 00:00" no horário do navegador.
+  const parseDateAsLocal = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null;
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  };
+
   const getNextWithdrawDate = () => {
     if (!details.withdrawDates || details.withdrawDates.length === 0)
       return null;
+    
+    // Hoje zerado (00:00:00)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const upcoming = details.withdrawDates
-      .map((d) => new Date(d))
+      .map((d) => parseDateAsLocal(d)) // Usa a conversão segura
       .filter((d) => {
-        const checkDate = new Date(d);
-        checkDate.setHours(0, 0, 0, 0);
-        return checkDate >= today;
+        if(!d) return false;
+        // Compara data local com data local (sem fuso interferindo)
+        return d >= today; 
       })
       .sort((a, b) => a - b);
 
@@ -170,12 +185,15 @@ const ContractDetailPage = () => {
   };
 
   const nextDate = getNextWithdrawDate();
+  
+  // Verifica se é hoje (comparando strings de data local)
   const isToday =
     nextDate && nextDate.toDateString() === new Date().toDateString();
 
   const getDateStatusClass = (dateString) => {
-    const date = new Date(dateString);
-    date.setHours(0, 0, 0, 0);
+    const date = parseDateAsLocal(dateString); // Usa a conversão segura
+    if(!date) return "";
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -183,6 +201,7 @@ const ContractDetailPage = () => {
     if (date.getTime() < today.getTime()) return "date-past";
     return "date-future";
   };
+  // --- FIM DA CORREÇÃO ---
 
   return (
     <motion.div
