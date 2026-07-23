@@ -5,12 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8f9fa; /* Cor de fundo principal */
-  overscroll-behavior: none;
-
+  background-color: #121828; /* Mesma cor de fundo da plataforma (evita flash branco) */
+  overscroll-behavior-y: none; /* Evita o "bounce" da página, sem travar o scroll interno */
 }
 
 * {
-  overscroll-behavior: none;
   box-sizing: border-box;
 }

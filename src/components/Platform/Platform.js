@@ -15,7 +15,7 @@ function Platform() {
     setIsPageLoading(true);
     const timer = setTimeout(() => {
       setIsPageLoading(false);
-    }, 1200);
+    }, 350);
 
     return () => clearTimeout(timer);
   }, [location.pathname]);

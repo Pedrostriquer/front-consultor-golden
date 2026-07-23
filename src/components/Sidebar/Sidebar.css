@@ -125,6 +125,8 @@
   padding: 1rem;
   margin: 0;
   flex-grow: 1;
+  overflow-y: auto; /* Menu longo rola internamente em telas baixas */
+  min-height: 0;
 }
 .menu-item {
   display: flex;

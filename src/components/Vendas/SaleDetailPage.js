@@ -97,24 +97,28 @@ const SaleDetailPage = () => {
     setUploadMessage({ text: "", type: "" });
 
     try {
-      // Faz a requisição direta para a nova rota do backend de Minérios (localhost:5097)
-      await clientService.addContractReceiptMineriosDirect(
+      // Envia o recibo via backend de consultores, que repassa ao sistema de Minérios
+      await clientService.addContractReceiptMinerios(
         sale.clientCpfCnpj,
         sale.contractId,
-        (receiptDescription + ": Adicionado pelo consultor") || "Recibo enviado pelo consultor via Portal",
+        receiptDescription
+          ? `${receiptDescription}: Adicionado pelo consultor`
+          : "Recibo enviado pelo consultor via Portal",
         receiptFile
       );
 
       setUploadMessage({
-        text: "Recibo anexado com sucesso diretamente no sistema de minérios!",
+        text: "Recibo anexado com sucesso no sistema de minérios!",
         type: "success",
       });
       setReceiptFile(null);
       setReceiptDescription("");
     } catch (err) {
-      console.error("Erro no upload direto:", err);
+      console.error("Erro no envio do recibo:", err);
       setUploadMessage({
-        text: "Erro ao enviar recibo. Verifique se o servidor de minérios (5097) está rodando.",
+        text:
+          err.response?.data?.message ||
+          "Erro ao enviar recibo. Tente novamente em instantes.",
         type: "error",
       });
     } finally {
@@ -192,7 +196,6 @@ const SaleDetailPage = () => {
           <div className="receipt-upload-card card-base">
             <h3>
               <i className="fa-solid fa-file-arrow-up"></i> Anexar Recibo
-              (Direto)
             </h3>
             <form onSubmit={handleUploadReceipt}>
               <div className="form-group">

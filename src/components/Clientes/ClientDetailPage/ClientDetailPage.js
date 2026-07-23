@@ -20,8 +20,10 @@ const getStatusBadge = (status, platform) => {
   const isDiamond = platform === "DIAMOND_PRIME";
   const statusMap = isDiamond
     ? {
-        1: { text: "Ativo", className: "status-active" },
-        2: { text: "Finalizado", className: "status-default" },
+        1: { text: "Pendente", className: "status-pending" },
+        2: { text: "Ativo", className: "status-active" },
+        3: { text: "Cancelado", className: "status-canceled" },
+        4: { text: "Finalizado", className: "status-default" },
       }
     : {
         1: { text: "Ativo", className: "status-active" },
@@ -225,8 +227,14 @@ const ClientDetailPage = () => {
     );
     return clientData.withdraws.filter((w) => {
       const isStatusValid = w.status === 1 || w.status === 2;
-      const isFromActiveContract = activeContractIds.includes(w.contractId);
-      return isStatusValid && isFromActiveContract;
+      if (!isStatusValid) return false;
+      // Na Diamond Prime o saque sai do saldo do cliente, sem vínculo com
+      // contrato — não há contractId para filtrar.
+      if (platformId === "DIAMOND_PRIME") return true;
+      // Saques antigos do CPOM podem não ter contrato vinculado; nesses
+      // casos exibimos mesmo assim.
+      if (w.contractId == null) return true;
+      return activeContractIds.includes(w.contractId);
     });
   }, [clientData, filteredContracts]);
 
@@ -355,7 +363,7 @@ const ClientDetailPage = () => {
               </strong>
             </li>
             <li>
-              <span>Total Sacado (Contratos Ativos)</span>
+              <span>Total Sacado</span>
               <strong className="valor-negativo">
                 {formatCurrency(totalSacado)}
               </strong>

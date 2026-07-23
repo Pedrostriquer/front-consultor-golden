@@ -1,8 +1,4 @@
 import api from './api/api';
-import axios from 'axios';
-
-// const MINERIOS_API_URL = "http://localhost:5097/api/Receipt";
-const MINERIOS_API_URL = "https://backend.demelloagent.app/api/Receipt";
 
 const searchClients = async (params = {}) => {
   const {
@@ -55,27 +51,24 @@ const getClientDetails = async (platformId, clientCpfCnpj) => {
 }
 
 /**
- * Envia um recibo DIRETAMENTE para o backend de Contratos de Minérios.
+ * Envia um recibo para o backend de Contratos de Minérios através do
+ * backend de consultores (proxy autenticado com o token do consultor).
  */
-const addContractReceiptMineriosDirect = async (clientCpfCnpj, contractId, description, file) => {
+const addContractReceiptMinerios = async (clientCpfCnpj, contractId, description, file) => {
   const formData = new FormData();
   formData.append("clientCpfCnpj", clientCpfCnpj);
   formData.append("contractId", contractId);
   formData.append("description", description);
   formData.append("file", file);
 
-  // Requisição direta para o localhost:5097
-  const response = await axios.post(
-    `${MINERIOS_API_URL}/contract-consultor-adding`,
-    formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
-  );
+  // O axios define o Content-Type multipart (com boundary) automaticamente
+  const response = await api.post("Receipt/contract-consultor-adding", formData);
   return response.data;
 };
 const clientService = {
   searchClients,
   getClientDetails, // Renomeado e atualizado
-  addContractReceiptMineriosDirect
+  addContractReceiptMinerios
 };
 
 export default clientService;
