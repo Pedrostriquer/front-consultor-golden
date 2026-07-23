@@ -1,61 +1,60 @@
+/* --- DETALHE DO CONTRATO — TEMA CLARO GOLD/BLACK --- */
 .contract-detail-page {
   font-family: 'Poppins', sans-serif;
-  padding: 20px;
+  padding: 0.5rem 0;
   max-width: 900px;
   margin: 0 auto;
-  color: #E5E7EB;
+  color: var(--ink-2);
 }
 
 .contract-detail-page .card-base {
-  background-color: #1F2937;
-  border-radius: 12px;
-  border: 1px solid #374151;
   padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .contract-detail-page .back-button {
   background: none;
   border: none;
-  color: #9CA3AF;
-  font-size: 1rem;
+  color: var(--ink-3);
+  font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.2s;
-  margin-bottom: 1.5rem;
+  transition: color 0.2s, transform 0.2s;
+  margin-bottom: 1.25rem;
+  padding: 0;
 }
 
 .contract-detail-page .back-button:hover {
-  color: #f6d168;
+  color: var(--gold-600);
+  transform: translateX(-3px);
 }
 
 .contract-detail-page .contract-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .contract-detail-page .contract-header h1 {
   margin: 0 0 5px 0;
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #F9FAFB;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .contract-detail-page .contract-header p {
   margin: 0;
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 .contract-detail-page .progress-card h3 {
   margin: 0 0 1.5rem 0;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #E5E7EB;
-  border-bottom: 1px solid #374151;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 1px solid var(--border);
   padding-bottom: 1rem;
 }
 
@@ -63,25 +62,26 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  color: #D1D5DB;
+  color: var(--ink-2);
 }
 
 .contract-detail-page .progress-bar-background {
   width: 100%;
   height: 12px;
-  background-color: #374151;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
 }
 
 .contract-detail-page .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #f6d168, #d3a429);
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
 }
 
 .contract-detail-page .details-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: 1.25rem;
   margin-top: 20px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
@@ -94,61 +94,194 @@
 }
 
 .contract-detail-page .metric-card span {
-  font-size: 0.85rem;
-  color: #9CA3AF;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .contract-detail-page .metric-card strong {
   font-size: 1.3rem;
-  font-weight: 600;
-  color: #F9FAFB;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .contract-detail-page .metric-card .valor-disponivel {
-  color: #34D399;
+  color: var(--success);
 }
 
 .highlight-withdraw {
-  border-left: 4px solid #f6d168 !important;
+  border-left: 4px solid var(--gold-500) !important;
   position: relative;
 }
 
 .next-withdraw-info {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #374151;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
 .next-withdraw-info small {
-  color: #9CA3AF;
+  color: var(--ink-3);
   font-size: 0.75rem;
 }
 
 .today-label {
-  color: #34D399;
+  color: var(--success);
   font-weight: 800;
   letter-spacing: 1px;
 }
 
 .view-all-dates {
-  background: rgba(246, 209, 104, 0.1);
-  border: 1px solid rgba(246, 209, 104, 0.3);
-  color: #f6d168;
+  background: var(--gold-tint);
+  border: 1px solid var(--gold-border);
+  color: var(--gold-600);
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.7rem;
   margin-top: 8px;
   cursor: pointer;
   transition: all 0.2s;
   width: fit-content;
+  font-weight: 600;
 }
 
 .view-all-dates:hover {
-  background: #f6d168;
-  color: #111827;
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--gold-300);
+}
+
+/* --- SAQUES DO CONTRATO --- */
+.contract-withdraws-section {
+  margin-top: 1.25rem;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.contract-withdraws-header {
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.contract-withdraws-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.contract-withdraws-header h3 i {
+  color: var(--gold-500);
+}
+
+.contract-withdraws-section .status-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem 0.85rem;
+}
+
+.contract-withdraws-section .status-filter-chips .chip {
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--ink-3);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.contract-withdraws-section .status-filter-chips .chip:hover {
+  border-color: var(--gold-500);
+  color: var(--gold-600);
+}
+
+.contract-withdraws-section .status-filter-chips .chip.active {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--gold-300);
+  font-weight: 600;
+}
+
+.contract-withdraws-table-wrapper {
+  overflow-x: auto;
+}
+
+.contract-withdraws-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.contract-withdraws-table-wrapper th,
+.contract-withdraws-table-wrapper td {
+  padding: 0.9rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.contract-withdraws-table-wrapper th {
+  color: var(--ink-3);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: var(--surface-2);
+  border-top: 1px solid var(--border);
+}
+
+.contract-withdraws-table-wrapper td {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+}
+
+.contract-withdraws-table-wrapper tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.contract-withdraws-table-wrapper .empty-message {
+  text-align: center;
+  color: var(--ink-3);
+  padding: 2rem;
+}
+
+.contract-withdraws-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--ink-3);
+  font-size: 0.9rem;
+}
+
+.contract-withdraws-pagination button {
+  background-color: var(--surface);
+  color: var(--ink-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.contract-withdraws-pagination button:hover:not(:disabled) {
+  border-color: var(--gold-500);
+  color: var(--gold-600);
+  background-color: var(--gold-tint);
+}
+
+.contract-withdraws-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .modal-overlay {
@@ -157,7 +290,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(16, 17, 20, 0.55);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
@@ -171,6 +304,7 @@
   max-width: 450px;
   max-height: 80vh;
   overflow-y: auto;
+  box-shadow: var(--shadow-lg);
 }
 
 .modal-header {
@@ -180,12 +314,22 @@
   margin-bottom: 20px;
 }
 
+.modal-header h3 {
+  color: var(--ink);
+  margin: 0;
+}
+
 .close-modal {
   background: none;
   border: none;
-  color: #9CA3AF;
+  color: var(--ink-3);
   font-size: 2rem;
   cursor: pointer;
+  transition: color var(--t-fast);
+}
+
+.close-modal:hover {
+  color: var(--ink);
 }
 
 .withdraw-list {
@@ -199,8 +343,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 15px;
-  border-radius: 8px;
-  background: #111827;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   border-left: 4px solid transparent;
 }
 
@@ -211,56 +356,37 @@
 
 .withdraw-index {
   font-size: 0.75rem;
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 .withdraw-date {
   font-weight: 500;
+  color: var(--ink-2);
 }
 
 .date-past {
-  border-color: #EF4444;
+  border-left-color: var(--danger);
   opacity: 0.7;
 }
 
 .date-past .withdraw-date {
-  color: #FCA5A5;
+  color: var(--danger);
 }
 
 .date-today {
-  border-color: #10B981;
-  background: rgba(16, 185, 129, 0.1);
+  border-left-color: var(--success);
+  background: var(--success-bg);
 }
 
 .date-today .withdraw-date {
-  color: #34D399;
+  color: var(--success);
   font-weight: 700;
 }
 
 .date-future {
-  border-color: #3B82F6;
+  border-left-color: var(--info);
 }
 
 .date-future .withdraw-date {
-  color: #60A5FA;
-}
-
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #fff;
-}
-
-.status-badge.status-active {
-  background-color: #059669;
-}
-
-.status-badge.status-canceled {
-  background-color: #DC2626;
-}
-
-.status-badge.status-default {
-  background-color: #4B5563;
+  color: var(--info);
 }

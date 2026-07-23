@@ -1,9 +1,10 @@
-/* --- GERAL DA PÁGINA --- */
+/* --- DETALHE DO CLIENTE — TEMA CLARO GOLD/BLACK --- */
 .client-detail-page {
-  padding: 2rem;
+  padding: 0.5rem 0;
   max-width: 1200px;
   margin: 0 auto;
-  color: #E5E7EB;
+  color: var(--ink-2);
+  font-family: 'Poppins', sans-serif;
 }
 
 .client-detail-loading,
@@ -11,84 +12,113 @@
   padding: 2rem;
   text-align: center;
   font-size: 1.2rem;
+  color: var(--ink-3);
 }
 
 .client-detail-error {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  border-radius: 8px;
-  border: 1px solid #ef444433;
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  border-radius: var(--radius);
+  border: 1px solid #F0CCC8;
 }
 
-.card-base {
-  background-color: #1F2A40;
-  border-radius: 12px;
-  border: 1px solid #374151;
+.client-detail-page .card-base {
   padding: 20px;
 }
 
 .back-button {
   background: none;
   border: none;
-  color: #9CA3AF;
-  font-size: 1rem;
+  color: var(--ink-3);
+  font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.2s;
-  margin-bottom: 1.5rem;
+  transition: color 0.2s, transform 0.2s;
+  margin-bottom: 1.25rem;
+  padding: 0;
 }
 
 .back-button:hover {
-  color: #E5E7EB;
+  color: var(--gold-600);
+  transform: translateX(-3px);
 }
 
+/* --- CABEÇALHO DO CLIENTE --- */
 .client-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Filete dourado no topo */
+.client-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
 }
 
 .client-header h1 {
   margin: 0 0 0.25rem 0;
-  font-size: 2rem;
-  color: #F9FAFB;
+  font-size: 1.6rem;
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .client-header p {
   margin: 0;
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 .client-status-tag {
   padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-.client-status-tag.status-ativo { background-color: #059669; color: #A7F3D0; }
-.client-status-tag.status-inativo { background-color: #991B1B; color: #FECACA; }
+.client-status-tag.status-ativo {
+  background-color: var(--success-bg);
+  color: var(--success);
+  border: 1px solid #C4E3D0;
+}
+.client-status-tag.status-inativo {
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid #F0CCC8;
+}
 
-
+/* --- GRID DE DETALHES --- */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .details-card h3 {
-  margin: 0 0 1.5rem 0;
-  font-size: 1.1rem;
-  border-bottom: 1px solid #374151;
-  padding-bottom: 1rem;
-  color: #E5E7EB;
+  margin: 0 0 1.25rem 0;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.9rem;
+  color: var(--ink);
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-weight: 600;
+}
+
+.details-card h3 i {
+  color: var(--gold-500);
 }
 
 .details-card ul {
@@ -104,23 +134,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 
 .details-card li span {
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 .details-card li strong {
-  font-weight: 500;
-  color: #F9FAFB;
+  font-weight: 600;
+  color: var(--ink);
   text-align: right;
 }
-.details-card li strong.valor-neutro { color: #A5B4FC; }
-.details-card li strong.valor-negativo { color: #FCA5A5; }
-.details-card li strong.valor-disponivel { color: #34D399; }
+.details-card li strong.valor-neutro { color: var(--info); }
+.details-card li strong.valor-negativo { color: var(--danger); }
+.details-card li strong.valor-disponivel { color: var(--success); }
 
-
+/* --- TABELAS --- */
 .data-table-container {
   padding: 0;
   overflow: hidden;
@@ -133,9 +163,9 @@
 
 .data-table-container th,
 .data-table-container td {
-  padding: 1rem 1.25rem;
+  padding: 0.9rem 1.25rem;
   text-align: left;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--border);
 }
 
 .data-table-container tbody tr:last-child td {
@@ -143,98 +173,127 @@
 }
 .data-table-container tbody tr.clickable-row {
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.15s;
 }
 .data-table-container tbody tr.clickable-row:hover {
-  background-color: #37415155;
+  background-color: var(--gold-tint);
 }
-
 
 .data-table-container th {
-  color: #9CA3AF;
-  font-weight: 500;
-  font-size: 0.8rem;
+  color: var(--ink-3);
+  font-weight: 600;
+  font-size: 0.72rem;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: var(--surface-2);
+}
+.data-table-container td {
+  color: var(--ink-2);
+  font-size: 0.92rem;
 }
 .data-table-container td.valor-disponivel {
-  color: #34D399;
-  font-weight: 500;
+  color: var(--success);
+  font-weight: 600;
 }
 
-
+/* --- ABAS --- */
 .table-tabs {
   display: flex;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--border);
   padding: 0 20px;
+  background-color: var(--surface);
 }
 
 .tab-button {
-  padding: 12px 20px;
+  padding: 14px 20px;
   cursor: pointer;
   background-color: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  font-size: 1rem;
-  color: #9CA3AF;
-  transition: all 0.3s;
+  font-size: 0.95rem;
+  color: var(--ink-3);
+  transition: all 0.25s;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: 500;
 }
-.tab-button:hover { color: #FFF; }
+.tab-button:hover { color: var(--ink); }
 
 .tab-button.active {
-  color: #A5B4FC;
-  border-bottom-color: #A5B4FC;
+  color: var(--gold-600);
+  border-bottom-color: var(--gold-500);
   font-weight: 600;
 }
 
 .table-content {
-  padding-top: 10px;
+  padding-top: 6px;
+}
+
+/* --- CHIPS DE FILTRO DE STATUS --- */
+.status-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem 0.5rem;
+}
+
+.status-filter-chips .chip {
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--ink-3);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.status-filter-chips .chip:hover {
+  border-color: var(--gold-500);
+  color: var(--gold-600);
+}
+
+.status-filter-chips .chip.active {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--gold-300);
+  font-weight: 600;
 }
 
 .empty-message {
   text-align: center;
-  color: #6B7280;
+  color: var(--ink-3);
   padding: 2rem;
 }
 
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-.status-badge.status-completed { background-color: #059669; color: #A7F3D0; }
-.status-badge.status-canceled { background-color: #991B1B; color: #FECACA; }
-.status-badge.status-pending { background-color: #9A3412; color: #FDE68A; }
-.status-badge.status-active { background-color: #1D4ED8; color: #BFDBFE; }
-.status-badge.status-default { background-color: #4B5563; color: #E5E7EB; }
-
-/* --- Estilos da Paginação --- */
+/* --- PAGINAÇÃO --- */
 .pagination-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  border-top: 1px solid #374151;
-  color: #9CA3AF;
+  border-top: 1px solid var(--border);
+  color: var(--ink-3);
   font-size: 0.9rem;
 }
 
 .pagination-controls button {
-  background-color: #374151;
-  color: #E5E7EB;
-  border: none;
-  border-radius: 6px;
+  background-color: var(--surface);
+  color: var(--ink-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
   padding: 0.5rem 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .pagination-controls button:hover:not(:disabled) {
-  background-color: #4B5563;
+  border-color: var(--gold-500);
+  color: var(--gold-600);
+  background-color: var(--gold-tint);
 }
 
 .pagination-controls button:disabled {

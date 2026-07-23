@@ -6,11 +6,9 @@ const api = axios.create({
 
 api.interceptors.request.use(async config => {
   let token = localStorage.getItem('authToken');
-  let tokenType = 'Consultor';
 
   if (!token) {
     token = localStorage.getItem('adminAuthToken');
-    tokenType = 'Admin';
   }
 
 

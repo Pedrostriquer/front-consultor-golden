@@ -226,6 +226,16 @@ const Home = () => {
       initial="initial"
       animate="in"
     >
+      <motion.div className="d_home-page-header" variants={itemVariants}>
+        <div>
+          <h1>
+            Olá, {getFirstName(user?.name) || "Consultor"}
+            <span className="d_home-header-accent">.</span>
+          </h1>
+          <p>Acompanhe suas vendas, comissões e clientes em um só lugar.</p>
+        </div>
+      </motion.div>
+
       <motion.div className="d_home-stats-grid" variants={itemVariants}>
         <div className="d_home-stat-card d_home-card-base">
           <h3>
@@ -290,29 +300,40 @@ const Home = () => {
                 data={chartData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
-                <XAxis dataKey="month" stroke="#9CA3AF" />
+                <XAxis
+                  dataKey="month"
+                  stroke="#787D89"
+                  tickLine={false}
+                  axisLine={{ stroke: "#E7E4DC" }}
+                />
                 <YAxis
-                  stroke="#9CA3AF"
+                  stroke="#787D89"
+                  tickLine={false}
+                  axisLine={false}
                   tickFormatter={(v) =>
                     v >= 1000 ? `R$ ${v / 1000}k` : `R$ ${v}`
                   }
                 />
                 <Tooltip
-                  cursor={{ fill: "rgba(246, 209, 104, 0.1)" }}
+                  cursor={{ fill: "rgba(201, 162, 39, 0.08)" }}
                   formatter={(value) => [
                     formatCurrency(value, true),
                     "Faturamento",
                   ]}
                   contentStyle={{
-                    backgroundColor: "#1F2A40",
-                    border: "1px solid #374151",
-                    borderRadius: "8px",
+                    backgroundColor: "#FFFFFF",
+                    border: "1px solid #E7E4DC",
+                    borderRadius: "6px",
+                    boxShadow: "0 8px 28px rgba(20, 18, 10, 0.1)",
+                    color: "#16171B",
                   }}
+                  labelStyle={{ color: "#16171B", fontWeight: 600 }}
+                  itemStyle={{ color: "#3E4149" }}
                 />
                 <Bar
                   dataKey="faturamento"
                   name="Faturamento"
-                  fill="#f6d168"
+                  fill="#C9A227"
                   radius={[4, 4, 0, 0]}
                 />
               </BarChart>
@@ -411,7 +432,7 @@ const Home = () => {
                         (clientCount || 1)) *
                       100
                     }
-                    color="#f6d168"
+                    color="#C9A227"
                   />
                   <div
                     className="d_home-stat-item"
@@ -434,7 +455,7 @@ const Home = () => {
                       (clientsByPlatform.diamondPrime / (clientCount || 1)) *
                       100
                     }
-                    color="#6B7280"
+                    color="#3465C8"
                   />
                 </>
               ) : (

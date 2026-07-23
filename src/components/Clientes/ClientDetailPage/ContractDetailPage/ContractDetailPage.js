@@ -26,12 +26,17 @@ const getStatusBadge = (status, platform) => {
     String(platform) === "2";
   const statusMap = isDiamond
     ? {
-        1: { text: "Ativo", className: "status-active" },
-        2: { text: "Finalizado", className: "status-default" },
+        1: { text: "Pendente", className: "status-pending" },
+        2: { text: "Ativo", className: "status-active" },
+        3: { text: "Cancelado", className: "status-canceled" },
+        4: { text: "Finalizado", className: "status-completed" },
       }
     : {
-        1: { text: "Ativo", className: "status-active" },
+        1: { text: "Valorizando", className: "status-active" },
+        2: { text: "Valorização Concluída", className: "status-completed" },
         3: { text: "Cancelado", className: "status-canceled" },
+        4: { text: "Pendente", className: "status-pending" },
+        5: { text: "Recomprado", className: "status-default" },
       };
   const { text, className } = statusMap[status] || {
     text: `Status ${status}`,
@@ -39,6 +44,31 @@ const getStatusBadge = (status, platform) => {
   };
   return <span className={`status-badge ${className}`}>{text}</span>;
 };
+
+// Status de saque (mesma semântica do portal do cliente do CPOM)
+const WITHDRAW_STATUS_LABELS = {
+  1: "Pendente",
+  2: "Pago",
+  3: "Cancelado",
+  4: "Ctr. Recomprado",
+};
+
+const WITHDRAW_STATUS_CLASSES = {
+  1: "status-pending",
+  2: "status-completed",
+  3: "status-canceled",
+  4: "status-default",
+};
+
+const getWithdrawStatusBadge = (status) => (
+  <span
+    className={`status-badge ${
+      WITHDRAW_STATUS_CLASSES[status] || "status-default"
+    }`}
+  >
+    {WITHDRAW_STATUS_LABELS[status] || `Status ${status}`}
+  </span>
+);
 
 const UniversalProgressBar = ({ progressInfo }) => {
   const { currentValue, maxValue, currentLabel, maxLabel, title } =
@@ -71,6 +101,9 @@ const ContractDetailPage = () => {
   const navigate = useNavigate();
   const [data] = useState(location.state || {});
   const [showModal, setShowModal] = useState(false);
+  const [withdrawStatusFilter, setWithdrawStatusFilter] = useState("all");
+  const [withdrawsPage, setWithdrawsPage] = useState(1);
+  const WITHDRAWS_PER_PAGE = 5;
 
   useEffect(() => {
     if (!data.contractData) {
@@ -203,6 +236,33 @@ const ContractDetailPage = () => {
   };
   // --- FIM DA CORREÇÃO ---
 
+  // --- SAQUES DO CONTRATO (somente CPOM; a Diamond não vincula saque a contrato) ---
+  const contractWithdraws = data.contractWithdraws || [];
+
+  const withdrawStatusCounts = contractWithdraws.reduce((acc, w) => {
+    if (w.status == null) return acc;
+    acc[w.status] = (acc[w.status] || 0) + 1;
+    return acc;
+  }, {});
+
+  const visibleWithdraws =
+    withdrawStatusFilter === "all"
+      ? contractWithdraws
+      : contractWithdraws.filter((w) => w.status === withdrawStatusFilter);
+
+  const totalWithdrawPages = Math.ceil(
+    visibleWithdraws.length / WITHDRAWS_PER_PAGE
+  );
+  const paginatedWithdraws = visibleWithdraws.slice(
+    (withdrawsPage - 1) * WITHDRAWS_PER_PAGE,
+    withdrawsPage * WITHDRAWS_PER_PAGE
+  );
+
+  const handleWithdrawFilterChange = (status) => {
+    setWithdrawStatusFilter(status);
+    setWithdrawsPage(1);
+  };
+
   return (
     <motion.div
       className="contract-detail-page"
@@ -296,6 +356,99 @@ const ContractDetailPage = () => {
           <strong>{formatDate(details.dataFinal)}</strong>
         </div>
       </div>
+
+      {/* --- TABELA DE SAQUES DO CONTRATO (CPOM) --- */}
+      {!isDiamond && (
+        <div className="contract-withdraws-section card-base">
+          <div className="contract-withdraws-header">
+            <h3>
+              <i className="fa-solid fa-money-bill-transfer"></i> Saques deste
+              Contrato ({contractWithdraws.length})
+            </h3>
+          </div>
+
+          {contractWithdraws.length > 0 && (
+            <div className="status-filter-chips">
+              <button
+                className={
+                  withdrawStatusFilter === "all" ? "chip active" : "chip"
+                }
+                onClick={() => handleWithdrawFilterChange("all")}
+              >
+                Todos ({contractWithdraws.length})
+              </button>
+              {Object.keys(withdrawStatusCounts)
+                .map(Number)
+                .sort((a, b) => a - b)
+                .map((s) => (
+                  <button
+                    key={s}
+                    className={
+                      withdrawStatusFilter === s ? "chip active" : "chip"
+                    }
+                    onClick={() => handleWithdrawFilterChange(s)}
+                  >
+                    {WITHDRAW_STATUS_LABELS[s] || `Status ${s}`} (
+                    {withdrawStatusCounts[s]})
+                  </button>
+                ))}
+            </div>
+          )}
+
+          <div className="contract-withdraws-table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Valor Sacado</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedWithdraws.length > 0 ? (
+                  paginatedWithdraws.map((w) => (
+                    <tr key={w.id}>
+                      <td>#{w.id}</td>
+                      <td>{formatCurrency(w.amountWithdrawn)}</td>
+                      <td>{getWithdrawStatusBadge(w.status)}</td>
+                      <td>{formatDate(w.dateCreated)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="empty-message">
+                      {contractWithdraws.length === 0
+                        ? "Nenhum saque realizado neste contrato."
+                        : "Nenhum saque com esse status."}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {totalWithdrawPages > 1 && (
+            <div className="contract-withdraws-pagination">
+              <button
+                disabled={withdrawsPage === 1}
+                onClick={() => setWithdrawsPage((p) => p - 1)}
+              >
+                Anterior
+              </button>
+              <span>
+                Página {withdrawsPage} de {totalWithdrawPages}
+              </span>
+              <button
+                disabled={withdrawsPage === totalWithdrawPages}
+                onClick={() => setWithdrawsPage((p) => p + 1)}
+              >
+                Próxima
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <AnimatePresence>
         {showModal && (

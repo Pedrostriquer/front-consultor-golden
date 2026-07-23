@@ -1,7 +1,7 @@
-/* --- Estilos Gerais --- */
+/* --- PÁGINA DE CLIENTES — TEMA CLARO GOLD/BLACK --- */
 .clientes-page {
   font-family: 'Poppins', sans-serif;
-  color: #E5E7EB;
+  color: var(--ink-2);
 }
 
 /* --- Cabeçalho da Página --- */
@@ -9,16 +9,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
-}
-
-.clientes-page .page-header h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #F9FAFB;
-  margin: 0;
 }
 
 .clientes-page .header-actions {
@@ -29,38 +22,35 @@
 
 /* --- Container de Filtros e Busca --- */
 .filters-container {
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  /* Alinha os itens na base */
-  gap: 1.5rem;
-  background-color: #1F2A40;
-  border-radius: 16px;
-  border: 1px solid #374151;
+  gap: 1.25rem;
 }
 
-/* --- Barra de Busca (dentro do container de filtros) --- */
+/* --- Barra de Busca --- */
 .filters-container .search-bar {
   display: flex;
   align-items: center;
-  background-color: #121828;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
+  background-color: var(--surface-2);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
   flex-grow: 1;
-  /* Faz a barra de busca ocupar o espaço disponível */
   min-width: 300px;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
 }
 
 .filters-container .search-bar:focus-within {
-  border-color: #f6d168;
-  box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  background-color: var(--surface);
 }
 
 .filters-container .search-bar i {
-  color: #6B7280;
+  color: var(--ink-3);
 }
 
 .filters-container .search-bar input {
@@ -69,53 +59,83 @@
   margin-left: 0.75rem;
   width: 100%;
   background-color: transparent;
-  color: #E5E7EB;
-  font-size: 1rem;
+  color: var(--ink);
+  font-size: 0.95rem;
 }
 
 .filters-container .search-bar input::placeholder {
-  color: #6B7280;
+  color: var(--ink-3);
 }
-
 
 /* --- Grupos de Filtro (Selects) --- */
 .filter-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-width: 220px;
+  gap: 0.4rem;
+  min-width: 210px;
 }
 
 .filter-group label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #9CA3AF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .filter-group select {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
-  background-color: #121828;
-  color: #E5E7EB;
-  font-size: 1rem;
+  padding: 0.65rem 2.5rem 0.65rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--surface-2);
+  color: var(--ink);
+  font-size: 0.92rem;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23787D89' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
   background-position: right 0.75rem top 50%;
   background-repeat: no-repeat;
-  background-size: 1.25em 1.25em;
+  background-size: 1.1em 1.1em;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
 }
 
+.filter-group select:hover {
+  border-color: var(--border-strong);
+}
+
+.filter-group select:focus {
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  outline: none;
+}
+
+/* --- Botão limpar filtros --- */
+.clear-filters-button {
+  background: none;
+  border: 1px solid var(--border-strong);
+  color: var(--ink-3);
+  border-radius: var(--radius);
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--t-fast);
+}
+
+.clear-filters-button:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background-color: var(--danger-bg);
+}
 
 /* --- Tabela --- */
 .table-wrapper {
   overflow-x: auto;
-  background: #1F2A40;
-  border-radius: 16px;
-  border: 1px solid #374151;
-  padding: 0.5rem;
+  padding: 0.25rem;
 }
 
 .clientes-page table {
@@ -126,49 +146,68 @@
 
 .clientes-page th,
 .clientes-page td {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.5rem;
   text-align: left;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
 
 .clientes-page thead th {
-  color: #9CA3AF;
-  font-weight: 500;
-  font-size: 0.8rem;
+  color: var(--ink-3);
+  font-weight: 600;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  background-color: var(--surface-2);
+}
+
+.clientes-page thead th:first-child {
+  border-top-left-radius: var(--radius);
+}
+
+.clientes-page thead th:last-child {
+  border-top-right-radius: var(--radius);
 }
 
 .clientes-page tbody tr:last-child td {
   border-bottom: none;
 }
 
+.clientes-page tbody td {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+}
+
 .clickable-row,
 .clientes-page tbody tr {
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease;
 }
 
 .clickable-row:hover,
 .clientes-page tbody tr:hover {
-  background-color: #374151;
+  background-color: var(--gold-tint);
+}
+
+.clientes-page .username-cell {
+  color: var(--gold-600);
+  font-weight: 500;
 }
 
 .clientes-page .saldo-positivo {
-  color: #34D399;
+  color: var(--success);
   font-weight: 500;
 }
 
 /* Coluna e Logo da Plataforma */
 .clientes-page th.platform-col {
   width: 40px;
-  padding: 1.25rem 0 1.25rem 1.5rem;
+  padding: 1rem 0 1rem 1.5rem;
 }
 
 .clientes-page td.platform-col {
   width: 40px;
-  padding: 1.25rem 0 1.25rem 1.5rem;
+  padding: 1rem 0 1rem 1.5rem;
 }
 
 .platform-logo-wrapper {
@@ -183,22 +222,21 @@
   object-fit: contain;
 }
 
-
 /* --- Paginação --- */
 .clientes-page .pagination-controls {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .clientes-page .pagination-controls button {
-  background-color: #1F2A40;
-  border: 1px solid #374151;
-  color: #E5E7EB;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--ink-2);
+  border-radius: var(--radius);
+  padding: 0.55rem 1.2rem;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
@@ -208,8 +246,9 @@
 }
 
 .clientes-page .pagination-controls button:hover:not(:disabled) {
-  background-color: #374151;
-  border-color: #4B5563;
+  border-color: var(--gold-500);
+  color: var(--gold-600);
+  background-color: var(--gold-tint);
 }
 
 .clientes-page .pagination-controls button:disabled {
@@ -218,7 +257,7 @@
 }
 
 .clientes-page .pagination-controls span {
-  color: #9CA3AF;
+  color: var(--ink-3);
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -226,7 +265,7 @@
 /* --- Skeleton e Empty State --- */
 .skeleton-row .skeleton-bar {
   height: 16px;
-  background-color: #374151;
+  background-color: #ECEAE3;
   border-radius: 4px;
   animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -245,7 +284,7 @@
 
 .error-cell {
   text-align: center;
-  color: #fca5a5;
+  color: var(--danger);
   padding: 2rem;
 }
 
@@ -256,11 +295,12 @@
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
-  color: #6B7280;
+  color: var(--ink-3);
 }
 
 .empty-state-icon {
-  background-color: #374151;
+  background-color: var(--gold-tint);
+  border: 1px solid var(--gold-border);
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -272,13 +312,13 @@
 
 .empty-state-icon i {
   font-size: 2rem;
-  color: #9CA3AF;
+  color: var(--gold-500);
 }
 
 .empty-state-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #E5E7EB;
+  color: var(--ink);
   margin: 0 0 0.5rem 0;
 }
 
@@ -290,10 +330,10 @@
 
 .total-count {
   font-size: 0.9rem;
-  color: #9CA3AF; /* Cor cinza suave para não brigar com o H1 */
+  color: var(--ink-3);
   margin-top: 0.25rem;
 }
 
 .total-count strong {
-  color: #f6d168; /* Cor amarela/dourada para destacar o número */
+  color: var(--gold-600);
 }

@@ -16,6 +16,7 @@ const formatCurrency = (value) =>
     maximumFractionDigits: 2,
   })}`;
 
+// Semântica confirmada nos fronts oficiais dos clientes de cada plataforma
 const getStatusBadge = (status, platform) => {
   const isDiamond = platform === "DIAMOND_PRIME";
   const statusMap = isDiamond
@@ -23,13 +24,14 @@ const getStatusBadge = (status, platform) => {
         1: { text: "Pendente", className: "status-pending" },
         2: { text: "Ativo", className: "status-active" },
         3: { text: "Cancelado", className: "status-canceled" },
-        4: { text: "Finalizado", className: "status-default" },
+        4: { text: "Finalizado", className: "status-completed" },
       }
     : {
-        1: { text: "Ativo", className: "status-active" },
-        2: { text: "Pendente", className: "status-pending" },
+        1: { text: "Valorizando", className: "status-active" },
+        2: { text: "Valorização Concluída", className: "status-completed" },
         3: { text: "Cancelado", className: "status-canceled" },
         4: { text: "Pendente", className: "status-pending" },
+        5: { text: "Recomprado", className: "status-default" },
       };
   const { text, className } = statusMap[status] || {
     text: `Status ${status}`,
@@ -38,7 +40,88 @@ const getStatusBadge = (status, platform) => {
   return <span className={`status-badge ${className}`}>{text}</span>;
 };
 
+// Status de saque é o mesmo nas duas plataformas (4 só existe no CPOM)
+const getWithdrawStatusBadge = (status) => {
+  const statusMap = {
+    1: { text: "Pendente", className: "status-pending" },
+    2: { text: "Pago", className: "status-completed" },
+    3: { text: "Cancelado", className: "status-canceled" },
+    4: { text: "Ctr. Recomprado", className: "status-default" },
+  };
+  const { text, className } = statusMap[status] || {
+    text: `Status ${status}`,
+    className: "status-default",
+  };
+  return <span className={`status-badge ${className}`}>{text}</span>;
+};
+
 const getClientStatus = (status) => (status === 1 ? "Ativo" : "Inativo");
+
+// Rótulos por plataforma para os chips de filtro
+const CONTRACT_STATUS_LABELS = {
+  DIAMOND_PRIME: {
+    1: "Pendente",
+    2: "Ativo",
+    3: "Cancelado",
+    4: "Finalizado",
+  },
+  CONTRATO_DE_MINERIOS: {
+    1: "Valorizando",
+    2: "Valorização Concluída",
+    3: "Cancelado",
+    4: "Pendente",
+    5: "Recomprado",
+  },
+};
+
+const WITHDRAW_STATUS_LABELS = {
+  1: "Pendente",
+  2: "Pago",
+  3: "Cancelado",
+  4: "Ctr. Recomprado",
+};
+
+// Chips de filtro por status (com contagem), derivados dos dados presentes.
+// `hidden` remove um status da lista de filtros (os itens continuam na tabela).
+const StatusFilterChips = ({
+  items,
+  getStatus,
+  labels,
+  value,
+  onChange,
+  hidden = [],
+}) => {
+  const counts = items.reduce((acc, item) => {
+    const s = getStatus(item);
+    if (s == null) return acc;
+    acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {});
+  const statuses = Object.keys(counts)
+    .map(Number)
+    .filter((s) => !hidden.includes(s))
+    .sort((a, b) => a - b);
+  if (statuses.length <= 1) return null;
+  return (
+    <div className="status-filter-chips">
+      <button
+        className={value === "all" ? "chip active" : "chip"}
+        onClick={() => onChange("all")}
+      >
+        Todos ({items.length})
+      </button>
+      {statuses.map((s) => (
+        <button
+          key={s}
+          className={value === s ? "chip active" : "chip"}
+          onClick={() => onChange(s)}
+        >
+          {labels[s] || `Status ${s}`} ({counts[s]})
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const Pagination = ({
   totalItems,
@@ -153,7 +236,7 @@ const WithdrawsTable = ({ withdraws }) => (
           <tr key={w.id}>
             <td>#{w.id}</td>
             <td>{formatCurrency(w.amountWithdrawn)}</td>
-            <td>{getStatusBadge(w.status)}</td>
+            <td>{getWithdrawStatusBadge(w.status)}</td>
             <td>{formatDate(w.dateCreated)}</td>
           </tr>
         ))
@@ -178,6 +261,8 @@ const ClientDetailPage = () => {
   const [activeTab, setActiveTab] = useState("contracts");
   const [contractsPage, setContractsPage] = useState(1);
   const [withdrawsPage, setWithdrawsPage] = useState(1);
+  const [contractStatusFilter, setContractStatusFilter] = useState("all");
+  const [withdrawStatusFilter, setWithdrawStatusFilter] = useState("all");
   const ITEMS_PER_PAGE = 5;
 
   useEffect(() => {
@@ -204,84 +289,98 @@ const ClientDetailPage = () => {
   useEffect(() => {
     setContractsPage(1);
     setWithdrawsPage(1);
-  }, [activeTab]);
+  }, [activeTab, contractStatusFilter, withdrawStatusFilter]);
 
-  const filteredContracts = useMemo(() => {
+  // A tabela mostra TODOS os contratos e saques do cliente (os backends já
+  // enviam tudo); só os cards de totais filtram por contrato ativo.
+  const allContracts = useMemo(() => {
     if (!clientData?.contracts) return [];
-    const platformId = clientData.clientInfo?.platformId;
-    return clientData.contracts.filter((item) => {
-      if (!item) return false;
-      if (platformId === "DIAMOND_PRIME") {
-        return item.status === 2;
-      } else {
-        return item.contract?.status === 1;
-      }
-    });
+    return clientData.contracts.filter(Boolean);
   }, [clientData]);
 
-  const filteredWithdraws = useMemo(() => {
-    if (!clientData?.withdraws) return [];
-    const platformId = clientData.clientInfo?.platformId;
-    const activeContractIds = filteredContracts.map((c) =>
-      platformId === "DIAMOND_PRIME" ? c.id : c.contract?.id
+  const activeContracts = useMemo(() => {
+    const platformId = clientData?.clientInfo?.platformId;
+    return allContracts.filter((item) =>
+      platformId === "DIAMOND_PRIME"
+        ? item.status === 2
+        : item.contract?.status === 1
     );
-    return clientData.withdraws.filter((w) => {
-      const isStatusValid = w.status === 1 || w.status === 2;
-      if (!isStatusValid) return false;
-      // Na Diamond Prime o saque sai do saldo do cliente, sem vínculo com
-      // contrato — não há contractId para filtrar.
-      if (platformId === "DIAMOND_PRIME") return true;
-      // Saques antigos do CPOM podem não ter contrato vinculado; nesses
-      // casos exibimos mesmo assim.
-      if (w.contractId == null) return true;
-      return activeContractIds.includes(w.contractId);
-    });
-  }, [clientData, filteredContracts]);
+  }, [allContracts, clientData]);
+
+  const allWithdraws = useMemo(() => {
+    if (!clientData?.withdraws) return [];
+    return clientData.withdraws.filter(Boolean);
+  }, [clientData]);
 
   const totalInvestido = useMemo(() => {
     const isDiamond = clientData?.clientInfo?.platformId === "DIAMOND_PRIME";
     return isDiamond
-      ? filteredContracts.reduce((s, i) => s + (i.amount || 0), 0)
-      : filteredContracts.reduce(
+      ? activeContracts.reduce((s, i) => s + (i.amount || 0), 0)
+      : activeContracts.reduce(
           (s, i) => s + (i.contract?.totalPrice || 0),
           0
         );
-  }, [filteredContracts, clientData]);
+  }, [activeContracts, clientData]);
 
   const totalSacado = useMemo(() => {
-    return filteredWithdraws.reduce((s, i) => s + (i.amountWithdrawn || 0), 0);
-  }, [filteredWithdraws]);
+    // Saque cancelado (status 3) devolve o valor, então fica fora da soma
+    return allWithdraws
+      .filter((w) => w.status !== 3)
+      .reduce((s, i) => s + (i.amountWithdrawn || 0), 0);
+  }, [allWithdraws]);
 
   const totalDisponivel = useMemo(() => {
     const isDiamond = clientData?.clientInfo?.platformId === "DIAMOND_PRIME";
     if (isDiamond) return clientData?.clientInfo?.balance || 0;
-    return filteredContracts.reduce(
+    return activeContracts.reduce(
       (s, i) => s + (i.avaliableToWithdraw || 0),
       0
     );
-  }, [filteredContracts, clientData]);
+  }, [activeContracts, clientData]);
+
+  // Listas visíveis após o filtro de status dos chips
+  const visibleContracts = useMemo(() => {
+    if (contractStatusFilter === "all") return allContracts;
+    const isDiamond = clientData?.clientInfo?.platformId === "DIAMOND_PRIME";
+    return allContracts.filter(
+      (item) =>
+        (isDiamond ? item.status : item.contract?.status) ===
+        contractStatusFilter
+    );
+  }, [allContracts, contractStatusFilter, clientData]);
+
+  const visibleWithdraws = useMemo(() => {
+    if (withdrawStatusFilter === "all") return allWithdraws;
+    return allWithdraws.filter((w) => w.status === withdrawStatusFilter);
+  }, [allWithdraws, withdrawStatusFilter]);
 
   const paginatedContracts = useMemo(() => {
     const startIndex = (contractsPage - 1) * ITEMS_PER_PAGE;
-    return filteredContracts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredContracts, contractsPage]);
+    return visibleContracts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [visibleContracts, contractsPage]);
 
   const paginatedWithdraws = useMemo(() => {
     const startIndex = (withdrawsPage - 1) * ITEMS_PER_PAGE;
-    return filteredWithdraws.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredWithdraws, withdrawsPage]);
+    return visibleWithdraws.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [visibleWithdraws, withdrawsPage]);
 
   const handleContractClick = (contractData) => {
     if (!clientData?.clientInfo) return;
-    const contractId =
-      clientData.clientInfo.platformId === "DIAMOND_PRIME"
-        ? contractData.id
-        : contractData.contract.id;
+    const isDiamondPlatform =
+      clientData.clientInfo.platformId === "DIAMOND_PRIME";
+    const contractId = isDiamondPlatform
+      ? contractData.id
+      : contractData.contract.id;
+    // Na Diamond Prime o saque não tem vínculo com contrato
+    const contractWithdraws = isDiamondPlatform
+      ? []
+      : allWithdraws.filter((w) => w.contractId === contractId);
     navigate(`/platform/contrato/${contractId}`, {
       state: {
         contractData,
         platformId: clientData.clientInfo.platformId,
         clientName: clientData.clientInfo.name,
+        contractWithdraws,
       },
     });
   };
@@ -388,7 +487,7 @@ const ClientDetailPage = () => {
             onClick={() => setActiveTab("contracts")}
           >
             <i className="fa-solid fa-file-signature"></i> Contratos (
-            {filteredContracts.length})
+            {allContracts.length})
           </button>
           <button
             className={`tab-button ${
@@ -397,10 +496,33 @@ const ClientDetailPage = () => {
             onClick={() => setActiveTab("withdraws")}
           >
             <i className="fa-solid fa-money-bill-transfer"></i> Saques (
-            {filteredWithdraws.length})
+            {allWithdraws.length})
           </button>
         </div>
         <div className="table-content">
+          {activeTab === "contracts" ? (
+            <StatusFilterChips
+              items={allContracts}
+              getStatus={(item) =>
+                isDiamond ? item.status : item.contract?.status
+              }
+              labels={
+                CONTRACT_STATUS_LABELS[clientInfo.platformId] ||
+                CONTRACT_STATUS_LABELS.CONTRATO_DE_MINERIOS
+              }
+              value={contractStatusFilter}
+              onChange={setContractStatusFilter}
+              hidden={[5]} // "Recomprado" fora dos filtros (a pedido)
+            />
+          ) : (
+            <StatusFilterChips
+              items={allWithdraws}
+              getStatus={(w) => w.status}
+              labels={WITHDRAW_STATUS_LABELS}
+              value={withdrawStatusFilter}
+              onChange={setWithdrawStatusFilter}
+            />
+          )}
           <AnimatePresence mode="wait">
             {activeTab === "contracts" ? (
               <UniversalContractsTable
@@ -415,7 +537,7 @@ const ClientDetailPage = () => {
         </div>
         {activeTab === "contracts" && (
           <Pagination
-            totalItems={filteredContracts.length}
+            totalItems={visibleContracts.length}
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={contractsPage}
             onPageChange={setContractsPage}
@@ -423,7 +545,7 @@ const ClientDetailPage = () => {
         )}
         {activeTab === "withdraws" && (
           <Pagination
-            totalItems={filteredWithdraws.length}
+            totalItems={visibleWithdraws.length}
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={withdrawsPage}
             onPageChange={setWithdrawsPage}

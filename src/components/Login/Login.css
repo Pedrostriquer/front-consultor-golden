@@ -1,25 +1,24 @@
-/* --- Estrutura Principal da Página --- */
+/* --- LOGIN — BRANDING PRETO PREMIUM + FORMULÁRIO CLARO --- */
 .login-page-merged {
     display: flex;
     height: 100vh;
     width: 100%;
-    background-color: #1F2A40; /* Cor de fundo para o painel direito */
+    background-color: var(--bg);
 }
 
-/* --- Painel da Esquerda (Branding) --- */
+/* --- Painel da Esquerda (Branding preto & gold) --- */
 .login-branding {
-    width: 60%; /* AUMENTADO PARA 60% */
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 3rem;
-    color: #F9FAFB;
+    color: var(--ink-inverse);
     position: relative;
-    overflow: hidden; /* Importante para o efeito de brilho */
+    overflow: hidden;
 
-    /* NOVO FUNDO com textura de pontos */
-    background-color: #111827;
+    background-color: #101114;
     background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
     background-size: 25px 25px;
 }
@@ -32,7 +31,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at center, rgba(246, 209, 104, 0.08), transparent 35%);
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.09), transparent 35%);
     animation: rotateGlow 40s linear infinite;
 }
 
@@ -44,7 +43,7 @@
 .branding-content {
     text-align: center;
     max-width: 450px;
-    z-index: 1; /* Para ficar na frente do efeito de brilho */
+    z-index: 1;
 }
 
 .logo-showcase-merged {
@@ -67,7 +66,7 @@
 .logo-separator-login {
     height: 40px;
     width: 2px;
-    background-color: #f6d168;
+    background-color: var(--gold-400);
     opacity: 0.5;
 }
 
@@ -79,35 +78,37 @@
 }
 
 .branding-p {
-    font-size: 1.1rem;
-    color: #9CA3AF;
+    font-size: 1.05rem;
+    color: var(--ink-inverse-2);
     line-height: 1.6;
 }
 
-/* --- Painel da Direita (Formulário) --- */
+/* --- Painel da Direita (Formulário claro) --- */
 .login-form-area {
-    width: 40%; /* DIMINUÍDO PARA 40% */
+    width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--bg);
+    border-left: 1px solid var(--border);
 }
 
 .login-form-wrapper {
     width: 100%;
     max-width: 400px;
     padding: 2rem;
-    background: transparent; /* Remove o fundo do card para integrar com o painel */
+    background: transparent;
 }
 
 .login-form-wrapper h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 1.7rem;
+    font-weight: 700;
     margin: 0 0 0.5rem 0;
-    color: #F9FAFB;
+    color: var(--ink);
 }
 
 .form-subtitle {
-    color: #9CA3AF;
+    color: var(--ink-3);
     margin-bottom: 2.5rem;
 }
 
@@ -117,9 +118,10 @@
 
 .input-group label {
     display: block;
-    color: #9CA3AF;
+    color: var(--ink-2);
     font-weight: 500;
     margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
 .input-field {
@@ -131,24 +133,24 @@
     left: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #6B7280;
+    color: var(--ink-3);
 }
 
 .input-field input {
     width: 100%;
     padding: 0.8rem 1rem 0.8rem 3rem;
-    border: 1px solid #374151;
-    background-color: #121828;
-    color: #E5E7EB;
-    border-radius: 10px;
+    border: 1px solid var(--border-strong);
+    background-color: var(--surface);
+    color: var(--ink);
+    border-radius: var(--radius);
     font-size: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-field input:focus {
     outline: none;
-    border-color: #f6d168;
-    box-shadow: 0 0 0 3px rgba(246, 209, 104, 0.2);
+    border-color: var(--gold-400);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
 }
 
 .login-button {
@@ -156,17 +158,19 @@
     margin-top: 1rem;
     padding: 0.9rem;
     border: none;
-    border-radius: 10px;
-    background-color: #f6d168;
-    color: #111827;
+    border-radius: var(--radius);
+    background-color: var(--black);
+    color: var(--gold-300);
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .login-button:hover:not(:disabled) {
-    background-color: #eab308;
+    background-color: var(--black-2);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
 }
 
 .login-button:disabled {
@@ -177,19 +181,19 @@
 .spinner-button {
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(17, 24, 39, 0.3);
-    border-top-color: #111827;
+    border: 3px solid rgba(212, 175, 55, 0.3);
+    border-top-color: var(--gold-300);
     border-radius: 50%;
     display: inline-block;
     animation: spin 1s linear infinite;
 }
 
 .error-message {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: #fca5a5;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background-color: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #F0CCC8;
     padding: 0.8rem 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius);
     text-align: center;
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
@@ -202,10 +206,11 @@
 /* --- Responsividade para Telas Menores --- */
 @media (max-width: 900px) {
     .login-branding {
-        display: none; /* Oculta o painel esquerdo em telas pequenas */
+        display: none;
     }
     .login-form-area {
         width: 100%;
         padding: 2rem;
+        border-left: none;
     }
 }

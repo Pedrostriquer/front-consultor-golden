@@ -1,22 +1,16 @@
+/* --- EXTRATO — TEMA CLARO GOLD/BLACK --- */
 .extrato-page {
-  color: #E5E7EB;
-}
-
-.extrato-page .page-header h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #F9FAFB;
-  margin: 0;
+  color: var(--ink-2);
 }
 
 .extrato-page .page-header p {
-  font-size: 1rem;
-  color: #9CA3AF;
+  font-size: 0.95rem;
+  color: var(--ink-3);
   margin-top: 0.5rem;
 }
 
 .extrato-content {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   padding: 0.5rem;
 }
 
@@ -28,16 +22,17 @@
 
 .extrato-table th, .extrato-table td {
   text-align: left;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #374151;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .extrato-table thead th {
-  color: #9CA3AF;
-  font-weight: 500;
-  font-size: 0.8rem;
+  color: var(--ink-3);
+  font-weight: 600;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  background-color: var(--surface-2);
 }
 
 .extrato-table tbody tr:last-child td {
@@ -46,11 +41,11 @@
 
 .clickable-row {
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease;
 }
 
 .clickable-row:hover {
-  background-color: #374151;
+  background-color: var(--gold-tint);
 }
 
 .icon-cell {
@@ -68,23 +63,23 @@
 }
 
 .transaction-icon.credit {
-  background-color: rgba(52, 211, 153, 0.1);
-  color: #34D399;
+  background-color: var(--success-bg);
+  color: var(--success);
 }
 
 .transaction-icon.debit {
-  background-color: rgba(248, 113, 113, 0.1);
-  color: #F87171;
+  background-color: var(--danger-bg);
+  color: var(--danger);
 }
 
 .transaction-description {
-  font-weight: 500;
-  color: #F9FAFB;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .transaction-date {
   font-size: 0.85rem;
-  color: #9CA3AF;
+  color: var(--ink-3);
   margin-top: 4px;
 }
 
@@ -93,54 +88,55 @@
 }
 
 .amount-credit {
-  color: #34D399;
+  color: var(--success);
   font-weight: 600;
 }
 
 .amount-debit {
-  color: #F87171;
+  color: var(--danger);
   font-weight: 600;
 }
 
 .empty-cell {
   text-align: center;
   padding: 4rem;
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
-/* --- PAGINAÇÃO (COM ALINHAMENTO CORRIGIDO) --- */
-.pagination-controls {
+/* --- PAGINAÇÃO --- */
+.extrato-page .pagination-controls {
   display: flex;
-  justify-content: center; /* ALTERADO DE flex-end PARA center */
+  justify-content: center;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.5rem 1rem;
-  border-top: 1px solid #374151;
+  padding: 1.25rem 1rem;
+  border-top: 1px solid var(--border);
 }
 
-.pagination-controls button {
-  background-color: #1F2A40;
-  border: 1px solid #374151;
-  color: #E5E7EB;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
+.extrato-page .pagination-controls button {
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--ink-2);
+  border-radius: var(--radius);
+  padding: 0.55rem 1.2rem;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
 }
 
-.pagination-controls button:hover:not(:disabled) {
-  background-color: #374151;
-  border-color: #4B5563;
+.extrato-page .pagination-controls button:hover:not(:disabled) {
+  border-color: var(--gold-500);
+  color: var(--gold-600);
+  background-color: var(--gold-tint);
 }
 
-.pagination-controls button:disabled {
+.extrato-page .pagination-controls button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.pagination-controls span {
-  color: #9CA3AF;
+.extrato-page .pagination-controls span {
+  color: var(--ink-3);
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -150,11 +146,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #374151;
+  background-color: #ECEAE3;
 }
 .skeleton-row .skeleton-bar {
   height: 16px;
-  background-color: #374151;
+  background-color: #ECEAE3;
   border-radius: 4px;
 }
 .skeleton-row td {
@@ -170,27 +166,29 @@
   }
 }
 
-/* MODAL STYLES */
-.modal-overlay {
+/* MODAL */
+.extrato-page .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(17, 24, 39, 0.8);
+  background-color: rgba(16, 17, 20, 0.55);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-.modal-content {
-  background-color: #1F2A40;
-  border-radius: 16px;
+.extrato-page .modal-content {
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 500px;
   position: relative;
-  border: 1px solid #374151;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
 }
 
 .close-modal-btn {
@@ -199,38 +197,42 @@
   right: 15px;
   background: none;
   border: none;
-  color: #9CA3AF;
+  color: var(--ink-3);
   font-size: 2rem;
   cursor: pointer;
+  transition: color var(--t-fast);
 }
 
-.modal-header {
+.close-modal-btn:hover {
+  color: var(--ink);
+}
+
+.extrato-page .modal-header {
   padding: 1.5rem 2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--border);
 }
 
-.modal-header.credit { border-left: 5px solid #34D399; }
-.modal-header.debit { border-left: 5px solid #F87171; }
+.extrato-page .modal-header.credit { border-left: 5px solid var(--success); }
+.extrato-page .modal-header.debit { border-left: 5px solid var(--danger); }
 
-
-.modal-header .modal-icon {
+.extrato-page .modal-header .modal-icon {
   font-size: 1.5rem;
 }
-.modal-header.credit .modal-icon { color: #34D399; }
-.modal-header.debit .modal-icon { color: #F87171; }
+.extrato-page .modal-header.credit .modal-icon { color: var(--success); }
+.extrato-page .modal-header.debit .modal-icon { color: var(--danger); }
 
-
-.modal-header h3 {
+.extrato-page .modal-header h3 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  color: var(--ink);
 }
 
-.modal-header p {
+.extrato-page .modal-header p {
   margin: 0;
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 .modal-details-grid {
@@ -246,18 +248,20 @@
 }
 
 .modal-details-grid .detail-item span {
-  color: #9CA3AF;
+  color: var(--ink-3);
   font-size: 0.85rem;
   margin-bottom: 0.25rem;
 }
 
 .modal-details-grid .detail-item strong {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--ink);
 }
 .modal-details-grid .detail-item p {
   margin: 0;
   line-height: 1.6;
+  color: var(--ink-2);
 }
 
 .modal-details-grid .detail-item.full-width {

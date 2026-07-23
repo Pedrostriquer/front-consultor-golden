@@ -1,4 +1,4 @@
-/* --- LAYOUT GERAL --- */
+/* --- PERFIL — TEMA CLARO GOLD/BLACK --- */
 .perfil-page {
   font-family: 'Poppins', sans-serif;
   height: 100%;
@@ -13,29 +13,14 @@
   gap: 1rem;
 }
 
-.perfil-page .page-header h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #F9FAFB;
-  margin: 0;
-}
-
 .perfil-page .page-header p {
   font-size: 0.9rem;
-  color: #9CA3AF;
+  color: var(--ink-3);
   margin: 0;
-}
-
-.perfil-page .card-base {
-  background: #1F2937;
-  border: 1px solid #374151;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .perfil-card {
   width: 100%;
-  /* Remove a margem auto para usar flex grow se necessário, ou mantém fixo */
   margin: 0;
   position: relative;
   overflow: hidden;
@@ -43,19 +28,18 @@
   flex-direction: column;
 }
 
-/* --- BANNER (Reduzido) --- */
+/* --- BANNER — faixa preta premium com brilho dourado --- */
 .perfil-banner {
   height: 90px;
-  background: linear-gradient(135deg, rgba(246, 209, 104, 0.15), rgba(31, 42, 64, 0.9)),
-    url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-  background-size: cover;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.25), transparent 55%),
+    linear-gradient(135deg, #1A1B20, #101114);
 }
 
 /* --- CORPO DO PERFIL --- */
 .perfil-body {
   display: flex;
   flex-direction: row;
-  /* Lado a lado em Desktop */
   padding: 1rem 2rem 2rem 2rem;
   gap: 2rem;
   align-items: flex-start;
@@ -69,45 +53,46 @@
   text-align: center;
   min-width: 200px;
   margin-top: -45px;
-  /* Puxa para cima do banner */
 }
 
 .perfil-avatar {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: #f6d168;
-  color: #111827;
+  background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+  color: var(--black);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
   font-weight: 600;
-  border: 4px solid #1F2937;
+  border: 4px solid var(--surface);
   margin-bottom: 0.5rem;
   z-index: 2;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-gold);
 }
 
 .perfil-name {
   margin: 0;
   font-size: 1.4rem;
   font-weight: 700;
-  color: #F9FAFB;
+  color: var(--ink);
   line-height: 1.2;
 }
 
 .perfil-role {
-  font-size: 0.85rem;
-  color: #f6d168;
-  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--gold-600);
+  font-weight: 600;
   margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 /* Linha divisória vertical apenas em desktop */
 .perfil-divider {
   width: 1px;
-  background-color: #374151;
+  background-color: var(--border);
   align-self: stretch;
   margin-top: 1rem;
 }
@@ -121,7 +106,6 @@
   padding-top: 0.5rem;
 }
 
-/* Grid de 3 colunas para economizar altura */
 .perfil-details-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -135,9 +119,9 @@
 }
 
 .detail-item label {
-  font-weight: 500;
-  color: #9CA3AF;
-  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  font-size: 0.72rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -146,13 +130,13 @@
 }
 
 .detail-item label i {
-  color: #f6d168;
+  color: var(--gold-500);
 }
 
 .detail-item span {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #E5E7EB;
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -164,10 +148,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--gold-tint);
   padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
+  border-radius: var(--radius);
+  border: 1px solid var(--gold-border);
 }
 
 .link-box {
@@ -177,8 +161,8 @@
 }
 
 .link-box label {
-  font-size: 0.8rem;
-  color: #f6d168;
+  font-size: 0.78rem;
+  color: var(--gold-600);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -189,27 +173,26 @@
   display: flex;
   gap: 0;
   height: 36px;
-  /* Altura fixa compacta */
 }
 
 .indication-link-wrapper input {
   flex-grow: 1;
   padding: 0 0.75rem;
-  border: 1px solid #4B5563;
+  border: 1px solid var(--border-strong);
   border-right: none;
-  border-radius: 6px 0 0 6px;
-  background-color: #111827;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  background-color: var(--surface);
   font-size: 0.85rem;
-  color: #9CA3AF;
+  color: var(--ink-2);
   font-family: 'monospace';
   outline: none;
 }
 
 .indication-link-wrapper button {
-  background-color: #f6d168;
-  color: #111827;
+  background-color: var(--black);
+  color: var(--gold-300);
   border: none;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   padding: 0 1rem;
   font-size: 1rem;
   cursor: pointer;
@@ -220,11 +203,11 @@
 }
 
 .indication-link-wrapper button:hover {
-  background-color: #e5c05e;
+  background-color: var(--black-2);
 }
 
 .indication-link-wrapper button.copied {
-  background-color: #34D399;
+  background-color: var(--success);
   color: #fff;
 }
 
@@ -248,13 +231,11 @@
 
   .perfil-details-grid {
     grid-template-columns: 1fr;
-    /* Volta para 1 coluna no mobile */
     gap: 1rem;
   }
 
   .links-container {
     grid-template-columns: 1fr;
-    /* Empilha links no mobile */
     gap: 1rem;
   }
 }

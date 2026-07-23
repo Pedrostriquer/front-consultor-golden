@@ -1,11 +1,33 @@
 /* ================================================================ */
-/* --- ESTILOS PARA A PÁGINA HOME DO DASHBOARD (COM ESCOPO) --- */
+/* --- HOME DO DASHBOARD — TEMA CLARO GOLD/BLACK (COM ESCOPO) --- */
 /* ================================================================ */
 
-/* Classe principal da página para criar o escopo */
 .dashboard-home-page {
   font-family: 'Poppins', sans-serif;
-  color: #E5E7EB;
+  color: var(--ink-2);
+}
+
+/* --- CABEÇALHO DE BOAS-VINDAS --- */
+.dashboard-home-page .d_home-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-home-page .d_home-page-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.dashboard-home-page .d_home-header-accent {
+  color: var(--gold-500);
+}
+
+.dashboard-home-page .d_home-page-header p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-3);
 }
 
 .dashboard-home-page .d_home-loading-placeholder {
@@ -14,7 +36,7 @@
   align-items: center;
   height: 50vh;
   font-size: 1.2rem;
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 /* --- GRIDS DE LAYOUT --- */
@@ -22,8 +44,8 @@
 .dashboard-home-page .d_home-main-grid,
 .dashboard-home-page .d_home-secondary-grid {
   display: grid;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .dashboard-home-page .d_home-stats-grid {
@@ -31,12 +53,12 @@
 }
 
 .dashboard-home-page .d_home-main-grid {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1.6fr 1fr;
   align-items: stretch;
 }
 
 .dashboard-home-page .d_home-secondary-grid {
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1.6fr;
   align-items: stretch;
 }
 
@@ -50,48 +72,89 @@
 
 /* --- CARD BASE E CABEÇALHO --- */
 .dashboard-home-page .d_home-card-base {
-  background-color: #1F2A40;
-  border-radius: 16px;
-  border: 1px solid #374151;
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  transition: box-shadow var(--t), border-color var(--t);
 }
 
+.dashboard-home-page .d_home-card-base:hover {
+  box-shadow: var(--shadow);
+}
+
+/* Cabeçalho de card: título nunca quebra no meio — os controles é que
+   descem para a linha de baixo quando falta espaço */
 .dashboard-home-page .d_home-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #374151;
-  /* padding-bottom: 1rem; */
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .dashboard-home-page .d_home-card-header h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #F9FAFB;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* No card de Melhores Clientes, os filtros ficam SEMPRE em linha própria,
+   abaixo do título — nada de espremer o cabeçalho */
+.dashboard-home-page .d_home-top-clients-container .d_home-card-header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
 }
 
 .dashboard-home-page .d_home-card-header h3 i {
-  color: #f6d168;
+  color: var(--gold-500);
   margin-right: 0.5rem;
 }
 
-/* --- COMPONENTES DA DASHBOARD --- */
+/* --- STAT CARDS --- */
+.dashboard-home-page .d_home-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Filete dourado no topo dos stat cards */
+.dashboard-home-page .d_home-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+}
+
 .dashboard-home-page .d_home-stat-card h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: #9CA3AF;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-home-page .d_home-stat-card h3 i {
+  color: var(--gold-500);
+  margin-right: 0.4rem;
 }
 
 .dashboard-home-page .d_home-stat-value {
   margin: 0;
-  font-size: 2.25rem;
+  font-size: 2.1rem;
   font-weight: 700;
-  color: #F9FAFB;
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
 
 .dashboard-home-page .d_home-chart-container {
@@ -116,8 +179,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0.5rem;
-  border-bottom: 1px solid #374151;
+  padding: 0.9rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--t-fast), transform var(--t-fast);
+}
+
+.dashboard-home-page .d_home-client-item.clickable {
+  cursor: pointer;
+}
+
+.dashboard-home-page .d_home-client-item.clickable:hover {
+  background-color: var(--gold-tint);
+  transform: translateX(3px);
 }
 
 .dashboard-home-page .d_home-client-item:last-child {
@@ -128,11 +202,13 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  color: var(--ink-2);
+  font-weight: 500;
 }
 
 .dashboard-home-page .d_home-client-balance {
-  font-weight: 500;
-  color: #34D399;
+  font-weight: 600;
+  color: var(--success);
 }
 
 .dashboard-home-page .d_home-platform-logo-small {
@@ -142,7 +218,7 @@
 }
 
 .dashboard-home-page .d_home-placeholder-text {
-  color: #6B7280;
+  color: var(--ink-3);
   text-align: center;
   padding: 2rem;
 }
@@ -156,9 +232,11 @@
 
 .dashboard-home-page .d_home-platform-stats-container .d_home-stat-group h4 {
   margin: 0 0 1rem 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #9CA3AF;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .dashboard-home-page .d_home-platform-stats-container .d_home-stat-item {
@@ -172,23 +250,26 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  color: var(--ink-2);
 }
 
 .dashboard-home-page .d_home-platform-stats-container .d_home-stat-percentage {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  color: var(--ink);
 }
 
 .dashboard-home-page .d_home-platform-stats-container .d_home-stat-value-small {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1rem;
-  color: #F9FAFB;
+  color: var(--ink);
 }
 
 .dashboard-home-page .d_home-progress-bar-background {
   height: 8px;
   width: 100%;
-  background-color: #374151;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -208,20 +289,21 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  color: #9CA3AF;
+  color: var(--ink-3);
   margin-bottom: 1.5rem;
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-progress-summary strong {
-  color: #F9FAFB;
+  color: var(--ink);
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-progress-bar-container {
   position: relative;
   width: 100%;
   height: 18px;
-  background-color: #374151;
-  border-radius: 8px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
   margin-top: 2rem;
 }
 
@@ -231,8 +313,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #A38A4A, #f6d168);
-  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
+  border-radius: 9px;
   transform-origin: left;
   z-index: 1;
 }
@@ -250,8 +332,8 @@
 .dashboard-home-page .d_home-levels-container .d_home-marker-dot {
   width: 16px;
   height: 16px;
-  background-color: #1F2A40;
-  border: 3px solid #4B5563;
+  background-color: var(--surface);
+  border: 3px solid var(--border-strong);
   border-radius: 50%;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -259,23 +341,24 @@
 
 .dashboard-home-page .d_home-levels-container .d_home-level-marker:hover .d_home-marker-dot {
   transform: scale(1.2);
-  border-color: #f6d168;
+  border-color: var(--gold-400);
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-level-marker.completed .d_home-marker-dot {
-  background-color: #f6d168;
-  border-color: #1F2A40;
+  background-color: var(--gold-400);
+  border-color: var(--surface);
   transform: scale(1.0);
 }
 
+/* Tooltip do marcador — preto premium para contraste */
 .dashboard-home-page .d_home-levels-container .d_home-marker-tooltip {
   position: absolute;
   bottom: 30px;
-  background-color: #111827;
+  background-color: var(--black);
   padding: 0.5rem 0.8rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius);
+  border: 1px solid var(--black-border);
+  box-shadow: var(--shadow-lg);
   white-space: nowrap;
   visibility: hidden;
   opacity: 0;
@@ -293,13 +376,13 @@
 .dashboard-home-page .d_home-levels-container .d_home-tooltip-value {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #E5E7EB;
+  color: var(--ink-inverse);
   padding-right: 8px;
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-tooltip-commission {
   font-size: 0.8rem;
-  color: #34D399;
+  color: var(--gold-300);
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-marker-tooltip::after {
@@ -310,30 +393,31 @@
   transform: translateX(-50%);
   border-width: 5px;
   border-style: solid;
-  border-color: #111827 transparent transparent transparent;
+  border-color: var(--black) transparent transparent transparent;
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-next-level-info {
   text-align: center;
-  color: #9CA3AF;
+  color: var(--ink-3);
   font-size: 0.9rem;
   margin-top: 1.5rem;
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-next-level-info strong {
-  color: #f6d168;
+  color: var(--gold-600);
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-levels-expand-button {
   background: none;
   border: none;
-  color: #9CA3AF;
+  color: var(--ink-3);
   cursor: pointer;
   font-size: 0.9rem;
+  transition: color var(--t-fast);
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-levels-expand-button:hover {
-  color: #f6d168;
+  color: var(--gold-600);
 }
 
 .dashboard-home-page .d_home-levels-container .d_home-levels-expand-button i {
@@ -343,7 +427,7 @@
 .dashboard-home-page .d_home-levels-container .d_home-expanded-levels-list {
   overflow: hidden;
   margin-top: 1.5rem;
-  border-top: 1px solid #374151;
+  border-top: 1px solid var(--border);
   padding-top: 1.5rem;
 }
 
@@ -360,51 +444,56 @@
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   transition: background-color 0.2s;
 }
 
 .dashboard-home-page .d_home-expanded-levels-list li.current {
-  background-color: rgba(246, 209, 104, 0.1);
-  border-left: 3px solid #f6d168;
+  background-color: var(--gold-tint);
+  border-left: 3px solid var(--gold-400);
 }
 
 .dashboard-home-page .d_home-expanded-levels-list li span {
-  color: #9CA3AF;
+  color: var(--ink-3);
 }
 
 .dashboard-home-page .d_home-expanded-levels-list li strong {
-  color: #34D399;
+  color: var(--success);
 }
 
-/* --- FILTRO DE CLIENTES --- */
+/* --- FILTRO DE CLIENTES (controle segmentado) --- */
 .dashboard-home-page .d_home-client-filter-controls {
   display: flex;
-  gap: 0.5rem;
+  gap: 4px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
 }
 
 .dashboard-home-page .d_home-client-filter-controls button {
+  flex: 1;
   background-color: transparent;
-  border: 1px solid #374151;
-  color: #9CA3AF;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
+  border: none;
+  color: var(--ink-3);
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  white-space: nowrap;
 }
 
 .dashboard-home-page .d_home-client-filter-controls button:hover {
-  background-color: #374151;
-  color: #F9FAFB;
+  color: var(--gold-600);
 }
 
 .dashboard-home-page .d_home-client-filter-controls button.active-filter {
-  background-color: #f6d168;
-  color: #1F2A40;
-  border-color: #f6d168;
+  background-color: var(--black);
+  color: var(--gold-300);
   font-weight: 600;
+  box-shadow: var(--shadow-sm);
 }
 
 .dashboard-home-page .d_home-client-platform-logo {
@@ -417,22 +506,22 @@
 /* --- SKELETON LOADER --- */
 @keyframes d_home-pulse {
   0% {
-    background-color: #2d3748;
+    background-color: #ECEAE3;
   }
 
   50% {
-    background-color: #4a5568;
+    background-color: #F3F1EA;
   }
 
   100% {
-    background-color: #2d3748;
+    background-color: #ECEAE3;
   }
 }
 
 .dashboard-home-page .d_home-skeleton-loader {
   animation: d_home-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  background-color: #2d3748;
-  border-radius: 8px;
+  background-color: #ECEAE3;
+  border-radius: var(--radius);
   width: 100%;
   height: 100%;
 }

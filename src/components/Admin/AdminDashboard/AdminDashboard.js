@@ -79,14 +79,22 @@ const AdminDashboard = () => {
                     <h3>Vendas nos Últimos 12 Meses</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                            <XAxis dataKey="name" stroke="#9CA3AF" />
-                            <YAxis stroke="#9CA3AF" tickFormatter={(value) => `R$${value / 1000}k`} />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#E7E4DC" vertical={false} />
+                            <XAxis dataKey="name" stroke="#787D89" tickLine={false} axisLine={{ stroke: '#E7E4DC' }} />
+                            <YAxis stroke="#787D89" tickLine={false} axisLine={false} tickFormatter={(value) => `R$${value / 1000}k`} />
                             <Tooltip
-                                cursor={{ fill: 'rgba(79, 70, 229, 0.1)' }}
-                                contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }}
+                                cursor={{ fill: 'rgba(201, 162, 39, 0.08)' }}
+                                contentStyle={{
+                                    backgroundColor: '#FFFFFF',
+                                    border: '1px solid #E7E4DC',
+                                    borderRadius: '6px',
+                                    boxShadow: '0 8px 28px rgba(20, 18, 10, 0.1)',
+                                    color: '#16171B',
+                                }}
+                                labelStyle={{ color: '#16171B', fontWeight: 600 }}
+                                itemStyle={{ color: '#3E4149' }}
                             />
-                            <Bar dataKey="Vendas" fill="#4F46E5" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="Vendas" fill="#C9A227" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

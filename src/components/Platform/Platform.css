@@ -1,27 +1,28 @@
 .platform-container {
   display: flex;
   min-height: 100vh;
-  background-color: #121828;
+  background-color: var(--bg);
 }
 
-/* O wrapper agora NÃO tem 'position: relative', pois o loader não é mais seu filho. */
-/* Ele apenas ocupa espaço e tem sua margem animada pela Framer Motion. */
+/* O wrapper apenas ocupa espaço e tem sua margem animada pela Framer Motion. */
 .content-wrapper {
   flex-grow: 1;
+  min-width: 0;
 }
 
 .content {
   width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 2rem;
-  transition: filter 0.3s ease-in-out;
+  padding: 2rem 2.25rem;
+  transition: filter 0.25s var(--ease);
 }
 
 .content--loading {
-  filter: blur(4px);
-  pointer-events: none; 
+  filter: blur(3px);
+  pointer-events: none;
 }
-  
+
 @media (max-width: 768px) {
   .content-wrapper {
     margin-left: 0 !important; /* !important para sobrepor a animação da Framer Motion */

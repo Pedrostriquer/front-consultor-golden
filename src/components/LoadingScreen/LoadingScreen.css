@@ -23,12 +23,23 @@
   justify-content: center;
   align-items: center;
 
-  background-color: rgba(17, 24, 39, 0.4);
+  background-color: rgba(246, 245, 241, 0.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 10;
   /* Anima a mudança de posição quando a sidebar abre/fecha */
   transition: left 0.4s cubic-bezier(0.6, 0.05, -0.01, 0.9);
+}
+
+/* No overlay claro, o traço de fundo e o texto precisam de contraste escuro */
+.content-loader-overlay .logo-bg {
+  stroke: rgba(16, 17, 20, 0.12);
+}
+.content-loader-overlay .logo-spark {
+  stroke: #16171b;
+}
+.content-loader-overlay .loading-text {
+  color: #787d89;
 }
 
 /* Quando a classe 'collapsed' é aplicada, ajusta a posição do overlay */
@@ -69,7 +80,7 @@
 }
 
 .logo-trail {
-  stroke: #f6d168;
+  stroke: #d4af37;
 }
 
 .logo-spark {

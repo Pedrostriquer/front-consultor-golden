@@ -1,12 +1,12 @@
 .admin-sidebar {
   width: 260px;
-  background-color: #1F2937;
-  color: #E5E7EB;
+  background-color: var(--black);
+  background-image: linear-gradient(180deg, #14151a 0%, #101114 55%, #0c0d10 100%);
+  color: var(--ink-inverse);
   display: flex;
   flex-direction: column;
   height: 100vh;
-  border-right: 1px solid #374151;
-  /* Impede que a sidebar encolha se o conteúdo for muito largo */
+  border-right: 1px solid var(--black-border);
   flex-shrink: 0;
 }
 
@@ -15,6 +15,7 @@
   align-items: center;
   padding: 1.5rem;
   gap: 1rem;
+  border-bottom: 1px solid var(--black-border);
 }
 
 .admin-sidebar-logo img {
@@ -22,71 +23,88 @@
 }
 
 .admin-sidebar-logo span {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: #F9FAFB;
+  color: var(--ink-inverse);
 }
 
 .admin-sidebar-nav {
   flex-grow: 1;
-  padding: 1rem;
+  padding: 1rem 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  overflow-y: auto; /* Adicionado para caso de muitos links na sidebar */
+  gap: 0.4rem;
+  overflow-y: auto;
 }
 
 .admin-nav-link {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  color: #D1D5DB;
+  border-radius: var(--radius);
+  color: var(--ink-inverse-2);
   text-decoration: none;
   transition: background-color 0.2s, color 0.2s;
   font-weight: 500;
+  font-size: 0.92rem;
 }
 
 .admin-nav-link:hover {
-  background-color: #374151;
-  color: #FFF;
+  background-color: var(--black-2);
+  color: var(--ink-inverse);
 }
 
 .admin-nav-link.active {
-  background-color: #4F46E5;
-  color: #FFF;
+  background-color: rgba(212, 175, 55, 0.12);
+  color: var(--gold-300);
   font-weight: 600;
 }
 
+.admin-nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18%;
+  height: 64%;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--gold-300), var(--gold-500));
+}
+
 .admin-nav-link i {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   width: 20px;
   text-align: center;
 }
 
+.admin-nav-link.active i {
+  color: var(--gold-400);
+}
+
 .admin-sidebar-footer {
-  padding: 1.5rem;
-  border-top: 1px solid #374151;
+  padding: 1rem 0.85rem;
+  border-top: 1px solid var(--black-border);
 }
 
 .admin-logout-button {
   width: 100%;
   background: none;
   border: none;
-  color: #D1D5DB;
-  font-size: 1rem;
+  color: var(--ink-inverse-2);
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   transition: background-color 0.2s, color 0.2s;
 }
 
 .admin-logout-button:hover {
-  background-color: #374151;
-  color: #FFF;
+  background-color: var(--black-2);
+  color: var(--ink-inverse);
 }

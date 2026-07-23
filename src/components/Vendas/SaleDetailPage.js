@@ -233,7 +233,7 @@ const SaleDetailPage = () => {
           </div>
         ) : (
           <div className="card-base">
-            <p style={{ color: "#9CA3AF", fontSize: "0.9rem" }}>
+            <p style={{ color: "var(--ink-3)", fontSize: "0.9rem" }}>
               <i className="fa-solid fa-info-circle"></i> O envio direto de
               recibos não está disponível para esta plataforma.
             </p>

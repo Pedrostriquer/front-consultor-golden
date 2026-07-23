@@ -1,17 +1,11 @@
-/* --- LAYOUT E TEMA GERAL --- */
+/* --- SAQUE — TEMA CLARO GOLD/BLACK --- */
 .saque-page .page-header {
   margin-bottom: 2rem;
   text-align: center;
 }
-.saque-page .page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #F9FAFB;
-  margin: 0;
-}
 .saque-page .page-header p {
-  font-size: 1.1rem;
-  color: #9CA3AF;
+  font-size: 1rem;
+  color: var(--ink-3);
   margin-top: 0.5rem;
   max-width: 600px;
   margin-left: auto;
@@ -22,22 +16,22 @@
 .saque-page .saque-card {
   padding: 2.5rem;
   max-width: 550px;
-  margin: 0 auto; /* Centralizado horizontalmente */
+  margin: 0 auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .saque-page .saque-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 .saque-page .saldo-disponivel {
   text-align: center;
   padding-bottom: 2rem;
   margin-bottom: 2rem;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--border);
 }
 .saque-page .saldo-disponivel span {
-  font-size: 1.1rem;
-  color: #9CA3AF;
+  font-size: 0.95rem;
+  color: var(--ink-3);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -53,7 +47,7 @@
   font-weight: 700;
   margin: 0.75rem 0 0 0;
   line-height: 1;
-  background: linear-gradient(90deg, #d4a74e, #f6d168, #e7c26a, #f6d168, #d4a74e);
+  background: linear-gradient(90deg, #96741F, #D4AF37, #B8912F, #D4AF37, #96741F);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -62,43 +56,43 @@
 
 /* Formulário de Saque */
 .saque-page .saque-form { display: flex; flex-direction: column; gap: 1rem; text-align: left;}
-.saque-page .saque-form label { font-weight: 500; color: #9CA3AF; margin-bottom: -0.5rem; }
+.saque-page .saque-form label { font-weight: 500; color: var(--ink-3); margin-bottom: -0.5rem; }
 .saque-page .saque-input-wrapper { position: relative; }
-.saque-page .input-prefix { position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; font-weight: 500; color: #6B7280; }
+.saque-page .input-prefix { position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; font-weight: 500; color: var(--ink-3); }
 .saque-page .saque-input-wrapper input {
   width: 100%;
   padding: 1.25rem 1rem 1.25rem 5rem;
   font-size: 1.75rem;
   font-weight: 600;
-  border-radius: 10px;
-  background-color: #121828;
-  border: 1px solid #374151;
-  color: #F9FAFB;
+  border-radius: var(--radius);
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink);
   transition: all 0.2s;
 }
 .saque-page .saque-input-wrapper input:focus {
   outline: none;
-  border-color: #f6d168;
-  box-shadow: 0 0 0 4px rgba(246, 209, 104, 0.2);
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+  background-color: var(--surface);
 }
 .saque-page .saque-button {
-  background: linear-gradient(95deg, #d4a74e, #f6d168);
-  color: #111827;
+  background: var(--black);
+  color: var(--gold-300);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius);
   padding: 1.25rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center; justify-content: center; gap: 0.75rem;
   transition: all 0.2s ease;
   margin-top: 0.5rem;
-  box-shadow: 0 4px 20px rgba(246, 209, 104, 0.25);
+  box-shadow: var(--shadow);
 }
-.saque-page .saque-button:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(246, 209, 104, 0.35); transform: translateY(-2px); }
-.saque-page .saque-button:disabled { background: #4B5563; color: #9CA3AF; cursor: not-allowed; box-shadow: none; transform: none;}
-
+.saque-page .saque-button:hover:not(:disabled) { box-shadow: var(--shadow-lg); transform: translateY(-2px); background-color: var(--black-2); }
+.saque-page .saque-button:disabled { background: var(--border-strong); color: var(--ink-3); cursor: not-allowed; box-shadow: none; transform: none;}
 
 /* --- HISTÓRICO DE SAQUES --- */
 .saque-page .history-section {
@@ -106,60 +100,57 @@
   max-width: 1000px;
   margin: 3rem auto 0 auto;
 }
-.saque-page .history-section h2 { font-size: 1.75rem; margin-bottom: 1.5rem; color: #F9FAFB; text-align: left; }
-.saque-page .filters-container { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.saque-page .history-section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--ink); text-align: left; }
+.saque-page .filters-container { display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 0; border: none !important; background: transparent !important; box-shadow: none; }
 .saque-page .filters-container select {
   padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
-  background-color: #2a3a55;
-  color: #E5E7EB;
-  font-size: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--surface-2);
+  color: var(--ink);
+  font-size: 0.92rem;
 }
 
-/* --- ESTILOS DA TABELA DO HISTÓRICO (AGORA ISOLADOS) --- */
+/* --- TABELA DO HISTÓRICO --- */
 .saque-page .table-wrapper { overflow-x: auto; }
 .saque-page .withdraws-table { width: 100%; border-collapse: collapse; text-align: left; }
-.saque-page .withdraws-table th, .saque-page .withdraws-table td { padding: 1.25rem 1rem; border-bottom: 1px solid #374151; }
-.saque-page .withdraws-table th { font-size: 0.8rem; text-transform: uppercase; color: #9CA3AF; font-weight: 500; }
-.saque-page .withdraws-table td { font-size: 0.9rem; color: #E5E7EB; font-weight: 500; }
+.saque-page .withdraws-table th, .saque-page .withdraws-table td { padding: 1.1rem 1rem; border-bottom: 1px solid var(--border); }
+.saque-page .withdraws-table th { font-size: 0.72rem; text-transform: uppercase; color: var(--ink-3); font-weight: 600; letter-spacing: 0.06em; }
+.saque-page .withdraws-table td { font-size: 0.9rem; color: var(--ink-2); font-weight: 500; }
 .saque-page .withdraws-table tbody tr:last-child td { border-bottom: none; }
-.saque-page .empty-cell { text-align: center; padding: 3rem; color: #6B7280; font-size: 1rem;}
+.saque-page .empty-cell { text-align: center; padding: 3rem; color: var(--ink-3); font-size: 1rem;}
 
-/* Estilos para os Badges de Status (isolados) */
-.saque-page .status-badge { padding: 0.3rem 0.8rem; border-radius: 12px; font-weight: 600; font-size: 0.75rem; }
-.saque-page .status-badge.status-pending { background-color: rgba(245, 158, 11, 0.2); color: #facc15; }
-.saque-page .status-badge.status-paid { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
-.saque-page .status-badge.status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #f87171; }
+/* Badge extra usado só aqui */
+.saque-page .status-badge.status-paid { background-color: var(--success-bg); color: var(--success); border: 1px solid #C4E3D0; }
 
-/* Mensagens de erro/sucesso (isoladas) */
-.saque-page .saque-message { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; font-weight: 500; }
-.saque-page .saque-message.error { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
-.saque-page .saque-message.success { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+/* Mensagens de erro/sucesso */
+.saque-page .saque-message { padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem; font-size: 0.9rem; text-align: center; font-weight: 500; }
+.saque-page .saque-message.error { background-color: var(--danger-bg); color: var(--danger); border: 1px solid #F0CCC8; }
+.saque-page .saque-message.success { background-color: var(--success-bg); color: var(--success); border: 1px solid #C4E3D0; }
 
-/* Paginação (isolada) */
-.saque-page .pagination-controls { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #374151; }
-.saque-page .pagination-controls button { background-color: #1F2A40; border: 1px solid #374151; color: #E5E7EB; border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer; font-weight: 500; transition: all 0.2s; }
-.saque-page .pagination-controls button:hover:not(:disabled) { background-color: #374151; border-color: #f6d168; }
+/* Paginação */
+.saque-page .pagination-controls { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.saque-page .pagination-controls button { background-color: var(--surface); border: 1px solid var(--border-strong); color: var(--ink-2); border-radius: var(--radius); padding: 0.55rem 1.2rem; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.saque-page .pagination-controls button:hover:not(:disabled) { border-color: var(--gold-500); color: var(--gold-600); background-color: var(--gold-tint); }
 .saque-page .pagination-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
-.saque-page .pagination-controls span { color: #9CA3AF; font-size: 0.9rem; font-weight: 500; }
+.saque-page .pagination-controls span { color: var(--ink-3); font-size: 0.9rem; font-weight: 500; }
 
-/* Skeleton (isolado) */
-.saque-page .skeleton-row td .skeleton-bar { height: 16px; border-radius: 6px; background-color: #374151; animation: skeleton-loading 1.5s infinite alternate; }
-@keyframes skeleton-loading { 0% { background-color: #374151; } 100% { background-color: #4B5563; } }
+/* Skeleton */
+.saque-page .skeleton-row td .skeleton-bar { height: 16px; border-radius: 6px; background-color: #ECEAE3; animation: skeleton-loading 1.5s infinite alternate; }
+@keyframes skeleton-loading { 0% { background-color: #ECEAE3; } 100% { background-color: #F3F1EA; } }
 
-/* Modal (isolado) */
-.saque-page .modal-overlay { position: fixed; inset: 0; background-color: rgba(18, 24, 40, 0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-.saque-page .modal-content { background: #1F2A40; border: 1px solid #374151; padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); color: #E5E7EB; text-align: center;}
-.saque-page .modal-content h3 { display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 1.5rem; color: #F9FAFB; margin-top: 0; }
-.saque-page .modal-content h3 i { color: #f6d168; }
-.saque-page .modal-content p { color: #9CA3AF; line-height: 1.6; font-size: 1rem; }
-.saque-page .modal-input { width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid #374151; background-color: #121828; color: #F9FAFB; font-size: 1.5rem; text-align: center; letter-spacing: 8px; margin: 1.5rem 0; transition: all 0.2s; }
-.saque-page .modal-input:focus { outline: none; border-color: #f6d168; box-shadow: 0 0 0 4px rgba(246, 209, 104, 0.2); }
+/* Modal */
+.saque-page .modal-overlay { position: fixed; inset: 0; background-color: rgba(16, 17, 20, 0.55); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.saque-page .modal-content { background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; border-radius: var(--radius-lg); width: 100%; max-width: 450px; box-shadow: var(--shadow-lg); color: var(--ink-2); text-align: center;}
+.saque-page .modal-content h3 { display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 1.35rem; color: var(--ink); margin-top: 0; }
+.saque-page .modal-content h3 i { color: var(--gold-500); }
+.saque-page .modal-content p { color: var(--ink-3); line-height: 1.6; font-size: 1rem; }
+.saque-page .modal-input { width: 100%; padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border); background-color: var(--surface-2); color: var(--ink); font-size: 1.5rem; text-align: center; letter-spacing: 8px; margin: 1.5rem 0; transition: all 0.2s; }
+.saque-page .modal-input:focus { outline: none; border-color: var(--gold-400); box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15); }
 .saque-page .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
-.saque-page .modal-button { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
-.saque-page .modal-button.cancel { background-color: #374151; color: #E5E7EB; }
-.saque-page .modal-button.cancel:hover { background-color: #4B5563; }
-.saque-page .modal-button.confirm { background: #f6d168; color: #111827; }
-.saque-page .modal-button.confirm:hover:not(:disabled) { box-shadow: 0 0 15px rgba(246, 209, 104, 0.3); transform: translateY(-2px); }
+.saque-page .modal-button { padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+.saque-page .modal-button.cancel { background-color: var(--surface-2); color: var(--ink-2); border: 1px solid var(--border-strong); }
+.saque-page .modal-button.cancel:hover { background-color: var(--border); }
+.saque-page .modal-button.confirm { background: var(--black); color: var(--gold-300); }
+.saque-page .modal-button.confirm:hover:not(:disabled) { box-shadow: var(--shadow); transform: translateY(-2px); background: var(--black-2); }
 .saque-page .modal-error { margin-top: 1rem; margin-bottom: 0; }

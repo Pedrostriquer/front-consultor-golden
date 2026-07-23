@@ -26,7 +26,7 @@ const PlatformLogo = ({ platformId }) => {
 
 const EmptyState = ({ icon, title, message }) => (
   <tr>
-    <td colSpan="4">
+    <td colSpan="5">
       <div className="empty-state">
         <div className="empty-state-icon">
           <i className={icon}></i>
@@ -49,6 +49,9 @@ const TableSkeleton = ({ rows = 5 }) => (
           <div className="skeleton-bar" style={{ width: "80%" }}></div>
         </td>
         <td>
+          <div className="skeleton-bar" style={{ width: "50%" }}></div>
+        </td>
+        <td>
           <div className="skeleton-bar" style={{ width: "60%" }}></div>
         </td>
         <td>
@@ -65,7 +68,7 @@ const Clientes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 8;
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -185,8 +188,28 @@ const Clientes = () => {
           >
             <option value="dateCreated:desc">Mais Recentes</option>
             <option value="dateCreated:asc">Mais Antigos</option>
+            <option value="name:asc">Nome (A-Z)</option>
+            <option value="name:desc">Nome (Z-A)</option>
           </select>
         </div>
+        {(searchTerm ||
+          filters.platform !== "all" ||
+          filters.sortBy !== "dateCreated" ||
+          filters.sortOrder !== "desc") && (
+          <button
+            className="clear-filters-button"
+            onClick={() => {
+              setSearchTerm("");
+              setFilters({
+                sortBy: "dateCreated",
+                sortOrder: "desc",
+                platform: "all",
+              });
+            }}
+          >
+            <i className="fa-solid fa-xmark"></i> Limpar filtros
+          </button>
+        )}
       </div>
 
       <div className="table-wrapper card-base">
@@ -195,6 +218,7 @@ const Clientes = () => {
             <tr>
               <th className="platform-col"></th>
               <th>Nome</th>
+              <th>Usuário</th>
               <th>CPF/CNPJ</th>
               <th>Email</th>
             </tr>
@@ -227,6 +251,9 @@ const Clientes = () => {
                           <PlatformLogo platformId={client.platformId} />
                         </td>
                         <td>{client.name}</td>
+                        <td className="username-cell">
+                          {client.username || "—"}
+                        </td>
                         <td>{client.cpfCnpj}</td>
                         <td>{client.email}</td>
                       </motion.tr>

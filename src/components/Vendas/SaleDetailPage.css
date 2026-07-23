@@ -1,37 +1,34 @@
-/* --- GERAL DA PÁGINA DE DETALHES DA VENDA --- */
+/* --- DETALHE DA VENDA — TEMA CLARO GOLD/BLACK --- */
 .sale-detail-page {
     font-family: 'Poppins', sans-serif;
-    padding: 20px;
+    padding: 0.5rem 0;
     max-width: 900px;
     margin: 0 auto;
-    color: #E5E7EB;
+    color: var(--ink-2);
 }
 
-/* --- ELEMENTOS ESPECÍFICOS DA PÁGINA DE DETALHES --- */
 .sale-detail-page .card-base {
-    background-color: #1F2937;
-    border-radius: 12px;
-    border: 1px solid #374151;
     padding: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .sale-detail-page .back-button {
     background: none;
     border: none;
-    color: #9CA3AF;
-    font-size: 1rem;
+    color: var(--ink-3);
+    font-size: 0.95rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: color 0.2s;
-    margin-bottom: 1.5rem;
+    transition: color 0.2s, transform 0.2s;
+    margin-bottom: 1.25rem;
+    padding: 0;
 }
 
 .sale-detail-page .back-button:hover {
-    color: #f6d168;
+    color: var(--gold-600);
+    transform: translateX(-3px);
 }
 
 .sale-detail-page .sale-header {
@@ -42,34 +39,36 @@
 
 .sale-detail-page .sale-header h1 {
     margin: 0 0 5px 0;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #F9FAFB;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
 }
 
 .sale-detail-page .sale-header p {
     margin: 0;
-    color: #9CA3AF;
+    color: var(--ink-3);
 }
 
 .sale-detail-page .details-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.25rem;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .sale-detail-page .details-card h3 {
-    margin: 0 0 1.5rem 0;
-    font-size: 1.1rem;
-    border-bottom: 1px solid #374151;
+    margin: 0 0 1.25rem 0;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--border);
     padding-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    color: var(--ink);
+    font-weight: 600;
 }
 
 .sale-detail-page .details-card h3 i {
-    color: #f6d168;
+    color: var(--gold-500);
 }
 
 .sale-detail-page .details-card ul {
@@ -88,65 +87,64 @@
 }
 
 .sale-detail-page .details-card li span {
-    color: #9CA3AF;
+    color: var(--ink-3);
 }
 
 .sale-detail-page .details-card li strong {
-    font-weight: 500;
-    color: #F9FAFB;
+    font-weight: 600;
+    color: var(--ink);
 }
 
 .sale-detail-page .valor-total {
     font-size: 1.2rem;
-    color: #E5E7EB;
+    color: var(--ink);
 }
 
 .sale-detail-page .valor-comissao {
     font-size: 1.2rem;
-    color: #34D399; /* Verde */
+    color: var(--success);
 }
 
 .sale-detail-page .description-card h3 {
-    margin: 0 0 1.5rem 0;
-    font-size: 1.1rem;
-    border-bottom: 1px solid #374151;
+    margin: 0 0 1.25rem 0;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--border);
     padding-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    color: var(--ink);
+    font-weight: 600;
 }
 .sale-detail-page .description-card h3 i {
-    color: #f6d168;
+    color: var(--gold-500);
 }
 .sale-detail-page .description-card p {
-    color: #D1D5DB;
+    color: var(--ink-2);
     line-height: 1.6;
     margin: 0 0 1rem 0;
 }
 .sale-detail-page .description-card span {
     font-size: 0.9rem;
-    color: #9CA3AF;
+    color: var(--ink-3);
     font-style: italic;
 }
 
 .sale-detail-page .status-badge {
     padding: 8px 18px;
-    border-radius: 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
+    font-size: 0.9rem;
 }
 
 .sale-detail-page .sale-detail-error {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: #fca5a5;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: 12px;
+    background-color: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #F0CCC8;
+    border-radius: var(--radius);
     padding: 1rem;
     text-align: center;
 }
 
-/* --- ESTILOS DO UPLOAD DE RECIBO --- */
+/* --- UPLOAD DE RECIBO --- */
 .receipt-upload-card form {
     display: flex;
     flex-direction: column;
@@ -160,36 +158,46 @@
 }
 
 .receipt-upload-card label {
-    font-size: 0.9rem;
-    color: #9CA3AF;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    font-weight: 500;
 }
 
 .receipt-upload-card input[type="text"] {
-    background: #111827;
-    border: 1px solid #374151;
-    border-radius: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     padding: 10px;
-    color: white;
+    color: var(--ink);
+    transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.receipt-upload-card input[type="text"]:focus {
+    border-color: var(--gold-400);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    outline: none;
+    background-color: var(--surface);
 }
 
 .receipt-upload-card input[type="file"] {
-    color: #9CA3AF;
+    color: var(--ink-3);
     font-size: 0.85rem;
 }
 
 .upload-button {
-    background-color: #f6d168;
-    color: #111827;
+    background-color: var(--black);
+    color: var(--gold-300);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius);
     padding: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
 .upload-button:hover:not(:disabled) {
-    background-color: #e5c057;
+    background-color: var(--black-2);
+    box-shadow: var(--shadow);
     transform: translateY(-2px);
 }
 
@@ -200,19 +208,19 @@
 
 .upload-msg {
     padding: 10px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     font-size: 0.9rem;
     text-align: center;
 }
 
 .upload-msg.success {
-    background-color: rgba(52, 211, 153, 0.1);
-    color: #34D399;
-    border: 1px solid rgba(52, 211, 153, 0.2);
+    background-color: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #C4E3D0;
 }
 
 .upload-msg.error {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: #F87171;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background-color: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #F0CCC8;
 }
