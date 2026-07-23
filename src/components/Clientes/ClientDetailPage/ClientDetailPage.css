@@ -230,6 +230,58 @@
   padding-top: 6px;
 }
 
+/* --- BUSCA POR ID DO CONTRATO --- */
+.contract-id-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.85rem 1.25rem 0;
+  padding: 0.5rem 0.9rem;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 320px;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.contract-id-search:focus-within {
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  background-color: var(--surface);
+}
+
+.contract-id-search i {
+  color: var(--ink-3);
+  font-size: 0.85rem;
+}
+
+.contract-id-search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.88rem;
+  width: 100%;
+}
+
+.contract-id-search input::placeholder {
+  color: var(--ink-3);
+}
+
+.contract-id-search .clear-search {
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: 0 0.1rem;
+  font-size: 0.9rem;
+  transition: color var(--t-fast);
+}
+
+.contract-id-search .clear-search:hover {
+  color: var(--danger);
+}
+
 /* --- CHIPS DE FILTRO DE STATUS --- */
 .status-filter-chips {
   display: flex;

@@ -81,6 +81,48 @@ const WITHDRAW_STATUS_LABELS = {
   4: "Ctr. Recomprado",
 };
 
+// Tipo do saque — mesma regra do portal do cliente do CPOM:
+// flag sponsorWithdraw → Indicação; descrição com "golden box"/"caixinha"
+// → transferência para a Golden Box; com "recompra" → recompra.
+const getWithdrawTypeTag = (w) => {
+  const desc = (w.description || "").toLowerCase();
+  if (w.sponsorWithdraw) {
+    return (
+      <span className="withdraw-type-tag type-indicacao">
+        <i className="fa-solid fa-user-plus"></i> Indicação
+      </span>
+    );
+  }
+  if (desc.includes("golden box") || desc.includes("caixinha")) {
+    return (
+      <span className="withdraw-type-tag type-goldenbox">
+        <i className="fa-solid fa-box"></i> Golden Box
+      </span>
+    );
+  }
+  if (desc.includes("recompra")) {
+    return (
+      <span className="withdraw-type-tag type-recompra">
+        <i className="fa-solid fa-rotate"></i> Recompra
+      </span>
+    );
+  }
+  return <span className="withdraw-type-tag type-comum">Saque</span>;
+};
+
+// Texto de descrição idêntico ao do portal do cliente do CPOM
+const getWithdrawDescription = (w) => {
+  const valor = formatCurrency(w.amountWithdrawn);
+  const contrato = w.contractId ? ` do contrato #${w.contractId}` : "";
+  const desc = (w.description || "").toLowerCase();
+  if (w.sponsorWithdraw) return `Saque de Indicação de ${valor}`;
+  if (desc.includes("golden box") || desc.includes("caixinha"))
+    return `Transferência para Golden Box de ${valor}${contrato}`;
+  if (desc.includes("recompra"))
+    return `Saque para Recompra de ${valor}${contrato}`;
+  return `Saque de ${valor}${contrato}`;
+};
+
 // Chips de filtro por status (com contagem), derivados dos dados presentes.
 // `hidden` remove um status da lista de filtros (os itens continuam na tabela).
 const StatusFilterChips = ({
@@ -225,6 +267,8 @@ const WithdrawsTable = ({ withdraws }) => (
     <thead>
       <tr>
         <th>ID</th>
+        <th>Tipo</th>
+        <th>Descrição</th>
         <th>Valor Sacado</th>
         <th>Status</th>
         <th>Data</th>
@@ -235,6 +279,10 @@ const WithdrawsTable = ({ withdraws }) => (
         withdraws.map((w) => (
           <tr key={w.id}>
             <td>#{w.id}</td>
+            <td>{getWithdrawTypeTag(w)}</td>
+            <td className="withdraw-description">
+              {getWithdrawDescription(w)}
+            </td>
             <td>{formatCurrency(w.amountWithdrawn)}</td>
             <td>{getWithdrawStatusBadge(w.status)}</td>
             <td>{formatDate(w.dateCreated)}</td>
@@ -242,7 +290,7 @@ const WithdrawsTable = ({ withdraws }) => (
         ))
       ) : (
         <tr>
-          <td colSpan="4" className="empty-message">
+          <td colSpan="6" className="empty-message">
             Nenhum saque realizado.
           </td>
         </tr>
@@ -263,6 +311,7 @@ const ClientDetailPage = () => {
   const [withdrawsPage, setWithdrawsPage] = useState(1);
   const [contractStatusFilter, setContractStatusFilter] = useState("all");
   const [withdrawStatusFilter, setWithdrawStatusFilter] = useState("all");
+  const [contractIdSearch, setContractIdSearch] = useState("");
   const ITEMS_PER_PAGE = 5;
 
   useEffect(() => {
@@ -289,7 +338,7 @@ const ClientDetailPage = () => {
   useEffect(() => {
     setContractsPage(1);
     setWithdrawsPage(1);
-  }, [activeTab, contractStatusFilter, withdrawStatusFilter]);
+  }, [activeTab, contractStatusFilter, withdrawStatusFilter, contractIdSearch]);
 
   // A tabela mostra TODOS os contratos e saques do cliente (os backends já
   // enviam tudo); só os cards de totais filtram por contrato ativo.
@@ -338,21 +387,37 @@ const ClientDetailPage = () => {
     );
   }, [activeContracts, clientData]);
 
-  // Listas visíveis após o filtro de status dos chips
+  // Listas visíveis após os filtros (chips de status + busca por ID do contrato)
   const visibleContracts = useMemo(() => {
-    if (contractStatusFilter === "all") return allContracts;
     const isDiamond = clientData?.clientInfo?.platformId === "DIAMOND_PRIME";
-    return allContracts.filter(
-      (item) =>
-        (isDiamond ? item.status : item.contract?.status) ===
-        contractStatusFilter
-    );
-  }, [allContracts, contractStatusFilter, clientData]);
+    let list = allContracts;
+    if (contractStatusFilter !== "all") {
+      list = list.filter(
+        (item) =>
+          (isDiamond ? item.status : item.contract?.status) ===
+          contractStatusFilter
+      );
+    }
+    const q = contractIdSearch.trim();
+    if (q) {
+      list = list.filter((item) =>
+        String((isDiamond ? item.id : item.contract?.id) ?? "").includes(q)
+      );
+    }
+    return list;
+  }, [allContracts, contractStatusFilter, contractIdSearch, clientData]);
 
   const visibleWithdraws = useMemo(() => {
-    if (withdrawStatusFilter === "all") return allWithdraws;
-    return allWithdraws.filter((w) => w.status === withdrawStatusFilter);
-  }, [allWithdraws, withdrawStatusFilter]);
+    let list = allWithdraws;
+    if (withdrawStatusFilter !== "all") {
+      list = list.filter((w) => w.status === withdrawStatusFilter);
+    }
+    const q = contractIdSearch.trim();
+    if (q) {
+      list = list.filter((w) => String(w.contractId ?? "").includes(q));
+    }
+    return list;
+  }, [allWithdraws, withdrawStatusFilter, contractIdSearch]);
 
   const paginatedContracts = useMemo(() => {
     const startIndex = (contractsPage - 1) * ITEMS_PER_PAGE;
@@ -500,6 +565,27 @@ const ClientDetailPage = () => {
           </button>
         </div>
         <div className="table-content">
+          <div className="contract-id-search">
+            <i className="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="Buscar por ID do contrato..."
+              value={contractIdSearch}
+              onChange={(e) =>
+                setContractIdSearch(e.target.value.replace(/\D/g, ""))
+              }
+            />
+            {contractIdSearch && (
+              <button
+                className="clear-search"
+                onClick={() => setContractIdSearch("")}
+                title="Limpar busca"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            )}
+          </div>
           {activeTab === "contracts" ? (
             <StatusFilterChips
               items={allContracts}

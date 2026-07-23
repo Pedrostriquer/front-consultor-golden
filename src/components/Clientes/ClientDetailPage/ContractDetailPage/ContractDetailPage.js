@@ -70,6 +70,44 @@ const getWithdrawStatusBadge = (status) => (
   </span>
 );
 
+// Tipo do saque — mesma regra do portal do cliente do CPOM
+const getWithdrawTypeTag = (w) => {
+  const desc = (w.description || "").toLowerCase();
+  if (w.sponsorWithdraw) {
+    return (
+      <span className="withdraw-type-tag type-indicacao">
+        <i className="fa-solid fa-user-plus"></i> Indicação
+      </span>
+    );
+  }
+  if (desc.includes("golden box") || desc.includes("caixinha")) {
+    return (
+      <span className="withdraw-type-tag type-goldenbox">
+        <i className="fa-solid fa-box"></i> Golden Box
+      </span>
+    );
+  }
+  if (desc.includes("recompra")) {
+    return (
+      <span className="withdraw-type-tag type-recompra">
+        <i className="fa-solid fa-rotate"></i> Recompra
+      </span>
+    );
+  }
+  return <span className="withdraw-type-tag type-comum">Saque</span>;
+};
+
+// Texto de descrição idêntico ao do portal do cliente do CPOM
+const getWithdrawDescription = (w) => {
+  const valor = formatCurrency(w.amountWithdrawn);
+  const desc = (w.description || "").toLowerCase();
+  if (w.sponsorWithdraw) return `Saque de Indicação de ${valor}`;
+  if (desc.includes("golden box") || desc.includes("caixinha"))
+    return `Transferência para Golden Box de ${valor}`;
+  if (desc.includes("recompra")) return `Saque para Recompra de ${valor}`;
+  return `Saque de ${valor}`;
+};
+
 const UniversalProgressBar = ({ progressInfo }) => {
   const { currentValue, maxValue, currentLabel, maxLabel, title } =
     progressInfo;
@@ -400,6 +438,8 @@ const ContractDetailPage = () => {
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Descrição</th>
                   <th>Valor Sacado</th>
                   <th>Status</th>
                   <th>Data</th>
@@ -410,6 +450,10 @@ const ContractDetailPage = () => {
                   paginatedWithdraws.map((w) => (
                     <tr key={w.id}>
                       <td>#{w.id}</td>
+                      <td>{getWithdrawTypeTag(w)}</td>
+                      <td className="withdraw-description">
+                        {getWithdrawDescription(w)}
+                      </td>
                       <td>{formatCurrency(w.amountWithdrawn)}</td>
                       <td>{getWithdrawStatusBadge(w.status)}</td>
                       <td>{formatDate(w.dateCreated)}</td>
@@ -417,7 +461,7 @@ const ContractDetailPage = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="empty-message">
+                    <td colSpan="6" className="empty-message">
                       {contractWithdraws.length === 0
                         ? "Nenhum saque realizado neste contrato."
                         : "Nenhum saque com esse status."}
